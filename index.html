@@ -140,6 +140,78 @@
     animation: scrollDown 2.4s cubic-bezier(.4,0,.2,1) infinite;
   }
   @keyframes scrollDown { 0%{transform:translateY(0);} 100%{transform:translateY(300%);} }
+
+  /* ── Feature image section ── */
+  .feature-section {
+    position: relative; z-index: 2;
+    background: #0B1220;
+    padding: 0 0 120px;
+    overflow: hidden;
+  }
+  .feature-label {
+    text-align: center;
+    padding: 80px 24px 48px;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(248,249,245,0.45);
+  }
+  /* 3D image frame for homepageimg */
+  .feature-scene {
+    perspective: 1800px;
+    perspective-origin: 50% 30%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .feature-stage {
+    transform-style: preserve-3d;
+    transform: rotateX(22deg) scale(0.82);
+    opacity: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow:
+      0 80px 160px -40px rgba(0,0,0,0.9),
+      0 0 0 1px rgba(255,255,255,0.07),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+    transition: transform 1.6s cubic-bezier(0.16,1,0.3,1), opacity 1.2s ease, box-shadow 0.8s;
+  }
+  .feature-stage.revealed {
+    transform: rotateX(0deg) scale(1);
+    opacity: 1;
+    box-shadow:
+      0 40px 100px -30px rgba(0,0,0,0.7),
+      0 0 0 1px rgba(255,255,255,0.07),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  .feature-stage:hover {
+    transform: rotateX(-4deg) rotateY(2deg) scale(1.015) !important;
+    box-shadow:
+      0 100px 200px -50px rgba(0,0,0,0.9),
+      0 0 0 1px rgba(255,255,255,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+    transition: transform 0.6s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.6s;
+  }
+  .feature-stage img {
+    width: 100%; display: block;
+    transform: scale(1.04);
+    transition: transform 8s ease;
+  }
+  .feature-stage.revealed img {
+    transform: scale(1);
+  }
+  /* Cinematic letterbox bars */
+  .feature-stage::before,
+  .feature-stage::after {
+    content: ""; position: absolute; left: 0; right: 0; z-index: 3;
+    height: 60px; pointer-events: none;
+  }
+  .feature-stage::before { top: 0; background: linear-gradient(180deg, rgba(11,18,32,0.7), transparent); }
+  .feature-stage::after  { bottom: 0; background: linear-gradient(0deg, rgba(11,18,32,0.55), transparent); }
+  /* Glow beneath */
+  .feature-glow {
+    position: absolute; left: 10%; right: 10%; bottom: -60px; height: 120px;
+    background: radial-gradient(ellipse, rgba(16,185,129,0.18), transparent 70%);
+    filter: blur(30px); pointer-events: none;
+  }
 </style>
 </head>
 <body data-page="index">
@@ -170,6 +242,17 @@
   <div class="scroll-arrow" id="scrollArrow">
     <span>Scroll</span>
     <div class="bar"></div>
+  </div>
+</section>
+
+<!-- ── Feature: original homepage image ── -->
+<section class="feature-section">
+  <p class="feature-label">— Green Wadi</p>
+  <div class="feature-scene">
+    <div class="feature-stage" id="featureStage">
+      <img src="/images/homepageimg.png" alt="Green Wadi — Agriculture" id="featureImg"/>
+    </div>
+    <div class="feature-glow"></div>
   </div>
 </section>
 
@@ -219,7 +302,7 @@ gsap.to('#heroBg', {
   ease: 'none'
 });
 
-// ── 5. Mouse 3D tilt on img-stage ──
+// ── 5. Mouse 3D tilt on hero img-stage ──
 document.querySelectorAll('.img-stage').forEach(el => {
   el.addEventListener('mousemove', e => {
     const r = el.getBoundingClientRect();
@@ -227,9 +310,50 @@ document.querySelectorAll('.img-stage').forEach(el => {
     const y = (e.clientY - r.top) / r.height - 0.5;
     el.style.transform = `perspective(1400px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) scale(1.01)`;
   });
-  el.addEventListener('mouseleave', () => {
-    el.style.transform = '';
-  });
+  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+});
+
+// ── 6. Feature image: scroll-triggered 3D reveal ──
+const featureStage = document.getElementById('featureStage');
+ScrollTrigger.create({
+  trigger: featureStage,
+  start: 'top 88%',
+  onEnter: () => featureStage.classList.add('revealed')
+});
+
+// Slow vertical parallax on feature image itself
+gsap.to('#featureImg', {
+  scrollTrigger: {
+    trigger: '#featureStage',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 2
+  },
+  y: -80,
+  ease: 'none'
+});
+
+// Subtle continuous float
+gsap.to('#featureStage', {
+  y: -10,
+  duration: 4,
+  repeat: -1,
+  yoyo: true,
+  ease: 'sine.inOut',
+  delay: 1.8
+});
+
+// Mouse 3D tilt on feature image
+featureStage.addEventListener('mousemove', e => {
+  const r = featureStage.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - 0.5;
+  const y = (e.clientY - r.top) / r.height - 0.5;
+  featureStage.style.transform = `perspective(1800px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) scale(1.02)`;
+  featureStage.style.transition = 'transform 0.15s ease, box-shadow 0.15s';
+});
+featureStage.addEventListener('mouseleave', () => {
+  featureStage.style.transform = '';
+  featureStage.style.transition = 'transform 0.9s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.9s';
 });
 </script>
 </body>

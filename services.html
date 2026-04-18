@@ -3,229 +3,217 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Green Wadi Services</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<title>Services — Green Wadi</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
-  body { padding-top: 72px; background: #F8F9F5; overflow-x: hidden; }
-
-  /* Floating orbs */
-  .orb-bg { position: fixed; pointer-events: none; border-radius: 999px; filter: blur(90px); z-index: 0; }
-  .orb-bg-1 { width: 650px; height: 650px; top: -150px; right: -100px; background: radial-gradient(circle, rgba(244,199,123,0.22), transparent 70%); animation: o1 22s ease-in-out infinite; }
-  .orb-bg-2 { width: 450px; height: 450px; bottom: 10vh; left: -80px; background: radial-gradient(circle, rgba(16,185,129,0.15), transparent 70%); animation: o2 26s ease-in-out infinite; }
-  @keyframes o1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-60px,80px);} }
-  @keyframes o2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(70px,-50px);} }
-
-  /* Hero */
-  .hero-inner {
-    padding: 96px 0 64px;
-    background: radial-gradient(70% 50% at 80% 20%, rgba(244,199,123,0.32), transparent 60%), #F8F9F5;
-    position: relative; overflow: hidden;
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{
+    padding: 100px 0 60px;
+    background: radial-gradient(70% 50% at 80% 20%, rgba(244,199,123,0.35), transparent 60%), #F8F9F5;
   }
-
-  /* Service cards — 3D flip entrance */
-  .svc-card {
-    background: #fff;
-    border: 1px solid rgba(15,23,42,0.08);
-    border-radius: 22px;
-    overflow: hidden;
-    transform: rotateY(90deg);
-    opacity: 0;
-    transition:
-      transform 0.8s cubic-bezier(0.2,0.8,0.2,1),
-      opacity 0.8s ease,
-      box-shadow 0.45s,
-      border-color 0.4s;
-    transform-origin: left center;
-    perspective: 800px;
+  .svc-card{
+    border:1px solid rgba(15,23,42,0.08); border-radius:20px; background:#fff;
+    overflow:hidden; transition: border-color .4s, box-shadow .4s;
+    cursor:pointer;
   }
-  .svc-card.in {
-    transform: rotateY(0deg);
-    opacity: 1;
-  }
-  .svc-card:hover {
-    box-shadow: 0 28px 60px -20px rgba(15,23,42,0.22);
-    border-color: rgba(16,185,129,0.35);
-    transform: rotateY(0deg) translateY(-4px) scale(1.01);
-  }
-
-  /* Dark green header bar per card */
-  .svc-head {
-    background: linear-gradient(135deg, #0B4D35 0%, #1F5F3A 60%, #0F7B52 100%);
-    padding: 28px 30px;
-    position: relative; overflow: hidden;
-  }
-  .svc-head::before {
-    content: "";
-    position: absolute; top: -40px; right: -40px;
-    width: 160px; height: 160px; border-radius: 999px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
-    pointer-events: none;
-  }
-  .svc-num {
-    font-family: "Fraunces", serif; font-weight: 300;
-    font-size: 72px; color: rgba(255,255,255,0.18);
-    line-height: 1; letter-spacing: -0.04em;
-    position: absolute; top: 16px; right: 24px;
-  }
-  .svc-title {
-    font-family: "Fraunces", serif; font-weight: 300;
-    font-size: 30px; color: #F8F9F5;
-    letter-spacing: -0.02em; position: relative; z-index: 1;
-  }
-  .svc-lead {
-    font-size: 14px; color: rgba(248,249,245,0.75);
-    margin-top: 8px; line-height: 1.55;
-    position: relative; z-index: 1; max-width: 50ch;
-  }
-
-  /* Card body */
-  .svc-body { padding: 28px 30px; }
-  .bullet { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-  .bullet-dot { width: 6px; height: 6px; border-radius: 999px; background: var(--green); flex-shrink: 0; margin-top: 8px; }
-  .bullet-text { font-size: 15px; color: #1E2A3A; line-height: 1.55; }
-
-  .animate-text { opacity: 0; transform: translateY(40px); }
-
-  /* Grid */
-  .svc-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  @media (min-width: 768px) {
-    .svc-grid { grid-template-columns: 1fr 1fr; }
-    .svc-grid .svc-card:last-child:nth-child(odd) { grid-column: 1 / -1; max-width: 600px; }
-  }
+  .svc-card:hover{ border-color:rgba(16,185,129,0.3); box-shadow:0 20px 48px -24px rgba(15,23,42,0.18); }
+  .svc-card.active{ border-color:rgba(16,185,129,0.5); box-shadow:0 24px 56px -24px rgba(16,185,129,0.25); }
+  .svc-head{ display:grid; grid-template-columns: 72px 1fr auto; gap:20px; align-items:center; padding:28px; }
+  .svc-num{ font-family:"Fraunces",serif; font-weight:300; font-size:64px; color:var(--green-deep); line-height:1; letter-spacing:-0.02em; }
+  .svc-body{ padding:0 28px 28px; border-top:1px solid rgba(15,23,42,0.06); display:none; }
+  .svc-card.active .svc-body{ display:block; }
+  .svc-toggle{ width:36px; height:36px; border-radius:999px; background:rgba(15,23,42,0.04); border:1px solid rgba(15,23,42,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink-2); transition:background .3s, transform .4s; }
+  .svc-card.active .svc-toggle{ background:var(--green-deep); color:#fff; transform:rotate(45deg); }
+  .svc-toggle svg{ width:16px; height:16px; }
+  .bullet-list{ display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+  .bullet-item{ display:flex; align-items:flex-start; gap:12px; font-size:14.5px; color:#1E2A3A; line-height:1.5; }
+  .bullet-dot{ width:6px; height:6px; border-radius:999px; background:var(--green); flex-shrink:0; margin-top:8px; }
+  .step-num{ font-family:"Fraunces",serif; font-weight:300; font-size:42px; color:var(--green-deep); width:56px; letter-spacing:-0.02em; line-height:1; }
+  .step-card{ padding:24px 0; border-top:1px solid rgba(15,23,42,0.08); }
+  .step-card:last-child{ border-bottom:1px solid rgba(15,23,42,0.08); }
 </style>
 </head>
 <body data-page="services">
 
-<div class="orb-bg orb-bg-1" aria-hidden="true"></div>
-<div class="orb-bg orb-bg-2" aria-hidden="true"></div>
-
-<!-- Hero -->
-<section class="hero-inner" style="position:relative; z-index:1;">
+<section class="intro">
   <div class="wrap">
-    <div class="eyebrow mb-5 animate-text">— Services</div>
-    <h1 class="h1 max-w-[22ch] animate-text">Green Wadi Services</h1>
-    <p class="body max-w-[60ch] mt-6 animate-text">Five service areas. One continuous relationship.</p>
+    <div class="eyebrow mb-5">— Services</div>
+    <h1 class="h1 max-w-[22ch]">Five service areas. One continuous relationship.</h1>
+    <p class="body max-w-[62ch] mt-8">We deliver these as a stack — from agronomy and planning through consulting, rural development and agribusiness — or independently, on a mandate-by-mandate basis. Every engagement includes a five-year review at no extra cost.</p>
   </div>
 </section>
 
-<!-- Services grid -->
-<section class="section" style="padding-top:56px; position:relative; z-index:1;">
+<!-- Service cards with accordion -->
+<section class="section" style="padding-top:40px">
   <div class="wrap">
+    <div class="eyebrow mb-6">— Our five service areas</div>
+    <div class="flex flex-col gap-4" id="svcList"></div>
+  </div>
+</section>
 
-    <div class="svc-grid">
-
-      <!-- 01 Agronomy -->
-      <div class="svc-card">
-        <div class="svc-head">
-          <div class="svc-num">01</div>
-          <div class="svc-title">Agronomy</div>
-          <div class="svc-lead">Best methodology, agricultural products and sustainable operations.</div>
-        </div>
-        <div class="svc-body">
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Provide the best methodology and agricultural products</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Support agronomic growth through R&amp;D</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Implement sustainable operations</span></div>
-        </div>
+<!-- Phased engagement -->
+<section class="section" style="background:#F2F4EC">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— How we engage</div>
+    <h2 class="h2 mb-12 max-w-[20ch]">A phased engagement, always.</h2>
+    <div class="grid md:grid-cols-5 gap-0">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="h3 mt-3">Listen</div>
+        <p class="small mt-2">Land, family, goals. No tools, no slides. We start with the people.</p>
       </div>
-
-      <!-- 02 Planning -->
-      <div class="svc-card">
-        <div class="svc-head">
-          <div class="svc-num">02</div>
-          <div class="svc-title">Planning</div>
-          <div class="svc-lead">Assessments, feasibility, master plans, GIS and environmental protection.</div>
-        </div>
-        <div class="svc-body">
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Agricultural assessments &amp; feasibility studies</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Strategic planning &amp; master plans</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">GIS &amp; spatial analysis</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Environmental protection</span></div>
-        </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="h3 mt-3">Baseline</div>
+        <p class="small mt-2">Independent audit: soil, water, yield, labour. We measure before we prescribe.</p>
       </div>
-
-      <!-- 03 Consulting -->
-      <div class="svc-card">
-        <div class="svc-head">
-          <div class="svc-num">03</div>
-          <div class="svc-title">Consulting</div>
-          <div class="svc-lead">Production guidance, advanced technology and applied R&amp;D.</div>
-        </div>
-        <div class="svc-body">
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Production guidance &amp; supervision</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Advanced technology adoption</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Applied research &amp; development</span></div>
-        </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="h3 mt-3">Plan</div>
+        <p class="small mt-2">5- and 25-year horizons, not single seasons. Strategic planning and master plans.</p>
       </div>
-
-      <!-- 04 Rural Development -->
-      <div class="svc-card">
-        <div class="svc-head">
-          <div class="svc-num">04</div>
-          <div class="svc-title">Rural Development</div>
-          <div class="svc-lead">Regional employment, food security and community infrastructure.</div>
-        </div>
-        <div class="svc-body">
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Regional production &amp; employment</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Sustainable economic growth</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Food security &amp; safety</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Community infrastructure</span></div>
-        </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="h3 mt-3">Implement</div>
+        <p class="small mt-2">Technology adoption, operator training, supplier selection. We embed until the team runs solo.</p>
       </div>
-
-      <!-- 05 Agribusiness -->
-      <div class="svc-card">
-        <div class="svc-head">
-          <div class="svc-num">05</div>
-          <div class="svc-title">Agribusiness</div>
-          <div class="svc-lead">Field-to-fork value chains, resource management and value-added processing.</div>
-        </div>
-        <div class="svc-body">
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Field-to-fork value chains</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Resource management</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Productivity improvement</span></div>
-          <div class="bullet"><span class="bullet-dot"></span><span class="bullet-text">Value-added processing</span></div>
-        </div>
+      <div class="step-card">
+        <div class="step-num">05</div>
+        <div class="h3 mt-3">Review</div>
+        <p class="small mt-2">Year-5 audit is on us. Always. Results compared to the original plan, independently verified.</p>
       </div>
-
     </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="wrap grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-1">
+      <div class="eyebrow mb-4">— FAQ</div>
+      <h2 class="h2">Common questions.</h2>
+      <p class="body mt-4 max-w-[36ch]">Straightforward answers about how we work and what to expect.</p>
+    </div>
+    <div class="md:col-span-2 space-y-2" id="faq"></div>
   </div>
 </section>
 
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
-gsap.registerPlugin(ScrollTrigger);
+const svcs = [
+  {
+    k:'01', n:'Agronomy',
+    lead:'Providing the best methodology and agricultural products to drive measurable agronomic growth.',
+    bullets:[
+      'Provide the best methodology and agricultural products tailored to each farm',
+      'Support agronomic growth through applied R&D and on-farm trials',
+      'Implement sustainable operations and best-practice protocols',
+      'Crop management planning: cereals, horticulture, specialty crops',
+      'Integrated pest and disease management programs'
+    ]
+  },
+  {
+    k:'02', n:'Planning',
+    lead:'Agricultural assessments, strategic master plans, GIS analysis and environmental protection.',
+    bullets:[
+      'Agricultural assessments and feasibility studies',
+      'Strategic planning and master plans (5- and 25-year horizons)',
+      'GIS and spatial analysis for land-use optimization',
+      'Environmental protection planning and compliance',
+      'Market analysis and value-chain mapping'
+    ]
+  },
+  {
+    k:'03', n:'Consulting',
+    lead:'Production guidance, advanced technology adoption and applied research and development.',
+    bullets:[
+      'Production guidance and on-site supervision',
+      'Advanced technology adoption: precision farming, IoT, AI tools',
+      'Applied research and development programs',
+      'Post-harvest technology and cold-chain consulting',
+      'Agro-industrial process optimization'
+    ]
+  },
+  {
+    k:'04', n:'Rural Development',
+    lead:'Regional production programs, sustainable economic growth, food security and community infrastructure.',
+    bullets:[
+      'Regional production and employment programs',
+      'Sustainable economic growth strategies for rural communities',
+      'Food security and food safety frameworks',
+      'Community infrastructure and capacity building',
+      'Strengthening rural livelihoods and institutional capacity'
+    ]
+  },
+  {
+    k:'05', n:'Agribusiness',
+    lead:'Field-to-fork value chains, resource management, productivity improvement and value-added processing.',
+    bullets:[
+      'Field-to-fork value chain design and optimization',
+      'Resource management: water, soil, energy, labour',
+      'Productivity improvement through technology and training',
+      'Value-added processing integration',
+      'Agribusiness investment structuring and project management'
+    ]
+  },
+];
 
-// Text stagger on scroll
-gsap.utils.toArray('.animate-text').forEach(el => {
-  gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 90%' },
-    y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
-  });
-});
+document.getElementById('svcList').innerHTML = svcs.map((s,i) => `
+  <div class="svc-card ${i===0?'active':''}" onclick="toggleCard(this)">
+    <div class="svc-head">
+      <div class="svc-num">${s.k}</div>
+      <div>
+        <div class="eyebrow mb-1">Service area</div>
+        <div class="h3">${s.n}</div>
+        <p class="small mt-1 max-w-[60ch]">${s.lead}</p>
+      </div>
+      <div class="svc-toggle">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div class="svc-body" style="${i===0?'display:block':'display:none'}">
+      <div class="bullet-list">
+        ${s.bullets.map(b=>`<div class="bullet-item"><span class="bullet-dot"></span><span>${b}</span></div>`).join('')}
+      </div>
+      <a href="contacts.html" class="btn btn-primary mt-6" style="display:inline-flex;">
+        Discuss this service
+        <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>`).join('');
 
-// Cards 3D flip entrance with stagger
-document.querySelectorAll('.svc-card').forEach((card, i) => {
-  ScrollTrigger.create({
-    trigger: card,
-    start: 'top 88%',
-    onEnter: () => {
-      setTimeout(() => {
-        card.style.transition = `transform 0.8s cubic-bezier(0.2,0.8,0.2,1) ${(i % 2) * 120}ms, opacity 0.8s ease ${(i % 2) * 120}ms, box-shadow 0.45s, border-color 0.4s`;
-        card.classList.add('in');
-      }, Math.floor(i / 2) * 80);
-    }
+function toggleCard(card){
+  const wasActive = card.classList.contains('active');
+  document.querySelectorAll('.svc-card').forEach(c => {
+    c.classList.remove('active');
+    c.querySelector('.svc-body').style.display = 'none';
   });
-});
+  if(!wasActive){
+    card.classList.add('active');
+    card.querySelector('.svc-body').style.display = 'block';
+  }
+}
+
+const faqs = [
+  {q:'Do you replace our existing agronomist?', a:'Never. We augment the team your family or board already trusts, and we train them on our methods so they can continue after we leave.'},
+  {q:'What is the smallest engagement you accept?', a:'A single 6-week diagnosis. From there, the client decides what comes next, on their timeline and budget.'},
+  {q:'Do you work with governments and development funds?', a:'Yes. Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.'},
+  {q:'Who owns the data?', a:'You. Always. Soil samples, imagery, reports and recommendations are your property, exportable at any time in open formats.'},
+  {q:'Can you provide training to local staff?', a:'Absolutely — capacity building at all levels of the agricultural value chain is a core part of every engagement.'},
+];
+document.getElementById('faq').innerHTML = faqs.map((f,i) => `
+  <details class="card" ${i===0?'open':''}>
+    <summary style="list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:20px;">
+      <span class="h3" style="font-size:18px">${f.q}</span>
+      <span style="font-family:Fraunces,serif; font-size:28px; color:#0F7B52; line-height:1; flex-shrink:0;">+</span>
+    </summary>
+    <p class="body mt-4">${f.a}</p>
+  </details>`).join('');
 </script>
 </body>
 </html>

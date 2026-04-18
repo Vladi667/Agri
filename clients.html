@@ -4,137 +4,191 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Clients — Green Wadi</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
-  body { padding-top: 72px; background: #F8F9F5; overflow-x: hidden; }
-
-  /* Floating orbs */
-  .orb-bg { position: fixed; pointer-events: none; border-radius: 999px; filter: blur(90px); z-index: 0; }
-  .orb-bg-1 { width: 600px; height: 600px; top: -100px; right: -100px; background: radial-gradient(circle, rgba(244,199,123,0.2), transparent 70%); animation: o1 20s ease-in-out infinite; }
-  .orb-bg-2 { width: 450px; height: 450px; bottom: 15vh; left: -80px; background: radial-gradient(circle, rgba(16,185,129,0.14), transparent 70%); animation: o2 24s ease-in-out infinite; }
-  @keyframes o1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-55px,80px);} }
-  @keyframes o2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(70px,-50px);} }
-
-  /* Hero */
-  .hero-inner {
-    padding: 96px 0 60px;
-    background: radial-gradient(60% 50% at 80% 20%, rgba(244,199,123,0.3), transparent 60%), #F8F9F5;
-    position: relative; overflow: hidden;
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{
+    padding: 100px 0 60px;
+    background: radial-gradient(60% 50% at 80% 20%, rgba(244,199,123,0.35), transparent 60%), #F8F9F5;
   }
-
-  /* 3D cinematic scene for clients image */
-  .scene {
-    perspective: 1400px;
-    perspective-origin: 50% 40%;
-    margin: 0 auto;
+  .clients-img{
+    width:100%; border-radius:22px; margin-bottom:40px; display:block;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.14);
   }
-  .img-stage {
-    transform-style: preserve-3d;
-    transform: rotateX(18deg) rotateY(-4deg) scale(0.88);
-    opacity: 0;
-    transition: transform 1.2s cubic-bezier(0.2,0.8,0.2,1), opacity 1s ease, box-shadow 0.6s;
-    border-radius: 22px; overflow: hidden;
-    box-shadow: 0 60px 120px -30px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.1);
+  .trust-statement{
+    background: linear-gradient(135deg, #F2F4EC 0%, #E8EDD8 100%);
+    border:1px solid rgba(15,23,42,0.06); border-radius:20px;
+    padding:40px 48px; margin:48px 0;
   }
-  .img-stage.revealed {
-    transform: rotateX(0deg) rotateY(0deg) scale(1);
-    opacity: 1;
+  .logo-grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr));
+    gap:1px; background:rgba(15,23,42,0.08); border:1px solid rgba(15,23,42,0.08);
+    border-radius:16px; overflow:hidden;
   }
-  .img-stage:hover {
-    transform: rotateX(-3deg) rotateY(4deg) scale(1.02);
-    box-shadow: 0 80px 160px -40px rgba(0,0,0,0.6);
+  .logo-cell{
+    background:#fff; padding:26px; height:120px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Fraunces",serif; font-weight:400; font-size:17px;
+    color:#1E2A3A; letter-spacing:-0.01em; text-align:center;
+    transition: background .3s;
   }
-  .img-3d { width: 100%; display: block; }
-  .img-reflection {
-    position: absolute; bottom: -40%; left: 0; right: 0; height: 40%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.08), transparent);
-    transform: scaleY(-1); opacity: 0.3; pointer-events: none;
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+  .logo-cell:hover{ background:#F8FFF5; }
+  .case{
+    border:1px solid rgba(15,23,42,0.08); border-radius:22px; background:#fff;
+    padding:28px; position:relative; overflow:hidden;
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
   }
-
-  .animate-text { opacity: 0; transform: translateY(40px); }
+  .case:hover{ transform:translateY(-3px); box-shadow:0 24px 56px -24px rgba(15,23,42,0.22); }
+  .case .img{ aspect-ratio:16/9; border-radius:14px; margin-bottom:18px; position:relative; overflow:hidden; }
+  .c1{ background:linear-gradient(135deg,#F2D9B2,#6F9C5A); }
+  .c2{ background:linear-gradient(135deg,#A9D1C2,#0F7B52); }
+  .c3{ background:linear-gradient(135deg,#E9A864,#8B5A1E); }
+  .case .img::after{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 70% 30%, rgba(255,255,255,0.3), transparent 60%); }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:18px; }
+  .stat-row .v{ font-family:"Fraunces",serif; font-size:32px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52; }
+  .stat-row .l{ font-size:11.5px; text-transform:uppercase; letter-spacing:.14em; color:#64748B; margin-top:2px; }
+  .quote{ font-family:"Fraunces",serif; font-weight:300; font-size:clamp(22px,2.6vw,36px); letter-spacing:-0.015em; line-height:1.22; color:#1E2A3A; }
+  .quote::before{ content:'\201C'; font-size:1.4em; line-height:0; vertical-align:-0.4em; color:var(--green-deep); margin-right:4px; }
 </style>
 </head>
 <body data-page="clients">
 
-<div class="orb-bg orb-bg-1" aria-hidden="true"></div>
-<div class="orb-bg orb-bg-2" aria-hidden="true"></div>
-
-<!-- Hero / Title -->
-<section class="hero-inner" style="position:relative; z-index:1;">
+<section class="intro">
   <div class="wrap">
-    <div class="eyebrow mb-5 animate-text">— Clients</div>
-    <h1 class="h1 animate-text" style="max-width:22ch;">Clients</h1>
+    <div class="eyebrow mb-5">— Clients</div>
+    <h1 class="h1 max-w-[22ch]">184 farms. 12 countries. Three generations already served.</h1>
+    <p class="body max-w-[62ch] mt-8">Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.</p>
   </div>
 </section>
 
-<!-- Clients image — full-width 3D cinematic -->
-<section class="section" style="padding-top: 32px; padding-bottom: 80px; position:relative; z-index:1;">
+<!-- Clients image hero -->
+<section style="padding:0">
   <div class="wrap">
-    <div class="scene">
-      <div class="img-stage" id="clientsImg">
-        <img src="/images/clients.png" class="img-3d img-parallax" alt="Green Wadi Clients"/>
-        <div class="img-reflection"></div>
+    <img src="/images/clients.png" alt="Green Wadi Clients" class="clients-img" loading="lazy"/>
+
+    <div class="trust-statement">
+      <div class="eyebrow mb-4">— Who trusts us</div>
+      <p class="body max-w-[72ch]" style="font-size:17px; line-height:1.7;">Our clients are families, family offices, sovereign funds, ministries and operating companies who think across generations. They come to Green Wadi not for a single-season fix — but because they believe that agriculture is a hundred-year craft, and they want a partner who shares that conviction.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Client types -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow mb-6">— Client types</div>
+    <div class="grid md:grid-cols-3 gap-4 mb-12">
+      <div class="card">
+        <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#E9FBF3,#B9E6D0); display:flex; align-items:center; justify-content:center; margin-bottom:14px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F7B52" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="16 2 12 7 8 2"/></svg>
+        </div>
+        <div class="h3" style="font-size:19px">Private investors</div>
+        <p class="small mt-3">Family offices and private investors seeking long-term agricultural returns with environmental stewardship built in from day one.</p>
       </div>
+      <div class="card">
+        <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#E9FBF3,#B9E6D0); display:flex; align-items:center; justify-content:center; margin-bottom:14px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F7B52" stroke-width="1.6" stroke-linecap="round"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 10v11M16 10v11M12 10v11"/></svg>
+        </div>
+        <div class="h3" style="font-size:19px">Governments</div>
+        <p class="small mt-3">National and regional governments developing food security programs, rural development policies and large-scale land rehabilitation initiatives.</p>
+      </div>
+      <div class="card">
+        <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#E9FBF3,#B9E6D0); display:flex; align-items:center; justify-content:center; margin-bottom:14px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F7B52" stroke-width="1.6" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="h3" style="font-size:19px">Development funds</div>
+        <p class="small mt-3">International development organizations and sovereign funds financing agricultural transformation, food security and sustainable land management.</p>
+      </div>
+    </div>
+
+    <div class="eyebrow mb-4">— Selected clients</div>
+    <div class="logo-grid">
+      <div class="logo-cell">Al Wadi Estates</div>
+      <div class="logo-cell">Ribeira Grande</div>
+      <div class="logo-cell">Atacama Agro</div>
+      <div class="logo-cell">Farm No.07</div>
+      <div class="logo-cell">Casa Horta</div>
+      <div class="logo-cell">MOA Program</div>
+      <div class="logo-cell">Oryx Pastoral</div>
+      <div class="logo-cell">Vega del Sur</div>
+      <div class="logo-cell">Sovereign Trust N.</div>
+      <div class="logo-cell">Lusitano Olives</div>
+      <div class="logo-cell">Dakhla Palms</div>
+      <div class="logo-cell">Ministry of Land</div>
+    </div>
+  </div>
+</section>
+
+<!-- Case studies -->
+<section class="section" style="background:#F2F4EC; padding-top:48px">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— Case studies</div>
+    <h2 class="h2 mb-10 max-w-[20ch]">Three estates. Three seasons. Three outcomes.</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="case">
+        <div class="img c1"></div>
+        <div class="eyebrow mb-2">Wadi, Oman</div>
+        <h3 class="h3">Date palm recovery</h3>
+        <p class="small mt-2">Heritage cultivar preserved; precision pollination reintroduced after a 40-year gap. Micro-irrigation retrofit delivered immediate efficiency gains.</p>
+        <div class="stat-row">
+          <div><div class="v">+2</div><div class="l">Fruit grades</div></div>
+          <div><div class="v">-32%</div><div class="l">Water use</div></div>
+          <div><div class="v">8y</div><div class="l">Partnership</div></div>
+        </div>
+      </div>
+      <div class="case">
+        <div class="img c2"></div>
+        <div class="eyebrow mb-2">Alentejo, Portugal</div>
+        <h3 class="h3">Olive → agroforestry</h3>
+        <p class="small mt-2">Monoculture olive converted to productive polyculture. Carbon verified by ISO 14064, revenue up over 50% by year three.</p>
+        <div class="stat-row">
+          <div><div class="v">+51%</div><div class="l">Revenue</div></div>
+          <div><div class="v">Net·0</div><div class="l">Carbon</div></div>
+          <div><div class="v">11y</div><div class="l">Partnership</div></div>
+        </div>
+      </div>
+      <div class="case">
+        <div class="img c3"></div>
+        <div class="eyebrow mb-2">Atacama, Chile</div>
+        <h3 class="h3">Drylands rehabilitation</h3>
+        <p class="small mt-2">Sovereign program: 12,000 hectares of halophyte-led recovery. Soil moisture tripled in the first three seasons.</p>
+        <div class="stat-row">
+          <div><div class="v">12k</div><div class="l">Hectares</div></div>
+          <div><div class="v">3×</div><div class="l">Soil moisture</div></div>
+          <div><div class="v">6y</div><div class="l">In progress</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— In their words</div>
+    <div class="grid md:grid-cols-2 gap-12">
+      <div>
+        <p class="quote">Green Wadi showed up in year one, year five and year ten. Our agronomist now runs the system better than they did.</p>
+        <div class="small mt-6">— Principal, Ribeira Grande (Portugal)</div>
+      </div>
+      <div>
+        <p class="quote">They will not tell you what you want to hear. They tell you what the soil is telling them.</p>
+        <div class="small mt-6">— Secretary General, MOA Program</div>
+      </div>
+    </div>
+    <div class="mt-12">
+      <a href="services.html" class="btn btn-primary lg">Explore our services
+        <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
   </div>
 </section>
 
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
-<script>
-gsap.registerPlugin(ScrollTrigger);
-
-// Text stagger on scroll
-gsap.utils.toArray('.animate-text').forEach(el => {
-  gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 90%' },
-    y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
-  });
-});
-
-// 3D image reveal
-document.querySelectorAll('.img-stage').forEach(el => {
-  ScrollTrigger.create({
-    trigger: el,
-    start: 'top 85%',
-    onEnter: () => el.classList.add('revealed')
-  });
-});
-// Also trigger immediately if in viewport on load
-setTimeout(() => {
-  document.querySelectorAll('.img-stage').forEach(el => {
-    const r = el.getBoundingClientRect();
-    if (r.top < window.innerHeight * 0.9) el.classList.add('revealed');
-  });
-}, 300);
-
-// Mouse 3D tilt
-document.querySelectorAll('.img-stage').forEach(el => {
-  el.addEventListener('mousemove', e => {
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `perspective(1400px) rotateX(${-y * 12}deg) rotateY(${x * 12}deg) scale(1.03)`;
-  });
-  el.addEventListener('mouseleave', () => {
-    if (el.classList.contains('revealed')) el.style.transform = '';
-  });
-});
-
-// Parallax on scroll
-gsap.utils.toArray('.img-parallax').forEach(el => {
-  gsap.to(el, {
-    scrollTrigger: { trigger: el, scrub: 1.5 },
-    y: -60, ease: 'none'
-  });
-});
-</script>
 </body>
 </html>

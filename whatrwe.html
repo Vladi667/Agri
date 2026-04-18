@@ -3,250 +3,157 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>What Are We — Green Wadi</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<title>What We Are — Green Wadi</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
-  body { padding-top: 72px; background: #F8F9F5; overflow-x: hidden; }
-
-  /* Floating orbs */
-  .orb-bg { position: fixed; pointer-events: none; border-radius: 999px; filter: blur(90px); z-index: 0; }
-  .orb-bg-1 { width: 650px; height: 650px; top: -100px; right: -100px; background: radial-gradient(circle, rgba(244,199,123,0.22), transparent 70%); animation: o1 21s ease-in-out infinite; }
-  .orb-bg-2 { width: 450px; height: 450px; bottom: 15vh; left: -80px; background: radial-gradient(circle, rgba(16,185,129,0.14), transparent 70%); animation: o2 25s ease-in-out infinite; }
-  @keyframes o1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-60px,80px);} }
-  @keyframes o2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(70px,-50px);} }
-
-  /* Hero */
-  .hero-inner {
-    padding: 96px 0 64px;
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{
+    padding: 100px 0 60px;
     background:
-      radial-gradient(60% 50% at 70% 20%, rgba(244,199,123,0.35), transparent 60%),
+      radial-gradient(60% 50% at 70% 20%, rgba(244,199,123,0.4), transparent 60%),
       radial-gradient(40% 40% at 20% 80%, rgba(16,185,129,0.12), transparent 60%),
       #F8F9F5;
-    position: relative; overflow: hidden;
   }
-
-  /* Mission — dark block with word animation */
-  .mission-block {
+  .mission-block{
     background: linear-gradient(135deg, #0B4D35 0%, #0B1220 100%);
-    border-radius: 28px; padding: clamp(40px, 6vw, 72px);
+    border-radius: 24px; padding: 56px; color:#F8F9F5;
     position: relative; overflow: hidden;
   }
-  .mission-block::before {
-    content: "";
-    position: absolute; top: -60px; right: -60px;
-    width: 360px; height: 360px; border-radius: 999px;
-    background: radial-gradient(circle, rgba(16,185,129,0.22), transparent 70%);
-    pointer-events: none;
+  .mission-block::before{
+    content:""; position:absolute; top:-40px; right:-40px; width:320px; height:320px;
+    border-radius:999px; background: radial-gradient(circle, rgba(16,185,129,0.25), transparent 70%);
+    pointer-events:none;
   }
-  .mission-block::after {
-    content: "";
-    position: absolute; bottom: -40px; left: -30px;
-    width: 250px; height: 250px; border-radius: 999px;
-    background: radial-gradient(circle, rgba(244,199,123,0.1), transparent 70%);
-    pointer-events: none;
+  .mission-text{
+    font-family:"Fraunces",serif; font-weight:300; font-size:clamp(22px,2.8vw,38px);
+    letter-spacing:-0.015em; line-height:1.3; color:#F8F9F5; max-width:38ch;
   }
-
-  /* Word-by-word text */
-  .word-anim-wrap {
-    font-family: "Fraunces", serif; font-weight: 300;
-    font-size: clamp(22px, 3vw, 44px);
-    letter-spacing: -0.015em; line-height: 1.4;
-    color: #F8F9F5;
-    position: relative; z-index: 1;
-    max-width: 36ch;
+  .mission-text em{ font-style:normal; color:#34D399; }
+  .principle-card{
+    background:#fff; border:1px solid rgba(15,23,42,0.08); border-radius:18px; padding:26px;
+    position:relative; overflow:hidden;
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s;
   }
-  .word-anim-wrap .w {
-    display: inline-block;
-    opacity: 0.15;
-    transition: opacity 0.4s ease;
-  }
-  .word-anim-wrap .w.lit { opacity: 1; }
-  .word-anim-wrap .w.accent { color: #34D399; }
-
-  /* 6 principle cards */
-  .principle-card {
-    background: #fff;
-    border: 1px solid rgba(15,23,42,0.08);
-    border-radius: 20px; padding: 28px;
-    transform: rotateY(90deg);
-    opacity: 0;
-    transition:
-      transform 0.8s cubic-bezier(0.2,0.8,0.2,1),
-      opacity 0.8s ease,
-      box-shadow 0.45s,
-      border-color 0.4s;
-    transform-origin: left center;
-  }
-  .principle-card.in {
-    transform: rotateY(0deg);
-    opacity: 1;
-  }
-  .principle-card:hover {
-    transform: rotateY(0deg) translateY(-4px);
-    box-shadow: 0 24px 54px -24px rgba(15,23,42,0.2);
-    border-color: rgba(16,185,129,0.3);
-  }
-  .principle-num {
-    font-family: "Fraunces", serif; font-weight: 300;
-    font-size: 56px; color: rgba(15,95,58,0.18);
-    line-height: 1; letter-spacing: -0.02em;
-    margin-bottom: 10px;
-  }
-  .principle-title {
-    font-family: "Fraunces", serif; font-weight: 400;
-    font-size: 18px; color: #0B1220; margin-top: 6px;
-    letter-spacing: -0.01em;
-  }
-  .principle-text { font-size: 14px; color: #334155; line-height: 1.6; margin-top: 10px; }
-
-  /* Section clip-path reveal */
-  .clip-section {
-    clip-path: inset(100% 0 0 0);
-    transition: clip-path 1s cubic-bezier(0.2,0.8,0.2,1);
-  }
-  .clip-section.revealed { clip-path: inset(0% 0 0 0); }
-
-  .animate-text { opacity: 0; transform: translateY(40px); }
+  .principle-card:hover{ transform:translateY(-3px); box-shadow:0 20px 48px -24px rgba(15,23,42,0.18); border-color:rgba(16,185,129,0.3); }
+  .principle-card .num{ font-family:"Fraunces",serif; font-weight:300; font-size:52px; color:rgba(15,95,58,0.2); line-height:1; letter-spacing:-0.02em; }
+  .value-ring{ position:relative; aspect-ratio:1; max-width:520px; margin:0 auto; }
+  .value-ring .center{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; }
+  .value-ring .node{ position:absolute; width:148px; padding:14px; border-radius:16px; background:#fff; border:1px solid rgba(15,23,42,0.08); box-shadow:0 10px 24px -12px rgba(15,23,42,0.18); text-align:center; }
+  .value-ring .node .k{ font-family:"Fraunces",serif; font-size:18px; font-weight:400; }
+  .value-ring .node .d{ font-size:11.5px; color:#64748B; margin-top:4px; line-height:1.4; }
+  .value-ring .n1{ top:0; left:50%; transform:translate(-50%,-20%); }
+  .value-ring .n2{ top:50%; right:0; transform:translate(20%,-50%); }
+  .value-ring .n3{ bottom:0; left:50%; transform:translate(-50%,20%); }
+  .value-ring .n4{ top:50%; left:0; transform:translate(-20%,-50%); }
+  .value-ring svg{ position:absolute; inset:0; width:100%; height:100%; }
 </style>
 </head>
 <body data-page="whatrwe">
 
-<div class="orb-bg orb-bg-1" aria-hidden="true"></div>
-<div class="orb-bg orb-bg-2" aria-hidden="true"></div>
-
-<!-- Hero -->
-<section class="hero-inner" style="position:relative; z-index:1;">
+<section class="intro">
   <div class="wrap">
-    <div class="eyebrow mb-5 animate-text">— What Are We</div>
-    <h1 class="h1 animate-text" style="max-width:26ch;">Agricultural Development Excellence</h1>
-    <p class="h2 animate-text" style="font-size:clamp(28px,4vw,56px); margin-top:10px; max-width:26ch;">Is What We Are</p>
+    <div class="eyebrow mb-5">— What we are</div>
+    <h1 class="h1 max-w-[22ch]">Agricultural Development Excellence Is What We Are.</h1>
+    <p class="body max-w-[62ch] mt-8">Green Wadi is a focused, independent agricultural consultancy — specialists in turning agronomic potential into verifiable, long-term results for farmers, investors and governments.</p>
   </div>
 </section>
 
-<!-- Mission statement — word-by-word -->
-<section class="section" style="padding-top: 56px; position:relative; z-index:1;">
+<!-- Mission statement -->
+<section class="section" style="padding-top:40px">
   <div class="wrap">
-    <div class="mission-block clip-section" id="missionBlock">
-      <div class="eyebrow mb-6" style="color:rgba(255,255,255,0.5); position:relative; z-index:1;">— Our mission</div>
-      <div class="word-anim-wrap" id="missionText">
-        <!-- Words injected by JS -->
-      </div>
-      <div style="margin-top: 40px; position:relative; z-index:1;">
-        <a href="services.html" class="btn btn-primary lg">Our Services
+    <div class="mission-block">
+      <div class="eyebrow mb-4" style="color:rgba(255,255,255,0.55)">— Our mission</div>
+      <p class="mission-text">
+        Green Wadi will <em>increase global agricultural production</em> to mitigate hunger and malnutrition, pave the way for <em>food self-sufficiency and security</em>; strengthen the rural community and improve its livelihood, while <em>protecting the environment and natural resources</em>.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a href="services.html" class="btn btn-primary lg">Our services
           <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
+        <a href="whorwe.html" class="btn btn-ghost lg" style="color:#F8F9F5; border-color:rgba(255,255,255,0.25);">Who we are</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 6 Principle cards -->
-<section class="section" style="background:#F2F4EC; position:relative; z-index:1;">
+<!-- 6 Principle cards with real company text -->
+<section class="section" style="background:#F2F4EC">
   <div class="wrap">
-    <div class="eyebrow mb-4 animate-text">— Six principles</div>
-    <h2 class="h2 mb-12 animate-text" style="max-width:24ch;">The principles that define every engagement.</h2>
-    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:24px;">
-
+    <div class="eyebrow mb-4">— Six principles</div>
+    <h2 class="h2 mb-4 max-w-[22ch]">The principles that define every engagement.</h2>
+    <p class="body mb-12 max-w-[60ch]">These are not values statements. They are the operating principles we apply to every mandate, from a single farm diagnosis to a national rural development program.</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div class="principle-card">
-        <div class="principle-num">01</div>
-        <div class="principle-title">Developing and introducing suitable agricultural practices, agro-technology, and post-harvest technology.</div>
+        <div class="num">01</div>
+        <div class="h3 mt-2" style="font-size:20px">Agricultural practices &amp; agro-technology</div>
+        <p class="small mt-3">Developing and introducing suitable agricultural practices, agro-technology, and post-harvest technology tailored to the specific conditions of each client.</p>
       </div>
-
       <div class="principle-card">
-        <div class="principle-num">02</div>
-        <div class="principle-title">Enhancing and building capacity at all levels of the agricultural value chain.</div>
+        <div class="num">02</div>
+        <div class="h3 mt-2" style="font-size:20px">Enhancing &amp; building capacity</div>
+        <p class="small mt-3">Enhancing and building capacity at all levels of the agricultural value chain — from the farmer in the field to the manager at the board level.</p>
       </div>
-
       <div class="principle-card">
-        <div class="principle-num">03</div>
-        <div class="principle-title">Adopting a results and success-oriented approach.</div>
+        <div class="num">03</div>
+        <div class="h3 mt-2" style="font-size:20px">Results &amp; success-oriented approach</div>
+        <p class="small mt-3">Adopting a results and success-oriented approach. Every recommendation is measured, verified independently, and revisited at year five.</p>
       </div>
-
       <div class="principle-card">
-        <div class="principle-num">04</div>
-        <div class="principle-title">Focusing on customer satisfaction.</div>
+        <div class="num">04</div>
+        <div class="h3 mt-2" style="font-size:20px">Customer satisfaction</div>
+        <p class="small mt-3">Focusing on customer satisfaction in every interaction. We provide quick answers and solutions — not reports that sit on a shelf.</p>
       </div>
-
       <div class="principle-card">
-        <div class="principle-num">05</div>
-        <div class="principle-title">Making a long-term commitment to our customers and their projects.</div>
+        <div class="num">05</div>
+        <div class="h3 mt-2" style="font-size:20px">Long-term commitment</div>
+        <p class="small mt-3">Making a long-term commitment to our customers and their projects. We are present in year one, year five, and year ten of every engagement.</p>
       </div>
-
       <div class="principle-card">
-        <div class="principle-num">06</div>
-        <div class="principle-title">Providing optimal tailor-made solutions for any given condition.</div>
+        <div class="num">06</div>
+        <div class="h3 mt-2" style="font-size:20px">Optimal tailor-made solutions</div>
+        <p class="small mt-3">Providing optimal tailor-made solutions for any given condition. No two farms, no two markets, no two challenges are ever identical.</p>
       </div>
+    </div>
+  </div>
+</section>
 
+<!-- Values ring -->
+<section class="section">
+  <div class="wrap grid md:grid-cols-[1fr_1fr] gap-16 items-center">
+    <div>
+      <div class="eyebrow mb-4">— Core values</div>
+      <h2 class="h2 max-w-[16ch]">Four values, arranged around the land.</h2>
+      <p class="body mt-6 max-w-[50ch]">Every decision — a hire, a tool, a client, a protocol — is tested against these four. If it fails one, it does not happen.</p>
+      <div class="mt-8 space-y-3">
+        <div class="flex gap-3 items-start"><span style="width:6px; height:6px; border-radius:999px; background:#10B981; flex-shrink:0; margin-top:8px;"></span><p class="body">Patience — year-5 reviews, always on us.</p></div>
+        <div class="flex gap-3 items-start"><span style="width:6px; height:6px; border-radius:999px; background:#10B981; flex-shrink:0; margin-top:8px;"></span><p class="body">Proof — third-party audit on every claim.</p></div>
+        <div class="flex gap-3 items-start"><span style="width:6px; height:6px; border-radius:999px; background:#10B981; flex-shrink:0; margin-top:8px;"></span><p class="body">Restraint — the simplest protocol that holds.</p></div>
+        <div class="flex gap-3 items-start"><span style="width:6px; height:6px; border-radius:999px; background:#10B981; flex-shrink:0; margin-top:8px;"></span><p class="body">Stewardship — 100-year plans, always open.</p></div>
+      </div>
+    </div>
+    <div class="value-ring">
+      <svg viewBox="0 0 520 520" fill="none">
+        <circle cx="260" cy="260" r="180" stroke="#1F5F3A" stroke-width="1" stroke-dasharray="4 6" opacity=".4"/>
+      </svg>
+      <div class="center">
+        <div>
+          <div class="eyebrow" style="font-size:10px">Centered on</div>
+          <div class="h3" style="font-size:26px; margin-top:4px;">The land</div>
+        </div>
+      </div>
+      <div class="node n1"><div class="k">Patience</div><div class="d">Year-5 reviews, always on us.</div></div>
+      <div class="node n2"><div class="k">Proof</div><div class="d">Third-party audit on every claim.</div></div>
+      <div class="node n3"><div class="k">Restraint</div><div class="d">The simplest protocol that holds.</div></div>
+      <div class="node n4"><div class="k">Stewardship</div><div class="d">100-year plans, always open.</div></div>
     </div>
   </div>
 </section>
 
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
-<script>
-gsap.registerPlugin(ScrollTrigger);
-
-// ── Text stagger on scroll ──
-gsap.utils.toArray('.animate-text').forEach(el => {
-  gsap.from(el, {
-    scrollTrigger: { trigger: el, start: 'top 90%' },
-    y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
-  });
-});
-
-// ── Mission: word-by-word opacity animation ──
-const missionStr = "Green Wadi will increase global agricultural production to mitigate hunger and malnutrition, pave the way for food self-sufficiency and security; strengthen the rural community and improve its livelihood, while protecting the environment and natural resources.";
-const accentWords = new Set(['increase','mitigate','hunger','malnutrition','food','self-sufficiency','security;','strengthen','protecting','environment']);
-
-const missionEl = document.getElementById('missionText');
-const words = missionStr.split(' ');
-missionEl.innerHTML = words.map(w => {
-  const clean = w.replace(/[.,;]/g,'').toLowerCase();
-  const isAccent = accentWords.has(w.toLowerCase()) || accentWords.has(clean);
-  return `<span class="w${isAccent ? ' accent' : ''}">${w}</span> `;
-}).join('');
-
-// Clip-path reveal on mission block
-ScrollTrigger.create({
-  trigger: '#missionBlock',
-  start: 'top 80%',
-  onEnter: () => {
-    document.getElementById('missionBlock').classList.add('revealed');
-    // Then stagger the word opacity
-    const allWords = missionEl.querySelectorAll('.w');
-    gsap.to(allWords, {
-      opacity: (i, el) => el.classList.contains('accent') ? 1 : 1,
-      duration: 0.001,
-      stagger: {
-        each: 0.06,
-        onStart: function() {
-          this.targets()[0].classList.add('lit');
-        }
-      },
-      delay: 0.4
-    });
-  },
-  once: true
-});
-
-// ── Principle cards 3D flip entrance ──
-document.querySelectorAll('.principle-card').forEach((card, i) => {
-  ScrollTrigger.create({
-    trigger: card,
-    start: 'top 90%',
-    onEnter: () => {
-      setTimeout(() => {
-        card.style.transition = `transform 0.8s cubic-bezier(0.2,0.8,0.2,1) ${(i % 3) * 110}ms, opacity 0.8s ease ${(i % 3) * 110}ms, box-shadow 0.45s, border-color 0.4s`;
-        card.classList.add('in');
-      }, Math.floor(i / 3) * 90);
-    }
-  });
-});
-</script>
 </body>
 </html>

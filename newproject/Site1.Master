@@ -1,0 +1,45 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="newproject.Site1" ClientIDMode="Static" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server" >
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+        <header>
+            <a id="name" href="homepage.aspx">
+                <img id="logo" src="../Images/logo.jpg" alt="Logo" />
+            </a>
+
+            <div class="welcome-message">
+                <% = "Welcome " + Session["username"] %>
+            </div>
+
+            <ul id="lists">
+                <li id="homepage"><a href="homepage.aspx">Green Wadi</a></li>
+                <li id="whorwe" runat="server"><a href="whorwe.aspx">Who Are We</a></li>
+                <li id="scope" runat="server"><a href="scope.aspx">Our Scope</a></li>
+                <li id="services" runat="server"><a href="services.aspx">Services</a></li>
+                <li id="activities" runat="server"><a href="activities.aspx">Activities</a></li>
+                <li id="gallery"><a href="whatrwe.aspx">What Are We</a></li>
+                <li id="clients"><a href="clients.aspx">Clients</a></li>
+                <li id="login" runat="server"><a href="login.aspx">Log In</a></li>
+                <li id="page1" runat="server"><a href="contacts.aspx">Contacts</a></li>
+                <li id="table" runat="server"><a href="table.aspx">Table</a></li>
+                <li id="logoutq" runat="server"><a href="logoutp.aspx">Logout</a></li>
+            </ul>
+            <br />
+        </header>
+
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
+        </div>
+        </div>
+        </form>
+</body>
+</html>

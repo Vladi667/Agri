@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link href="/css/StyleSheet1.css" rel="stylesheet" />
+  <script src="/js/auth.js"></script>
+  <script src="/js/validation.js"></script>
+</head>
+<body>
+  <header>
+    <a id="name" href="/index.html">
+      <img id="logo" src="/images/logo.jpg" alt="Logo" />
+    </a>
+    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
+    <ul id="lists">
+      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
+      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
+      <li id="scope"><a href="/scope.html">Our Scope</a></li>
+      <li id="services"><a href="/services.html">Services</a></li>
+      <li id="activities"><a href="/activities.html">Activities</a></li>
+      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
+      <li id="clients"><a href="/clients.html">Clients</a></li>
+      <li id="login"><a href="/login.html">Log In</a></li>
+      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
+      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
+      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+    <br />
+  </header>
+
+  <div id="ContentPlaceHolder1">
+    <h1 id="titles">Log In</h1>
+
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" onchange="logch()"><br>
+
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password" onchange="logch()"><br>
+
+    <input type="submit" value="Submit" onclick="doLogin()">
+
+    <div id="euse" style="color:red"><br /></div>
+
+    <p id="sign">Don't Have an Account? <a href="/signup.html">Sign Up</a></p>
+  </div>
+
+  <script>
+    async function doLogin() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const euse = document.getElementById('euse');
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          euse.innerHTML = data.error || 'Wrong Username or Password';
+          return;
+        }
+
+        localStorage.setItem('gw_token', data.token);
+        window.location.href = '/index.html';
+      } catch (err) {
+        euse.innerHTML = 'Server error, please try again.';
+      }
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') doLogin();
+    });
+  </script>
+</body>
+</html>

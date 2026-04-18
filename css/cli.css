@@ -1,0 +1,16 @@
+﻿#im {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#titles {
+    font-size: 3rem;
+    color: #1a4720;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+}

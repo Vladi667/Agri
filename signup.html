@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up</title>
+  <link href="/css/StyleSheet1.css" rel="stylesheet" />
+  <script src="/js/validation.js"></script>
+</head>
+<body>
+  <div>
+    <h1 id="titles">Sign Up</h1>
+    <form onsubmit="return handleSignup(event)">
+      <div>
+        <!-- username -->
+        <label for="use">Username:</label><br>
+        <input type="text" id="use" name="use" onchange="usech()" required><br>
+        <div id="usemsg"><br /></div>
+
+        <!-- password -->
+        <label for="pass">Password:</label><br>
+        <input type="password" id="pass" name="pass" onchange="passch()" required><br>
+        <div id="passmsg"><br /></div>
+
+        <!-- confirm password -->
+        <label for="password">Confirm Password:</label><br>
+        <input type="password" id="password" name="password" onchange="passwordch()" required><br>
+        <div id="passwordmsg"><br /></div>
+
+        <!-- telephone -->
+        <label for="tele">Telephone:</label><br>
+        <input type="text" id="tele" name="tele" onchange="telech()" required><br>
+        <div id="telemsg"><br /></div>
+
+        <!-- email -->
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <div id="emailmsg"><br /></div>
+
+        <div id="finmsg"><br /></div>
+
+        <!-- submit -->
+        <input type="submit" value="submit"><br>
+      </div>
+    </form>
+    <a href="/login.html"><p>Return to log in</p></a>
+  </div>
+
+  <script>
+    async function handleSignup(e) {
+      e.preventDefault();
+      if (!validateForm()) return;
+
+      const username = document.getElementById('use').value;
+      const password = document.getElementById('pass').value;
+      const telephone = document.getElementById('tele').value;
+      const email = document.getElementById('email').value;
+      const usemsg = document.getElementById('usemsg');
+      const finmsg = document.getElementById('finmsg');
+
+      try {
+        const res = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, telephone, email })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          if (res.status === 409) {
+            usemsg.innerHTML = 'Username is taken';
+            usemsg.style.color = 'red';
+          } else {
+            finmsg.innerHTML = data.error || 'Server error';
+            finmsg.style.color = 'red';
+          }
+          return;
+        }
+
+        window.location.href = '/index.html';
+      } catch (err) {
+        finmsg.innerHTML = 'Server error, please try again.';
+        finmsg.style.color = 'red';
+      }
+    }
+  </script>
+</body>
+</html>

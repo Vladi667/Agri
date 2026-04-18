@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Table</title>
+  <link href="/css/StyleSheet1.css" rel="stylesheet" />
+  <script src="/js/auth.js"></script>
+</head>
+<body>
+  <header>
+    <a id="name" href="/index.html">
+      <img id="logo" src="/images/logo.jpg" alt="Logo" />
+    </a>
+    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
+    <ul id="lists">
+      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
+      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
+      <li id="scope"><a href="/scope.html">Our Scope</a></li>
+      <li id="services"><a href="/services.html">Services</a></li>
+      <li id="activities"><a href="/activities.html">Activities</a></li>
+      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
+      <li id="clients"><a href="/clients.html">Clients</a></li>
+      <li id="login"><a href="/login.html">Log In</a></li>
+      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
+      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
+      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+    <br />
+  </header>
+
+  <div id="ContentPlaceHolder1">
+    <br />
+    <label for="Columns">sort by columns</label> &nbsp;&nbsp; <br />
+    <select id="Columns">
+      <option value="id">userId</option>
+      <option value="use1">username</option>
+      <option value="pass">password</option>
+      <option value="tele">phone</option>
+      <option value="email">email</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="radio" id="ASC" name="order" value="ASC" checked />
+    <label for="ASC">ASC</label>
+    &nbsp;&nbsp;
+    <input type="radio" id="DESC" name="order" value="DESC" />
+    <label for="DESC">DESC</label>
+    <br /><br /><br /><br />
+
+    <br />
+    <label for="fil">filter</label> &nbsp;&nbsp; <br />
+    <select id="Select2">
+      <option value="id">userId</option>
+      <option value="use1">username</option>
+      <option value="pass">password</option>
+      <option value="tele">phone</option>
+      <option value="email">email</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" id="Filter" />
+    <input type="button" value="filter" onclick="loadTable()" />
+    <br /><br />
+    <input type="button" value="delete" onclick="deleteSelected()" />
+    <input type="button" value="edit" onclick="editSelected()" />
+    <br /><br /><br />
+
+    <div id="tableDiv"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!requireAdmin()) return;
+      loadTable();
+    });
+
+    async function loadTable() {
+      const sort = document.getElementById('Columns').value;
+      const order = document.querySelector('input[name="order"]:checked').value;
+      const filterCol = document.getElementById('Select2').value;
+      const filterVal = document.getElementById('Filter').value;
+
+      let url = `/api/users?sort=${sort}&order=${order}`;
+      if (filterVal) url += `&filterCol=${filterCol}&filterVal=${encodeURIComponent(filterVal)}`;
+
+      try {
+        const res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + getToken() } });
+        const rows = await res.json();
+        document.getElementById('tableDiv').innerHTML = buildTable(rows);
+      } catch (err) {
+        document.getElementById('tableDiv').innerHTML = '<p style="color:red">Error loading users.</p>';
+      }
+    }
+
+    function buildTable(rows) {
+      if (!rows.length) return '<p>No users found.</p>';
+      const cols = ['id', 'use1', 'pass', 'tele', 'email', 'admin'];
+      let html = "<table class='usersTable' align='center'><tr><td></td>";
+      cols.forEach(c => { html += `<td><strong>${c}</strong></td>`; });
+      html += '</tr>';
+      rows.forEach(row => {
+        html += `<tr><td><input type="checkbox" name="chk${row.id}" id="chk${row.id}" /></td>`;
+        cols.forEach(c => { html += `<td>${row[c] !== null && row[c] !== undefined ? row[c] : ''}</td>`; });
+        html += '</tr>';
+      });
+      html += '</table>';
+      return html;
+    }
+
+    async function deleteSelected() {
+      const ids = getCheckedIds();
+      if (!ids.length) return alert('No users selected.');
+
+      try {
+        const res = await fetch('/api/delete-users', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ids })
+        });
+        if (!res.ok) throw new Error();
+        loadTable();
+      } catch {
+        alert('Error deleting users.');
+      }
+    }
+
+    function editSelected() {
+      const ids = getCheckedIds();
+      if (!ids.length) return alert('No user selected.');
+      localStorage.setItem('userToUpdate', ids[0]);
+      window.location.href = '/updateuser.html';
+    }
+
+    function getCheckedIds() {
+      const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+      return Array.from(checked).map(cb => parseInt(cb.id.replace('chk', '')));
+    }
+  </script>
+</body>
+</html>

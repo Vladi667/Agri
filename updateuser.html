@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update User</title>
+  <link href="/css/StyleSheet1.css" rel="stylesheet" />
+  <script src="/js/auth.js"></script>
+  <script src="/js/validation.js"></script>
+</head>
+<body>
+  <header>
+    <a id="name" href="/index.html">
+      <img id="logo" src="/images/logo.jpg" alt="Logo" />
+    </a>
+    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
+    <ul id="lists">
+      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
+      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
+      <li id="scope"><a href="/scope.html">Our Scope</a></li>
+      <li id="services"><a href="/services.html">Services</a></li>
+      <li id="activities"><a href="/activities.html">Activities</a></li>
+      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
+      <li id="clients"><a href="/clients.html">Clients</a></li>
+      <li id="login"><a href="/login.html">Log In</a></li>
+      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
+      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
+      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+    <br />
+  </header>
+
+  <div id="ContentPlaceHolder1">
+    <h1 id="titles">Update User</h1>
+
+    <!-- username -->
+    <label for="use">Username:</label><br>
+    <input type="text" id="use" name="use" onchange="usech()" required><br>
+    <div id="usemsg"><br /></div>
+
+    <!-- password -->
+    <label for="pass">Password:</label><br>
+    <input type="text" id="pass" name="pass" onchange="passch()" required><br>
+    <div id="passmsg"><br /></div>
+
+    <!-- telephone -->
+    <label for="tele">Telephone:</label><br>
+    <input type="text" id="tele" name="tele" onchange="telech()" required><br>
+    <div id="telemsg"><br /></div>
+
+    <!-- email -->
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" required><br>
+    <div id="emailmsg"><br /></div>
+
+    <input type="button" value="Submit" onclick="updateUser()"><br>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      if (!requireAdmin()) return;
+
+      const id = localStorage.getItem('userToUpdate');
+      if (!id) { window.location.href = '/table.html'; return; }
+
+      try {
+        const res = await fetch(`/api/get-user?id=${id}`, {
+          headers: { 'Authorization': 'Bearer ' + getToken() }
+        });
+        if (!res.ok) throw new Error();
+        const user = await res.json();
+        document.getElementById('use').value = user.use1 || '';
+        document.getElementById('pass').value = user.pass || '';
+        document.getElementById('tele').value = user.tele || '';
+        document.getElementById('email').value = user.email || '';
+      } catch {
+        alert('Error loading user data.');
+        window.location.href = '/table.html';
+      }
+    });
+
+    async function updateUser() {
+      const id = localStorage.getItem('userToUpdate');
+      const username = document.getElementById('use').value;
+      const password = document.getElementById('pass').value;
+      const telephone = document.getElementById('tele').value;
+      const email = document.getElementById('email').value;
+
+      try {
+        const res = await fetch('/api/update-user', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, username, password, telephone, email })
+        });
+        if (!res.ok) throw new Error();
+        localStorage.removeItem('userToUpdate');
+        window.location.href = '/table.html';
+      } catch {
+        alert('Error updating user.');
+      }
+    }
+  </script>
+</body>
+</html>

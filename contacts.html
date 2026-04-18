@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contacts</title>
+  <link href="/css/StyleSheet1.css" rel="stylesheet" />
+  <link href="/css/cont.css" rel="stylesheet" />
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      requireLogin();
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <a id="name" href="/index.html">
+      <img id="logo" src="/images/logo.jpg" alt="Logo" />
+    </a>
+    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
+    <ul id="lists">
+      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
+      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
+      <li id="scope"><a href="/scope.html">Our Scope</a></li>
+      <li id="services"><a href="/services.html">Services</a></li>
+      <li id="activities"><a href="/activities.html">Activities</a></li>
+      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
+      <li id="clients"><a href="/clients.html">Clients</a></li>
+      <li id="login"><a href="/login.html">Log In</a></li>
+      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
+      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
+      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
+    </ul>
+    <br />
+  </header>
+
+  <div id="ContentPlaceHolder1">
+    <div class="contact-container">
+      <div class="profile-card">
+        <h1 class="name-title">Shmuel Friedman</h1>
+        <div class="credentials">M.A.Adm., M.A.Sc.Agr., B.A.Sc.Agr.</div>
+
+        <div class="position-section">
+          <div class="former-position">The Former Chief of Staff for the Minister of Agriculture, Israel</div>
+        </div>
+
+        <div class="current-role">CEO</div>
+        <div class="company-name">Green Wadi – Advanced Agriculture and Know-How Ltd.</div>
+
+        <ul class="contact-list">
+          <li>
+            <strong>Address</strong>
+            Sde Yaakov, 3658600 Israel
+          </li>
+          <li>
+            <strong>Tel.</strong>
+            +972-50-6241818
+          </li>
+          <li>
+            <strong>Email</strong>
+            Sam@green-wadi.com
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

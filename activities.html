@@ -11,10 +11,24 @@
 <link rel="stylesheet" href="/css/gw.css">
 <style>
   body{ padding-top:72px; background:#F8F9F5; }
-  .intro{ padding: 100px 0 60px; background: radial-gradient(60% 50% at 30% 20%, rgba(16,185,129,0.14), transparent 60%), #F8F9F5;}
-  .activity{ display:grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 56px 0; border-top:1px solid rgba(15,23,42,0.08); align-items:center;}
+  .intro{
+    padding: 100px 0 60px;
+    background: radial-gradient(60% 50% at 30% 20%, rgba(16,185,129,0.14), transparent 60%),
+      radial-gradient(40% 40% at 80% 80%, rgba(244,199,123,0.2), transparent 60%),
+      #F8F9F5;
+  }
+  .map-hero{
+    margin: 0 0 64px;
+    border-radius: 22px; overflow:hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .map-hero img{ width:100%; display:block; }
+  .activity{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 56px 0; border-top:1px solid rgba(15,23,42,0.08); align-items:center;}
   .activity:nth-child(even) .visual{ order: -1; }
-  @media (max-width: 900px){ .activity{ grid-template-columns: 1fr; gap: 24px; } .activity:nth-child(even) .visual{ order:0;} }
+  @media (max-width: 900px){
+    .activity{ grid-template-columns: 1fr; gap: 24px; }
+    .activity:nth-child(even) .visual{ order:0; }
+  }
   .visual{ aspect-ratio: 4/3; border-radius: 20px; overflow:hidden; position:relative; }
   .v-field{ background: linear-gradient(180deg,#F2D9B2 0%, #6F9C5A 50%, #1F5F3A 100%);}
   .v-lab{ background: linear-gradient(135deg,#E9FBF3, #B9E6D0 60%, #0F7B52);}
@@ -23,48 +37,149 @@
   .v-pond{ background: linear-gradient(180deg,#A9D1C2,#14B8A6 70%,#0F7B52);}
   .v-forest{ background: linear-gradient(180deg,#3E6A34,#1E3A1E);}
   .visual::after{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.35), transparent 60%);}
-  .badge{ position:absolute; top:16px; left:16px; padding:5px 10px; border-radius:999px; background: rgba(255,255,255,0.85); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#1E2A3A; backdrop-filter: blur(8px);}
+  .badge{
+    position:absolute; top:16px; left:16px; padding:5px 12px; border-radius:999px;
+    background: rgba(255,255,255,0.85); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:#1E2A3A; backdrop-filter: blur(8px);
+  }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
+  .stat-row .v{ font-family:"Fraunces",serif; font-size:28px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52; }
+  .stat-row .l{ font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:#64748B; margin-top:2px; }
 </style>
 </head>
 <body data-page="activities">
+
 <section class="intro">
   <div class="wrap">
     <div class="eyebrow mb-5">— Activities</div>
     <h1 class="h1 max-w-[22ch]">The work itself — on the ground, in the lab, above the canopy.</h1>
-    <p class="body max-w-[62ch] mt-8">A selection of the practical activities that fill a Green Wadi season. Field trials, lab protocols, aerial survey, classroom programs and community stewardship.</p>
+    <p class="body max-w-[62ch] mt-8">Green Wadi operates across 12 countries, providing on-the-ground expertise in agriculture, rural development and land conservation. A selection of our practical field activities below.</p>
   </div>
 </section>
-<section class="section" style="padding-top: 40px">
+
+<!-- World map hero visual -->
+<section style="padding:0 0 0">
+  <div class="wrap">
+    <div class="map-hero">
+      <img src="/images/worldmap.png" alt="Green Wadi Global Activities — 12 Countries" loading="lazy"/>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      <div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">12</div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Countries</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Active field operations</div>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">184<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Farms</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Transformed enterprises</div>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">47<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">%</span></div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Avg. yield uplift</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Independently verified</div>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">10<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Years</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Of field experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity rows -->
+<section class="section" style="padding-top:0">
   <div class="wrap" id="actList"></div>
 </section>
+
+<!-- Seasonal calendar -->
 <section class="section" style="background:#F2F4EC">
   <div class="wrap">
     <div class="flex items-end justify-between flex-wrap gap-6 mb-12">
-      <h2 class="h2 max-w-[20ch]">A year on a Green Wadi farm.</h2>
+      <div>
+        <div class="eyebrow mb-3">— Seasonal rhythm</div>
+        <h2 class="h2 max-w-[20ch]">A year on a Green Wadi farm.</h2>
+      </div>
       <p class="body max-w-[40ch]">Every client sees the same rhythm: instrument, plant, scout, harvest, review. The rhythm is the product.</p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="card"><div class="eyebrow mb-2">Q1</div><div class="h3">Instrument</div><p class="small mt-2">Soil samples, sensor check, planning.</p></div>
-      <div class="card"><div class="eyebrow mb-2">Q2</div><div class="h3">Plant</div><p class="small mt-2">Variable-rate seeding, canopy training.</p></div>
-      <div class="card"><div class="eyebrow mb-2">Q3</div><div class="h3">Scout</div><p class="small mt-2">Weekly drone passes, disease response.</p></div>
-      <div class="card"><div class="eyebrow mb-2">Q4</div><div class="h3">Harvest & review</div><p class="small mt-2">Grade, store, audit, plan next year.</p></div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q1</div>
+        <div class="h3">Instrument</div>
+        <p class="small mt-2">Soil samples, sensor calibration, seasonal planning and baseline measurements.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q2</div>
+        <div class="h3">Plant</div>
+        <p class="small mt-2">Variable-rate seeding, canopy training, early-season pest monitoring.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q3</div>
+        <div class="h3">Scout</div>
+        <p class="small mt-2">Weekly drone passes, multispectral analysis, disease response protocols.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q4</div>
+        <div class="h3">Harvest &amp; review</div>
+        <p class="small mt-2">Grade, store, independent audit, plan next season with verified data.</p>
+      </div>
     </div>
   </div>
 </section>
+
+<div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
 const acts = [
-  {b:'Field',     c:'v-field',     t:'On-farm trials', d:'Every recommendation is tested against a control block on the client farm before it ships to the rest of the estate. Three seasons, minimum.'},
-  {b:'Lab',       c:'v-lab',       t:'Soil & tissue analysis', d:'ISO-accredited soil, tissue and microbiome work. Results within 72 hours, paired with recommendation, not just numbers.'},
-  {b:'Air',       c:'v-drone',     t:'Multispectral scouting', d:'NDVI, NDRE, thermal and LWIR stacks. Weekly cadence. Plant-level disease detection cross-checked against ground truth.'},
-  {b:'Teach',     c:'v-classroom', t:'Operator academy', d:'We train the people on the farm to run the instruments after we leave. Two-week residency, local language, free to clients.'},
-  {b:'Water',     c:'v-pond',      t:'Aquaculture-horticulture pairing', d:'IMTA ponds engineered to feed a matched horticultural block. Nutrient cycling monitored in real time.'},
-  {b:'Forest',    c:'v-forest',    t:'Native-species silviculture', d:'Agroforestry designs that interleave tree cover with productive ground. Each planting is tagged and monitored for 25 years.'},
+  {
+    b:'Field', c:'v-field',
+    t:'On-farm trials',
+    d:'Every recommendation is tested against a control block on the client farm before it ships to the rest of the estate. Three seasons minimum, independent verification on every result.',
+    stats:[{v:'3', l:'Seasons min.'},{v:'100%', l:'Control tested'},{v:'ISO', l:'Verified'}]
+  },
+  {
+    b:'Lab', c:'v-lab',
+    t:'Soil &amp; tissue analysis',
+    d:'ISO-accredited soil, tissue and microbiome work. Results within 72 hours, paired with a clear recommendation — not just numbers. We translate data into action.',
+    stats:[{v:'72h', l:'Turnaround'},{v:'ISO', l:'Accredited'},{v:'Full', l:'Recommendation'}]
+  },
+  {
+    b:'Air', c:'v-drone',
+    t:'Multispectral scouting',
+    d:'NDVI, NDRE, thermal and LWIR stacks flown on a weekly cadence. Plant-level disease detection cross-checked against ground truth. Field-to-cloud in under seven minutes.',
+    stats:[{v:'7min', l:'Field to cloud'},{v:'NDVI', l:'+ NDRE + thermal'},{v:'Weekly', l:'Cadence'}]
+  },
+  {
+    b:'Teach', c:'v-classroom',
+    t:'Operator academy',
+    d:'We train the people on the farm to run the instruments after we leave. Two-week residency, local language, free to clients. Capacity building at every level of the value chain.',
+    stats:[{v:'2wk', l:'Residency'},{v:'Local', l:'Language'},{v:'Free', l:'For clients'}]
+  },
+  {
+    b:'Water', c:'v-pond',
+    t:'Aquaculture-horticulture pairing',
+    d:'IMTA ponds engineered to feed a matched horticultural block. Nutrient cycling monitored in real time, closing the loop between production systems for maximum efficiency.',
+    stats:[{v:'IMTA', l:'System design'},{v:'Real-time', l:'Monitoring'},{v:'Closed', l:'Nutrient loop'}]
+  },
+  {
+    b:'Forest', c:'v-forest',
+    t:'Native-species silviculture',
+    d:'Agroforestry designs that interleave productive tree cover with agricultural ground. Each planting is tagged and monitored for 25 years — land conservation as a long-term investment.',
+    stats:[{v:'25yr', l:'Monitoring'},{v:'Native', l:'Species first'},{v:'Tagged', l:'Every planting'}]
+  },
 ];
 document.getElementById('actList').innerHTML = acts.map(a => `
   <div class="activity">
     <div class="visual ${a.c}"><div class="badge">${a.b}</div></div>
-    <div><div class="eyebrow mb-3">— Activity</div><h3 class="h2" style="font-size:40px">${a.t}</h3><p class="body mt-5 max-w-[52ch]">${a.d}</p></div>
+    <div>
+      <div class="eyebrow mb-3">— Activity</div>
+      <h3 class="h2" style="font-size:clamp(28px,3.5vw,44px)">${a.t}</h3>
+      <p class="body mt-5 max-w-[52ch]">${a.d}</p>
+      <div class="stat-row">
+        ${a.stats.map(s=>`<div><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
+      </div>
+    </div>
   </div>`).join('');
 </script>
 </body>

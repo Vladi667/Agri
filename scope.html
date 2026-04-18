@@ -3,16 +3,25 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Our scope — Green Wadi</title>
+<title>Our Scope — Green Wadi</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
-  body{ padding-top:72px; background:#F8F9F5;}
-  .intro{ padding: 100px 0 60px; background: radial-gradient(70% 50% at 20% 20%, rgba(16,185,129,0.12), transparent 60%), #F8F9F5;}
-  .sector-card{ display:block; position:relative; padding:22px; border:1px solid rgba(15,23,42,0.08); border-radius:20px; background:#fff; transition: transform .4s, box-shadow .4s, border-color .4s; cursor:pointer; text-decoration:none; color:inherit;}
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{
+    padding: 100px 0 60px;
+    background: radial-gradient(70% 50% at 20% 20%, rgba(16,185,129,0.12), transparent 60%),
+      radial-gradient(50% 40% at 80% 80%, rgba(244,199,123,0.25), transparent 60%),
+      #F8F9F5;
+  }
+  .sector-card{
+    display:block; position:relative; padding:22px; border:1px solid rgba(15,23,42,0.08);
+    border-radius:20px; background:#fff; transition: transform .4s, box-shadow .4s, border-color .4s;
+    cursor:pointer; text-decoration:none; color:inherit;
+  }
   .sector-card:hover{ transform:translateY(-3px); box-shadow: 0 24px 54px -24px rgba(15,23,42,0.22); border-color: rgba(16,185,129,0.35); }
   .sector-card .num{ font-family:"Fraunces",serif; font-weight:300; font-size:42px; color: rgba(15,95,58,0.3); line-height:1; letter-spacing:-0.02em;}
   .sector-card .ico{ width:44px; height:44px; border-radius:12px; background: linear-gradient(135deg,#E9FBF3,#B9E6D0); display:flex; align-items:center; justify-content:center; color:#0F7B52; margin-bottom:14px;}
@@ -20,19 +29,50 @@
   .sector-card .bdesc{ font-size:13.5px; color:#334155; margin-top:6px; line-height:1.5;}
   .sector-card .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
   .sector-card .tag{ font-size:10.5px; padding:3px 8px; border-radius:999px; background:#F2F4EC; color:#1E2A3A; letter-spacing:.04em;}
+  .scope-img{ width:100%; border-radius:18px; margin:32px 0; box-shadow:0 20px 60px rgba(0,0,0,0.12); display:block; }
+  .feature-statement{
+    background: linear-gradient(135deg, #0F7B52 0%, #0B4D35 100%);
+    border-radius:22px; padding:48px; margin:64px 0;
+    color:#F8F9F5;
+  }
+  .feature-statement .h2{ color:#F8F9F5; }
 </style>
 </head>
 <body data-page="scope">
+
 <section class="intro">
   <div class="wrap">
     <div class="eyebrow mb-5">— Our scope</div>
     <h1 class="h1 max-w-[22ch]">Twelve sectors. One connected, precise, multi-generational practice.</h1>
-    <p class="body max-w-[64ch] mt-8">Each sector is its own discipline. But the gains compound when they run on shared telemetry, shared soil, shared water. Explore the full scope below.</p>
+    <p class="body max-w-[64ch] mt-8">Green Wadi's scope encompasses various agricultural sectors including crops, horticulture, livestock, aquaculture, forestry and land conservation. Each sector is its own discipline — but the gains compound when they run on shared telemetry, shared soil, shared water.</p>
+    <img src="/images/scopeimg.png" alt="Our Scope — Green Wadi" class="scope-img" loading="lazy"/>
   </div>
 </section>
-<section class="section" style="padding-top:32px">
-  <div class="wrap grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="sectorGrid"></div>
+
+<section class="section" style="padding-top:16px">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— All sectors</div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="sectorGrid"></div>
+  </div>
 </section>
+
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="feature-statement">
+      <div class="eyebrow mb-4" style="color:rgba(255,255,255,0.6)">— Our approach</div>
+      <h2 class="h2 max-w-[28ch]">Green Wadi excels in leveraging technological innovation to drive growth and maximize efficiency.</h2>
+      <p class="mt-6 max-w-[60ch]" style="color:rgba(248,249,245,0.8); font-size:16px; line-height:1.65;">From AI-driven soil telemetry to drone-assisted multispectral scouting, we deploy technology not for its own sake — but in service of the land, the farmer, and the generation that follows.</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a href="services.html" class="btn btn-primary lg">Our services
+          <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="activities.html" class="btn btn-ghost lg" style="color:#F8F9F5; border-color:rgba(255,255,255,0.25);">See activities</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
 const sectors = [

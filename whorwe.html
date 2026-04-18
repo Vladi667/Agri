@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Who we are — Green Wadi</title>
+<title>Who We Are — Green Wadi</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,74 +11,164 @@
 <link rel="stylesheet" href="/css/gw.css">
 <style>
   body{ padding-top: 72px; background:#F8F9F5; }
-  .hero-about{ position:relative; overflow:hidden; padding: 100px 0 80px; background:
-    radial-gradient(60% 50% at 80% 20%, rgba(244,199,123,0.4), transparent 60%),
-    linear-gradient(180deg, #F8F9F5 0%, #F2F4EC 100%); }
-  .portrait{ aspect-ratio: 3/4; border-radius: 18px; background: linear-gradient(135deg,#C9A06A,#6F9C5A); position:relative; overflow:hidden; }
-  .portrait::after{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%); }
-  .portrait .initials{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:"Fraunces",serif; font-weight:300; font-size:72px; color:rgba(255,255,255,0.9); letter-spacing:-0.02em;}
+  .hero-about{
+    position:relative; overflow:hidden; padding: 100px 0 80px;
+    background:
+      radial-gradient(60% 50% at 80% 20%, rgba(244,199,123,0.4), transparent 60%),
+      radial-gradient(40% 40% at 10% 80%, rgba(16,185,129,0.1), transparent 60%),
+      linear-gradient(180deg, #F8F9F5 0%, #F2F4EC 100%);
+  }
+  .visual-panel{
+    border-radius: 22px; overflow: hidden; position: relative;
+    box-shadow: 0 32px 80px -24px rgba(15,23,42,0.22);
+  }
+  .visual-panel img{ width:100%; height:100%; object-fit:cover; display:block; }
   .timeline{ position:relative; padding-left: 28px; }
   .timeline::before{ content:""; position:absolute; left:8px; top:10px; bottom:10px; width:1px; background: linear-gradient(180deg, var(--green), var(--green-deep), transparent);}
   .tl-item{ position:relative; padding: 14px 0 28px; }
   .tl-item::before{ content:""; position:absolute; left:-25px; top:22px; width:11px; height:11px; border-radius:999px; background:#fff; border:2px solid var(--green-deep); }
   .pill{ display:inline-block; padding:4px 10px; border-radius:999px; background:#fff; border:1px solid rgba(15,23,42,0.08); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:#64748B;}
+  .philosophy-card{
+    background:#fff; border:1px solid rgba(15,23,42,0.08); border-radius:18px; padding:24px;
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s;
+  }
+  .philosophy-card:hover{ transform:translateY(-3px); box-shadow:0 20px 48px -24px rgba(15,23,42,0.18); border-color:rgba(16,185,129,0.3); }
+  .philosophy-card .icon{ width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#E9FBF3,#B9E6D0); display:flex; align-items:center; justify-content:center; color:#0F7B52; margin-bottom:14px;}
+  blockquote{ font-family:"Fraunces",serif; font-weight:300; font-size:clamp(24px,2.8vw,40px); letter-spacing:-0.015em; line-height:1.22; color:#1E2A3A; }
+  blockquote em{ font-style:normal; color:var(--green-deep); }
 </style>
 </head>
 <body data-page="whorwe">
+
 <section class="hero-about">
   <div class="wrap">
     <div class="eyebrow mb-5">— Who we are</div>
-    <h1 class="h1 max-w-[22ch]">A consultancy of agronomists, data scientists and patient operators.</h1>
-    <p class="body max-w-[62ch] mt-8">Founded in 2014 between Muscat and Lisbon, Green Wadi exists to serve families, institutions and governments who believe that agriculture is a hundred-year craft — and that technology, deployed with restraint, is how we keep it that way.</p>
+    <h1 class="h1 max-w-[26ch]">Agricultural Development Excellence — by people who live it.</h1>
+    <p class="body max-w-[64ch] mt-8">Green Wadi started as a one-man operation when Mr. Shmuel Friedman left the Ministry of Agriculture of Israel to become an independent consultant. A decade of field work across 12 countries later, we remain committed to delivering measurable, long-term value.</p>
   </div>
 </section>
-<section class="section" style="padding-top:32px">
+
+<!-- Story + Image -->
+<section class="section" style="padding-top:48px">
   <div class="wrap grid md:grid-cols-2 gap-16 items-start">
     <div>
-      <div class="eyebrow mb-4">— Our philosophy</div>
-      <h2 class="h2 max-w-[18ch]">Small decisions, compounded across seasons.</h2>
-      <p class="body mt-6 max-w-[52ch]">We resist single-season heroics. Every recommendation is tested on-farm, measured independently, and revisited five years later. If a protocol doesn't hold up at year five, it doesn't ship.</p>
+      <div class="eyebrow mb-4">— Our story</div>
+      <h2 class="h2 max-w-[18ch]">From one agronomist to a global practice.</h2>
+      <div class="body mt-6 space-y-5 max-w-[56ch]">
+        <p>Green Wadi Ltd. started as a one-man operation when Mr. Friedman left the Ministry of Agriculture of Israel to become an independent consultant 10 years ago.</p>
+        <p>In 2018, due to the expansion of projects, Green Wadi became a limited company employing experts as needed to be efficient and successful. We are committed to providing our clients with quick answers and solutions.</p>
+        <p>Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.</p>
+        <p>We offer diverse services, technology, know-how, and training required for the upgrading and construction of existing and new agricultural and agro-industrial enterprises.</p>
+        <p>Our successful projects have earned Green Wadi a reputation for delivering measurable value for the long term.</p>
+      </div>
       <div class="flex flex-wrap gap-2 mt-8">
-        <span class="pill">Independent</span><span class="pill">Patient</span>
-        <span class="pill">Data-native</span><span class="pill">Field-first</span>
+        <span class="pill">Est. 2014 · Israel</span>
+        <span class="pill">Independent</span>
+        <span class="pill">Field-first</span>
+        <span class="pill">12 Countries</span>
         <span class="pill">Multi-generational</span>
       </div>
     </div>
-    <div class="grid grid-cols-2 gap-4">
-      <div class="portrait"><div class="initials">AK</div></div>
-      <div class="portrait" style="background:linear-gradient(135deg,#6F9C5A,#1F5F3A)"><div class="initials">MR</div></div>
-      <div class="portrait" style="background:linear-gradient(135deg,#E9A864,#C9A06A)"><div class="initials">SL</div></div>
-      <div class="portrait" style="background:linear-gradient(135deg,#1F5F3A,#0B1220)"><div class="initials">JP</div></div>
+    <div class="visual-panel" style="aspect-ratio:3/4; max-height:600px;">
+      <img src="/images/image.png" alt="Green Wadi — agricultural operations" loading="lazy"/>
     </div>
   </div>
 </section>
+
+<!-- Timeline -->
 <section class="section" style="background:#F2F4EC">
-  <div class="wrap grid md:grid-cols-[340px_1fr] gap-16">
+  <div class="wrap grid md:grid-cols-[320px_1fr] gap-16">
     <div>
       <div class="eyebrow mb-4">— Our journey</div>
       <h2 class="h2">A decade of patient fieldwork.</h2>
+      <p class="body mt-5 max-w-[42ch]">From a single consultant to a trusted partner of sovereign funds and private investors across three continents.</p>
     </div>
     <div class="timeline">
-      <div class="tl-item"><div class="pill mb-2">2014</div><div class="h3">Founded in Muscat</div><p class="body mt-2 max-w-[52ch]">Three agronomists and one data scientist set up shop with a single commitment: five-year reviews on every engagement.</p></div>
-      <div class="tl-item"><div class="pill mb-2">2017</div><div class="h3">First 100 farms</div><p class="body mt-2 max-w-[52ch]">Cereal, olive and date palm clients across the Arabian peninsula. The soil-telemetry platform ships v1.</p></div>
-      <div class="tl-item"><div class="pill mb-2">2020</div><div class="h3">Desertification practice</div><p class="body mt-2 max-w-[52ch]">A partnership with three sovereign funds brings drylands rehabilitation into the core offering.</p></div>
-      <div class="tl-item"><div class="pill mb-2">2023</div><div class="h3">Aquaculture & forestry</div><p class="body mt-2 max-w-[52ch]">Integrated multi-trophic aquaculture joins the catalogue. Agroforestry becomes a standalone practice.</p></div>
-      <div class="tl-item"><div class="pill mb-2">2026</div><div class="h3">184 farms, 12 countries</div><p class="body mt-2 max-w-[52ch]">Independent auditors verify a 47% average yield uplift and a 38% reduction in water use.</p></div>
+      <div class="tl-item">
+        <div class="pill mb-3">2014</div>
+        <div class="h3">Founded in Israel</div>
+        <p class="body mt-2 max-w-[52ch]">Shmuel Friedman leaves the Ministry of Agriculture of Israel to establish an independent agricultural consultancy — Green Wadi.</p>
+      </div>
+      <div class="tl-item">
+        <div class="pill mb-3">2016</div>
+        <div class="h3">First international projects</div>
+        <p class="body mt-2 max-w-[52ch]">Green Wadi expands beyond Israel, bringing Israeli agro-technology and expertise to clients across the region.</p>
+      </div>
+      <div class="tl-item">
+        <div class="pill mb-3">2018</div>
+        <div class="h3">Incorporated as Green Wadi Ltd.</div>
+        <p class="body mt-2 max-w-[52ch]">Due to expansion of projects, Green Wadi became a limited company employing domain experts as needed to be efficient and successful.</p>
+      </div>
+      <div class="tl-item">
+        <div class="pill mb-3">2020</div>
+        <div class="h3">Rural development &amp; food security</div>
+        <p class="body mt-2 max-w-[52ch]">Governments and development funds begin partnering with Green Wadi for national-scale food security and rural development programs.</p>
+      </div>
+      <div class="tl-item">
+        <div class="pill mb-3">2024</div>
+        <div class="h3">184 farms · 12 countries</div>
+        <p class="body mt-2 max-w-[52ch]">Green Wadi now operates across 12 countries, having transformed over 184 agricultural enterprises with measurable, lasting results.</p>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- Philosophy cards -->
 <section class="section">
   <div class="wrap">
-    <div class="eyebrow mb-4">— Principles</div>
-    <h2 class="h2 mb-12 max-w-[20ch]">Four principles we will not negotiate.</h2>
+    <div class="eyebrow mb-4">— Our philosophy</div>
+    <h2 class="h2 mb-4 max-w-[22ch]">Results-oriented. Customer-focused. Long-term committed.</h2>
+    <p class="body mb-12 max-w-[60ch]">Every engagement is built on these four principles. If a recommendation does not serve the client's long-term interest, it does not happen.</p>
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="card"><div class="h3">No proprietary lock-in</div><p class="small mt-3">Clients own their data, their models, their soil. We leave — the knowledge stays.</p></div>
-      <div class="card"><div class="h3">Independent audit</div><p class="small mt-3">Every yield and water claim is verified by a third party before it leaves our offices.</p></div>
-      <div class="card"><div class="h3">Native first</div><p class="small mt-3">Local cultivars, local species, local hands. Imports are a last resort, never a default.</p></div>
-      <div class="card"><div class="h3">Generational horizon</div><p class="small mt-3">Our plans run to year 100. We bill for a decade and consult for a lifetime.</p></div>
+      <div class="philosophy-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 22V12M12 12l-4 4M12 12l4 4M5 3h14a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+        </div>
+        <div class="h3" style="font-size:18px">Results-oriented</div>
+        <p class="small mt-3">Adopting a results and success-oriented approach in every mandate. Outcomes are measured, verified, and shared.</p>
+      </div>
+      <div class="philosophy-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div class="h3" style="font-size:18px">Customer-focused</div>
+        <p class="small mt-3">Focusing on customer satisfaction above all else. We provide quick answers and tailor-made solutions for every condition.</p>
+      </div>
+      <div class="philosophy-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </div>
+        <div class="h3" style="font-size:18px">Long-term commitment</div>
+        <p class="small mt-3">Making a long-term commitment to our customers and their projects. We are in it for the season — and the generation.</p>
+      </div>
+      <div class="philosophy-card">
+        <div class="icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="h3" style="font-size:18px">Tailor-made solutions</div>
+        <p class="small mt-3">Providing optimal tailor-made solutions for any given condition. No two farms are alike; no two plans should be either.</p>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- Quote / Mission -->
+<section class="section" style="background:#0B1220">
+  <div class="wrap">
+    <div class="eyebrow mb-6" style="color:#64748B">— Our mission</div>
+    <blockquote class="max-w-[32ch]" style="color:#F8F9F5">
+      Green Wadi will increase global agricultural production to <em>mitigate hunger and malnutrition</em>, pave the way for <em>food self-sufficiency and security</em> — while protecting the environment and natural resources.
+    </blockquote>
+    <div class="mt-10 flex flex-col sm:flex-row gap-3">
+      <a href="services.html" class="btn btn-primary lg">Our services
+        <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="scope.html" class="btn btn-ghost lg" style="color:#F8F9F5; border-color:rgba(255,255,255,0.2);">Our scope</a>
+    </div>
+  </div>
+</section>
+
+<div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 </body>
 </html>

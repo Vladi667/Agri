@@ -1,67 +1,83 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Contacts</title>
-  <link href="/css/StyleSheet1.css" rel="stylesheet" />
-  <link href="/css/cont.css" rel="stylesheet" />
-  <script src="/js/auth.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      requireLogin();
-    });
-  </script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Contact — Green Wadi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<script src="/js/auth.js"></script>
+<style>
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{ padding: 100px 0 40px; background: radial-gradient(60% 50% at 80% 20%, rgba(16,185,129,0.12), transparent 60%), #F8F9F5;}
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#64748B; }
+  .field input, .field select, .field textarea{
+    background:#fff; border:1px solid rgba(15,23,42,0.1); border-radius: 12px; padding: 14px 16px;
+    font-size:15px; font-family: Inter, sans-serif; color:#0B1220; outline: none; transition: border-color .3s, box-shadow .3s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color: var(--green-deep); box-shadow: 0 0 0 6px rgba(16,185,129,0.1);}
+  .office{ display:grid; grid-template-columns: 1fr auto; gap: 12px; padding: 18px 0; border-top:1px solid rgba(15,23,42,0.08); align-items:start;}
+  .office:last-child{ border-bottom:1px solid rgba(15,23,42,0.08); }
+  .office .city{ font-family:"Fraunces",serif; font-size:22px; font-weight:400;}
+  .office .addr{ font-size:13px; color:#334155; margin-top:4px; line-height:1.55;}
+  .office .tz{ font-family: ui-monospace, Menlo, monospace; font-size:11px; color:#64748B;}
+</style>
 </head>
-<body>
-  <header>
-    <a id="name" href="/index.html">
-      <img id="logo" src="/images/logo.jpg" alt="Logo" />
-    </a>
-    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
-    <ul id="lists">
-      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
-      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
-      <li id="scope"><a href="/scope.html">Our Scope</a></li>
-      <li id="services"><a href="/services.html">Services</a></li>
-      <li id="activities"><a href="/activities.html">Activities</a></li>
-      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
-      <li id="clients"><a href="/clients.html">Clients</a></li>
-      <li id="login"><a href="/login.html">Log In</a></li>
-      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
-      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
-      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
-    </ul>
-    <br />
-  </header>
-
-  <div id="ContentPlaceHolder1">
-    <div class="contact-container">
-      <div class="profile-card">
-        <h1 class="name-title">Shmuel Friedman</h1>
-        <div class="credentials">M.A.Adm., M.A.Sc.Agr., B.A.Sc.Agr.</div>
-
-        <div class="position-section">
-          <div class="former-position">The Former Chief of Staff for the Minister of Agriculture, Israel</div>
-        </div>
-
-        <div class="current-role">CEO</div>
-        <div class="company-name">Green Wadi – Advanced Agriculture and Know-How Ltd.</div>
-
-        <ul class="contact-list">
-          <li>
-            <strong>Address</strong>
-            Sde Yaakov, 3658600 Israel
-          </li>
-          <li>
-            <strong>Tel.</strong>
-            +972-50-6241818
-          </li>
-          <li>
-            <strong>Email</strong>
-            Sam@green-wadi.com
-          </li>
-        </ul>
-      </div>
-    </div>
+<body data-page="contacts">
+<script>
+  document.addEventListener('DOMContentLoaded', function(){ requireLogin(); });
+</script>
+<section class="intro">
+  <div class="wrap">
+    <div class="eyebrow mb-5">— Contact</div>
+    <h1 class="h1 max-w-[22ch]">Tell us about your land.</h1>
+    <p class="body max-w-[60ch] mt-8">We reply within two working days. For sovereign programs and RFPs, please use the dedicated address below.</p>
   </div>
+</section>
+<section class="section" style="padding-top:40px">
+  <div class="wrap grid md:grid-cols-[1.3fr_1fr] gap-16 items-start">
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-5" onsubmit="event.preventDefault(); document.getElementById('sent').style.display='block'; this.reset();">
+      <div class="field md:col-span-1"><label>Name</label><input type="text" placeholder="Jane Almeida" required/></div>
+      <div class="field md:col-span-1"><label>Role / organisation</label><input type="text" placeholder="Principal, Casa Horta"/></div>
+      <div class="field md:col-span-1"><label>Email</label><input type="email" placeholder="jane@casahorta.pt" required/></div>
+      <div class="field md:col-span-1"><label>Country of operation</label><input type="text" placeholder="Portugal"/></div>
+      <div class="field md:col-span-1"><label>Sector</label>
+        <select><option>Crops</option><option>Horticulture</option><option>Open field</option><option>Protected</option><option>Livestock</option><option>Aquaculture</option><option>Post-harvest</option><option>Agro-industry</option><option>Forestry</option><option>Land conservation</option><option>Desertification</option><option>Environmental</option></select>
+      </div>
+      <div class="field md:col-span-1"><label>Engagement</label>
+        <select><option>Diagnosis</option><option>Plan design</option><option>Implementation</option><option>Stewardship</option><option>Special mandate (RFP)</option></select>
+      </div>
+      <div class="field md:col-span-2"><label>Tell us about your land</label><textarea rows="5" placeholder="Size, soil, what's growing, what isn't, what the family wants in 25 years."></textarea></div>
+      <div class="md:col-span-2 flex items-center justify-between gap-4 flex-wrap">
+        <p class="small max-w-[40ch]">We keep correspondence confidential. We do not add you to a mailing list. You own your data.</p>
+        <button class="btn btn-primary lg" type="submit">Send message
+          <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div id="sent" style="display:none; grid-column: 1/-1;" class="card">
+        <div class="eyebrow" style="color:#0F7B52">— Received</div>
+        <div class="h3 mt-2">Thank you — we'll reply within two working days.</div>
+      </div>
+    </form>
+    <aside>
+      <div class="eyebrow mb-4">— Offices</div>
+      <div class="office"><div><div class="city">Muscat</div><div class="addr">Al Mouj Business Park<br/>Muscat, Oman</div></div><div class="tz">GMT+4</div></div>
+      <div class="office"><div><div class="city">Lisbon</div><div class="addr">Rua das Flores 22<br/>1200-192 Lisboa, Portugal</div></div><div class="tz">GMT+0</div></div>
+      <div class="office"><div><div class="city">Santiago</div><div class="addr">Av. Apoquindo 3846, Piso 12<br/>Las Condes, Chile</div></div><div class="tz">GMT-4</div></div>
+      <div class="mt-10">
+        <div class="eyebrow mb-3">— Direct channels</div>
+        <div class="small"><strong style="color:#0B1220">Clients</strong> · clients@greenwadi.co</div>
+        <div class="small mt-2"><strong style="color:#0B1220">Sovereign & RFP</strong> · rfp@greenwadi.co</div>
+        <div class="small mt-2"><strong style="color:#0B1220">Press</strong> · press@greenwadi.co</div>
+        <div class="small mt-2"><strong style="color:#0B1220">Careers</strong> · join@greenwadi.co</div>
+      </div>
+    </aside>
+  </div>
+</section>
+<script src="/js/gw.js"></script>
 </body>
 </html>

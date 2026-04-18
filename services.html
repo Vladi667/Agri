@@ -1,87 +1,86 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Services</title>
-  <link href="/css/StyleSheet1.css" rel="stylesheet" />
-  <link href="/css/ser.css" rel="stylesheet" />
-  <script src="/js/auth.js"></script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Services — Green Wadi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{ padding: 100px 0 40px; background: radial-gradient(70% 50% at 80% 20%, rgba(244,199,123,0.35), transparent 60%), #F8F9F5;}
+  .svc{ display:grid; grid-template-columns: 180px 1fr auto; gap: 24px; align-items:start; padding: 26px 0; border-top:1px solid rgba(15,23,42,0.08); }
+  .svc:last-child{ border-bottom:1px solid rgba(15,23,42,0.08); }
+  .svc:hover .arr{ transform: translateX(6px); color: var(--green-deep); }
+  .arr{ transition: transform .4s, color .4s; color:#8C9AAE;}
+  .price-tag{ font-family:"Fraunces",serif; font-weight:400; font-size:16px; color:#1E2A3A;}
+  .ph-big{ font-family:"Fraunces",serif; font-weight:300; font-size:64px; letter-spacing:-0.02em; line-height:1; color:#0F7B52;}
+  @media (max-width: 768px){ .svc{ grid-template-columns: 1fr; } }
+  .step-num{ font-family:"Fraunces",serif; font-weight:300; font-size:42px; color:#0F7B52; width:56px; letter-spacing:-0.02em;}
+</style>
 </head>
-<body>
-  <header>
-    <a id="name" href="/index.html">
-      <img id="logo" src="/images/logo.jpg" alt="Logo" />
-    </a>
-    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
-    <ul id="lists">
-      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
-      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
-      <li id="scope"><a href="/scope.html">Our Scope</a></li>
-      <li id="services"><a href="/services.html">Services</a></li>
-      <li id="activities"><a href="/activities.html">Activities</a></li>
-      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
-      <li id="clients"><a href="/clients.html">Clients</a></li>
-      <li id="login"><a href="/login.html">Log In</a></li>
-      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
-      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
-      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
-    </ul>
-    <br />
-  </header>
-
-  <div id="ContentPlaceHolder1">
-    <div class="services-container">
-      <h1 class="main-title">Green Wadi Services</h1>
-
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="card-title">Agronomy</div>
-          <ul class="service-list">
-            <li>Provide the best methodology and agricultural products</li>
-            <li>Support agronomic growth through R&amp;D</li>
-            <li>Implement sustainable operations</li>
-          </ul>
-        </div>
-
-        <div class="service-card">
-          <div class="card-title">Planning</div>
-          <ul class="service-list">
-            <li>Agricultural assessments &amp; feasibility studies</li>
-            <li>Strategic planning &amp; master plans</li>
-            <li>GIS &amp; spatial analysis</li>
-            <li>Environmental protection</li>
-          </ul>
-        </div>
-
-        <div class="service-card">
-          <div class="card-title">Consulting</div>
-          <ul class="service-list">
-            <li>Production guidance &amp; supervision</li>
-            <li>Advanced technology adoption</li>
-            <li>Applied research &amp; development</li>
-          </ul>
-        </div>
-
-        <div class="service-card">
-          <div class="card-title">Rural Development</div>
-          <ul class="service-list">
-            <li>Regional production &amp; employment</li>
-            <li>Sustainable economic growth</li>
-            <li>Food security &amp; safety</li>
-            <li>Community infrastructure</li>
-          </ul>
-        </div>
-
-        <div class="service-card">
-          <div class="card-title">Agribusiness</div>
-          <ul class="service-list">
-            <li>Field-to-fork value chains</li>
-            <li>Resource management</li>
-            <li>Productivity improvement</li>
-            <li>Value-added processing</li>
-          </ul>
-        </div>
-      </div>
+<body data-page="services">
+<section class="intro">
+  <div class="wrap">
+    <div class="eyebrow mb-5">— Services</div>
+    <h1 class="h1 max-w-[22ch]">Five services. One continuous relationship.</h1>
+    <p class="body max-w-[62ch] mt-8">We deliver these as a stack — diagnosis to stewardship — or independently, on a season-by-season contract. Every engagement includes a five-year review at no extra cost.</p>
+  </div>
+</section>
+<section class="section" style="padding-top: 40px">
+  <div class="wrap"><div id="svcList"></div></div>
+</section>
+<section class="section" style="background:#F2F4EC">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— How we engage</div>
+    <h2 class="h2 mb-12 max-w-[20ch]">A phased engagement, always.</h2>
+    <div class="grid md:grid-cols-5 gap-6">
+      <div><div class="step-num">01</div><div class="h3 mt-3">Listen</div><p class="small mt-2">Land, family, goals. No tools, no slides.</p></div>
+      <div><div class="step-num">02</div><div class="h3 mt-3">Baseline</div><p class="small mt-2">Independent audit: soil, water, yield, labour.</p></div>
+      <div><div class="step-num">03</div><div class="h3 mt-3">Plan</div><p class="small mt-2">5- and 25-year horizons, not single seasons.</p></div>
+      <div><div class="step-num">04</div><div class="h3 mt-3">Instrument</div><p class="small mt-2">Telemetry, protocols, training in local hands.</p></div>
+      <div><div class="step-num">05</div><div class="h3 mt-3">Review</div><p class="small mt-2">Year 5 audit is on us. Always.</p></div>
     </div>
   </div>
+</section>
+<section class="section">
+  <div class="wrap grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-1"><div class="eyebrow mb-4">— FAQ</div><h2 class="h2">Common questions.</h2></div>
+    <div class="md:col-span-2 space-y-2" id="faq"></div>
+  </div>
+</section>
+<script src="/js/gw.js"></script>
+<script>
+const svcs = [
+  {k:'01', n:'Diagnosis', d:'Agronomic, hydrologic and economic baseline. Independent auditors on every mandate. A single document, signed, archived.', note:'From 6–10 weeks · fixed fee'},
+  {k:'02', n:'Plan design', d:'Five- and twenty-five-year plans with sector-specific operating protocols. Every recommendation cross-validated with three on-farm trials.', note:'12–18 weeks · milestone-based'},
+  {k:'03', n:'Implementation', d:'Telemetry deployment, training of local operators, supplier selection. We embed until the operator runs the system solo.', note:'Season-by-season · fixed + variable'},
+  {k:'04', n:'Stewardship & review', d:'Quarterly data reviews and an independent year-five audit that compares outcomes to the original plan.', note:'Ongoing · retainer'},
+  {k:'05', n:'Special mandates', d:'Governmental drylands programs, family-office land transitions, distressed estate recoveries.', note:'Bespoke · RFP'},
+];
+document.getElementById('svcList').innerHTML = svcs.map(s => `
+  <div class="svc">
+    <div><div class="ph-big">${s.k}</div><div class="eyebrow mt-3">Service</div></div>
+    <div><h3 class="h3">${s.n}</h3><p class="body mt-3 max-w-[56ch]">${s.d}</p><div class="price-tag mt-4">${s.note}</div></div>
+    <div class="arr"><svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M5 13h16M14 6l7 7-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>`).join('');
+const faqs = [
+  {q:'Do you replace our existing agronomist?', a:'Never. We augment the team your family or board already trusts, and we train them on our platforms so they can continue after we leave.'},
+  {q:'What is the smallest engagement you accept?', a:'A single 6-week diagnosis on a 50-hectare estate. From there, the client decides.'},
+  {q:'Who owns the data?', a:'You. Always. Telemetry, soil samples, imagery and models are your property, exportable at any time in open formats.'},
+  {q:'Do you take equity?', a:'Only in the context of sovereign drylands programs, and only when requested.'},
+];
+document.getElementById('faq').innerHTML = faqs.map((f,i) => `
+  <details class="card" ${i===0?'open':''}>
+    <summary style="list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:20px;">
+      <span class="h3" style="font-size:19px">${f.q}</span>
+      <span style="font-family:Fraunces,serif; font-size:28px; color:#0F7B52; line-height:1;">+</span>
+    </summary>
+    <p class="body mt-4">${f.a}</p>
+  </details>`).join('');
+</script>
 </body>
 </html>

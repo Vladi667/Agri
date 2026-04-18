@@ -1,30 +1,623 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Green Wadi</title>
-  <link href="/css/homepage.css" rel="stylesheet" />
-  <script src="/js/auth.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Green Wadi — Precision. Growth. Legacy.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ overflow-x:hidden; background:#0B1220;}
+  .bg-wash{
+    background:
+      radial-gradient(80% 55% at 70% 20%, rgba(255,221,160,0.55), transparent 60%),
+      radial-gradient(60% 45% at 22% 80%, rgba(16,185,129,0.18), transparent 65%),
+      radial-gradient(40% 30% at 50% 10%, rgba(255,240,200,0.55), transparent 70%),
+      linear-gradient(180deg, #F6EBD4 0%, #F3D9B0 38%, #E8C289 62%, #C9A06A 90%);
+  }
+  .grain::after{
+    content:""; position:absolute; inset:0; z-index:40; pointer-events:none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode:multiply; opacity:.55;
+  }
+  .letterbox{ position:fixed; left:0; right:0; z-index:60; pointer-events:none; background:#0B1220; }
+  .letterbox.top{ top:0; height:10vh; }
+  .letterbox.bot{ bottom:0; height:10vh; }
+  .layer{ position:absolute; inset:0; will-change: transform; }
+  .hero-wrap{ perspective: 1600px; }
+  .hero-clip{ overflow:hidden; }
+  .orb{
+    position:absolute; border-radius:20px; padding:13px 16px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(16px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.8);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 24px 56px -22px rgba(15,23,42,0.35), 0 6px 14px -8px rgba(15,23,42,0.14);
+    color:var(--ink); min-width: 190px; cursor:pointer;
+    transition: transform .3s, box-shadow .3s, background .3s;
+  }
+  .orb:hover{ transform: scale(1.03); background: rgba(255,255,255,0.72); }
+  .orb .k{ font-size:10.5px; letter-spacing:.14em; color:#64748B; text-transform:uppercase;}
+  .orb .v{ font-size:20px; font-weight:500; letter-spacing:-0.02em; margin-top:2px; font-family:"Fraunces",serif;}
+  .orb .s{ font-size:12px; color:#334155; margin-top:2px;}
+  .orb .spark{ position:absolute; top:11px; right:13px; width:7px; height:7px; border-radius:999px;
+    background: radial-gradient(circle at 30% 30%, #34D399, #0E8F64); box-shadow: 0 0 0 4px rgba(16,185,129,0.15);}
+  .orb .cta-hint{ margin-top:8px; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--green-deep); display:flex; align-items:center; gap:6px;}
+  .orb.hovering{ box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 32px 70px -24px rgba(16,185,129,0.45); }
+  .hotspot{
+    position:absolute; width:36px; height:36px; border-radius:999px;
+    background: rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.9);
+    box-shadow: 0 8px 24px -10px rgba(15,23,42,0.3);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    backdrop-filter: blur(8px); transition: transform .3s, background .3s;
+  }
+  .hotspot:hover{ transform: scale(1.1); background:#fff; }
+  .hotspot::before{ content:""; position:absolute; inset:-6px; border-radius:999px; border:1px solid rgba(16,185,129,0.55); animation: hsp 2.4s ease-out infinite; }
+  .hotspot::after{ content:""; position:absolute; inset:-14px; border-radius:999px; border:1px solid rgba(16,185,129,0.28); animation: hsp 2.4s ease-out infinite; animation-delay: .6s; }
+  @keyframes hsp { 0%{ transform:scale(0.8); opacity:.9;} 100%{ transform:scale(1.4); opacity:0;} }
+  .hotspot svg{ width:14px; height:14px; color:var(--green-deep);}
+  .drawer{
+    position:fixed; right: 20px; top: 88px; bottom: 20px;
+    width: min(420px, 92vw); background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(22px) saturate(1.2); border:1px solid rgba(15,23,42,0.08);
+    border-radius: 22px; box-shadow: 0 40px 80px -20px rgba(15,23,42,0.25);
+    padding: 26px; z-index: 70; overflow: auto;
+    transform: translateX(120%); transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .drawer.open{ transform: translateX(0); }
+  .drawer .close{ position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:999px; background:rgba(15,23,42,0.05); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .drawer .close:hover{ background: rgba(15,23,42,0.1); }
+  .word{ display:inline-block; overflow:hidden; vertical-align: bottom; padding: 0 .02em; }
+  .word > span{ display:inline-block; }
+  .letter{ display:inline-block; }
+  @keyframes sway { 0%,100%{ transform: rotate(-1.2deg);} 50%{ transform: rotate(1.2deg);} }
+  .sway{ transform-origin: 50% 100%; animation: sway 7s ease-in-out infinite; }
+  .sway.slow{ animation-duration: 11s; }
+  .sway.slower{ animation-duration: 14s; }
+  @keyframes breathe { 0%,100%{ transform: translateY(0) scale(1);} 50%{ transform: translateY(-3px) scale(1.004);} }
+  .breathe{ animation: breathe 12s ease-in-out infinite; transform-origin: 50% 100%; }
+  @keyframes microSway { 0%,100%{ transform: rotate(-0.6deg);} 50%{ transform: rotate(0.6deg);} }
+  .micro{ transform-origin: 50% 100%; animation: microSway 5s ease-in-out infinite;}
+  .flare{ position:absolute; pointer-events:none; mix-blend-mode: screen; background: radial-gradient(circle, rgba(255,230,180,0.75) 0%, rgba(255,200,130,0.35) 30%, transparent 70%); filter: blur(6px); border-radius: 999px;}
+  .scroll-hint{ position:absolute; left:50%; bottom:24px; transform:translateX(-50%); color: rgba(30,42,58,0.8); font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; display:flex; flex-direction:column; align-items:center; gap:10px; z-index: 15;}
+  .scroll-hint .bar{ width:1px; height:46px; position:relative; overflow:hidden; background: linear-gradient(180deg, rgba(15,23,42,0) 0%, rgba(15,23,42,0.5) 100%);}
+  .scroll-hint .bar::after{ content:""; position:absolute; inset: -40% 0 auto 0; height:40%; background: linear-gradient(180deg, transparent, #0F7B52); animation: scrollHint 2.6s cubic-bezier(.4,0,.2,1) infinite;}
+  @keyframes scrollHint{ 0%{transform:translateY(0);} 100%{transform:translateY(260%);} }
+  @media (max-height: 760px){ .orb[data-orb]{ display:none; } }
+  @media (max-width: 1100px){ .orb[data-orb]{ display:none; } }
+  .stat-num{ font-family:"Fraunces", serif; font-weight:300; letter-spacing:-0.03em; font-size: clamp(56px, 7vw, 108px); line-height:1; color:var(--ink);}
+  .stat-num .unit{ color:var(--green-deep); font-size:.55em; vertical-align: super; margin-left:2px;}
+  .stat-label{ color:#8C9AAE; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;}
+  .stat-desc{ color:#1E2A3A; font-size:14px; max-width:26ch; line-height:1.45;}
+  .drone-trail{ filter: drop-shadow(0 2px 14px rgba(15,23,42,0.2)); }
+</style>
 </head>
-<body>
-  <header>
-    <a id="name" href="/index.html">
-      <img id="logo" src="/images/logo.jpg" alt="Logo" />
-    </a>
-    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
-    <ul id="lists">
-      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
-      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
-      <li id="scope"><a href="/scope.html">Our Scope</a></li>
-      <li id="services"><a href="/services.html">Services</a></li>
-      <li id="activities"><a href="/activities.html">Activities</a></li>
-      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
-      <li id="clients"><a href="/clients.html">Clients</a></li>
-      <li id="login"><a href="/login.html">Log In</a></li>
-      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
-      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
-      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
+<body data-page="index" class="antialiased">
+
+<div class="letterbox top" id="lbTop"></div>
+<div class="letterbox bot" id="lbBot"></div>
+
+<section id="hero" class="hero-wrap hero-clip relative w-full h-[100svh] min-h-[800px] bg-wash grain">
+
+  <!-- Sky, mountains, wadi, fields -->
+  <div class="layer" data-depth="0.04" id="layer-hills">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+      <defs>
+        <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#F6EBD4"/><stop offset="0.5" stop-color="#F2D9B2"/><stop offset="1" stop-color="#E8BF84"/></linearGradient>
+        <radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF2D4" stop-opacity="1"/><stop offset="0.5" stop-color="#FFD99B" stop-opacity=".55"/><stop offset="1" stop-color="#FFD99B" stop-opacity="0"/></radialGradient>
+        <linearGradient id="mtnFar" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#C8A57A"/><stop offset="1" stop-color="#A07F55"/></linearGradient>
+        <linearGradient id="mtnMid" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#9A7E54"/><stop offset="1" stop-color="#6F5535"/></linearGradient>
+        <linearGradient id="hill1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#B9C796"/><stop offset="1" stop-color="#8FA46E"/></linearGradient>
+        <linearGradient id="hill2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#7C9A5D"/><stop offset="1" stop-color="#4D6E3A"/></linearGradient>
+        <linearGradient id="wadi" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#D6E4DA"/><stop offset=".5" stop-color="#A9D1C2"/><stop offset="1" stop-color="#78B99C"/></linearGradient>
+        <linearGradient id="field" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6A8A48"/><stop offset="1" stop-color="#2F4A1F"/></linearGradient>
+        <filter id="softBlur"><feGaussianBlur stdDeviation="3"/></filter>
+      </defs>
+      <rect width="1600" height="900" fill="url(#sky)"/>
+      <circle cx="1120" cy="260" r="340" fill="url(#sun)"/>
+      <circle cx="1120" cy="260" r="56" fill="#FFF5DC" opacity=".9"/>
+      <rect x="0" y="470" width="1600" height="170" fill="#F2D9B2" opacity=".4" filter="url(#softBlur)"/>
+      <g filter="url(#softBlur)" opacity=".75"><path d="M0,520 L 120,420 L 240,500 L 360,400 L 520,490 L 700,410 L 860,500 L 1020,430 L 1200,500 L 1380,440 L 1600,500 L 1600,560 L 0,560 Z" fill="url(#mtnFar)"/></g>
+      <g opacity=".9"><path d="M0,580 L 160,490 L 300,570 L 460,480 L 620,560 L 820,470 L 1000,560 L 1200,490 L 1400,560 L 1600,500 L 1600,620 L 0,620 Z" fill="url(#mtnMid)"/></g>
+      <g class="breathe" style="animation-delay:-3s"><path d="M0,640 C 220,590 380,620 560,600 C 760,576 900,640 1100,610 C 1300,580 1460,630 1600,610 L1600,900 L0,900 Z" fill="url(#hill1)"/></g>
+      <g class="breathe" style="animation-delay:-6s"><path d="M0,700 C 180,660 360,710 560,680 C 760,650 880,720 1060,690 C 1260,660 1420,710 1600,690 L1600,900 L0,900 Z" fill="url(#hill2)"/></g>
+      <g>
+        <path d="M -50,770 C 260,730 460,800 720,760 C 980,720 1180,810 1680,770 L1680,810 C 1180,840 980,780 720,810 C 460,840 260,780 -50,810 Z" fill="url(#wadi)" opacity=".95"/>
+        <path d="M -50,778 C 280,742 460,806 720,770 C 980,734 1180,816 1680,776" stroke="#E8F7F2" stroke-width="1" fill="none" opacity=".55"/>
+      </g>
+      <g>
+        <path d="M0,720 C 220,700 400,730 600,710 C 820,690 1000,730 1200,710 C 1380,695 1500,725 1600,710 L1600,900 L0,900 Z" fill="url(#field)"/>
+        <g stroke="#2E4419" stroke-width="1" opacity=".4">
+          <path d="M0,750 C 400,730 1200,770 1600,750" fill="none"/><path d="M0,780 C 400,760 1200,800 1600,780" fill="none"/>
+          <path d="M0,810 C 400,790 1200,830 1600,810" fill="none"/><path d="M0,840 C 400,820 1200,860 1600,840" fill="none"/>
+        </g>
+        <g stroke="#F4C77B" stroke-width="0.8" opacity=".28">
+          <path d="M0,752 C 400,732 1200,772 1600,752" fill="none"/><path d="M0,782 C 400,762 1200,802 1600,782" fill="none"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- God-rays -->
+  <div class="layer pointer-events-none" data-depth="0.07" aria-hidden="true">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full" style="mix-blend-mode: screen; opacity:.55">
+      <defs><linearGradient id="ray" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFE7B5" stop-opacity=".9"/><stop offset="1" stop-color="#FFE7B5" stop-opacity="0"/></linearGradient></defs>
+      <g transform="translate(1120,260)">
+        <path d="M 0 0 L -420 640 L -360 640 Z" fill="url(#ray)" opacity=".35"/>
+        <path d="M 0 0 L -200 640 L -140 640 Z" fill="url(#ray)" opacity=".45"/>
+        <path d="M 0 0 L  100 640 L  160 640 Z" fill="url(#ray)" opacity=".4"/>
+        <path d="M 0 0 L  340 640 L  400 640 Z" fill="url(#ray)" opacity=".3"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Distant treeline -->
+  <div class="layer pointer-events-none" data-depth="0.1" aria-hidden="true">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+      <defs><radialGradient id="canopyFar" cx=".4" cy=".4" r=".6"><stop offset="0" stop-color="#7BA06A"/><stop offset="1" stop-color="#3E5E31"/></radialGradient></defs>
+      <g opacity=".8" transform="translate(0,660)">
+        <g fill="url(#canopyFar)">
+          <ellipse cx="60" cy="0" rx="14" ry="18"/><ellipse cx="110" cy="-4" rx="18" ry="22"/><ellipse cx="180" cy="0" rx="12" ry="16"/>
+          <ellipse cx="260" cy="-2" rx="16" ry="20"/><ellipse cx="340" cy="0" rx="14" ry="18"/><ellipse cx="430" cy="-4" rx="20" ry="24"/>
+          <ellipse cx="540" cy="0" rx="16" ry="20"/><ellipse cx="640" cy="-2" rx="14" ry="18"/><ellipse cx="740" cy="0" rx="18" ry="22"/>
+          <ellipse cx="870" cy="-4" rx="22" ry="26"/><ellipse cx="970" cy="0" rx="14" ry="18"/><ellipse cx="1070" cy="-2" rx="18" ry="22"/>
+          <ellipse cx="1160" cy="0" rx="16" ry="20"/><ellipse cx="1260" cy="-4" rx="20" ry="24"/><ellipse cx="1360" cy="0" rx="14" ry="18"/>
+          <ellipse cx="1460" cy="-2" rx="18" ry="22"/><ellipse cx="1560" cy="0" rx="16" ry="20"/>
+        </g>
+        <g stroke="#4A3A20" stroke-width="2">
+          <line x1="60" y1="15" x2="60" y2="22"/><line x1="110" y1="15" x2="110" y2="22"/><line x1="180" y1="15" x2="180" y2="22"/>
+          <line x1="260" y1="15" x2="260" y2="22"/><line x1="430" y1="15" x2="430" y2="22"/><line x1="540" y1="15" x2="540" y2="22"/>
+          <line x1="740" y1="15" x2="740" y2="22"/><line x1="870" y1="15" x2="870" y2="22"/><line x1="1070" y1="15" x2="1070" y2="22"/>
+          <line x1="1260" y1="15" x2="1260" y2="22"/><line x1="1460" y1="15" x2="1460" y2="22"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Particles canvas -->
+  <canvas id="particles" class="layer" data-depth="0.15"></canvas>
+
+  <!-- Drone -->
+  <div class="layer pointer-events-none" data-depth="0.2" aria-hidden="true">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+      <defs><linearGradient id="trailGrad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#10B981" stop-opacity="0"/><stop offset="1" stop-color="#10B981" stop-opacity=".55"/></linearGradient></defs>
+      <path id="droneTrail" d="" stroke="url(#trailGrad)" stroke-width="1.3" fill="none" opacity=".8"/>
+      <g id="drone" style="filter:drop-shadow(0 2px 14px rgba(15,23,42,0.2))" transform="translate(-160, 240)">
+        <path d="M20,22 L -80,130 L 120,130 Z" fill="#10B981" opacity=".10"/>
+        <g stroke="#0B1220" stroke-width="1.6" stroke-linecap="round">
+          <line x1="-18" y1="14" x2="-36" y2="4"/><line x1="18" y1="14" x2="36" y2="4"/>
+          <line x1="-18" y1="30" x2="-36" y2="40"/><line x1="18" y1="30" x2="36" y2="40"/>
+        </g>
+        <g fill="#0B1220" opacity=".9">
+          <ellipse cx="-36" cy="4" rx="14" ry="2"><animate attributeName="rx" values="14;4;14" dur="0.2s" repeatCount="indefinite"/></ellipse>
+          <ellipse cx="36" cy="4" rx="14" ry="2"><animate attributeName="rx" values="4;14;4" dur="0.2s" repeatCount="indefinite"/></ellipse>
+          <ellipse cx="-36" cy="40" rx="14" ry="2"><animate attributeName="rx" values="4;14;4" dur="0.2s" repeatCount="indefinite"/></ellipse>
+          <ellipse cx="36" cy="40" rx="14" ry="2"><animate attributeName="rx" values="14;4;14" dur="0.2s" repeatCount="indefinite"/></ellipse>
+        </g>
+        <rect x="-18" y="12" width="36" height="20" rx="5" fill="#0B1220"/>
+        <rect x="-12" y="16" width="24" height="12" rx="3" fill="#10B981"/>
+        <circle cx="0" cy="22" r="1.6" fill="#fff"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 3D trees -->
+  <div class="layer pointer-events-none" data-depth="0.28" aria-hidden="true">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
+      <defs>
+        <radialGradient id="canopyMid" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#6F9C5A"/><stop offset=".55" stop-color="#3E6A34"/><stop offset="1" stop-color="#1E3A1E"/></radialGradient>
+        <radialGradient id="canopyNear" cx=".3" cy=".3" r=".8"><stop offset="0" stop-color="#8AB86D"/><stop offset=".5" stop-color="#3E6A34"/><stop offset="1" stop-color="#14301A"/></radialGradient>
+        <linearGradient id="trunk" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#2B1F10"/><stop offset=".5" stop-color="#553C1E"/><stop offset="1" stop-color="#2B1F10"/></linearGradient>
+        <linearGradient id="trunkDate" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#2A1D10"/><stop offset=".5" stop-color="#7A5A30"/><stop offset="1" stop-color="#2A1D10"/></linearGradient>
+        <filter id="treeShadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="8"/></filter>
+      </defs>
+      <!-- Left cluster -->
+      <g transform="translate(150,720)" class="micro" style="animation-delay:-1s">
+        <line x1="0" y1="0" x2="0" y2="-60" stroke="url(#trunk)" stroke-width="6"/>
+        <ellipse cx="-10" cy="-65" rx="28" ry="34" fill="url(#canopyMid)" opacity=".9"/>
+        <ellipse cx="12" cy="-80" rx="26" ry="30" fill="url(#canopyMid)" opacity=".95"/>
+        <ellipse cx="0" cy="-90" rx="30" ry="28" fill="url(#canopyMid)"/>
+      </g>
+      <g transform="translate(80,780)" class="sway slow" style="transform-origin:0 100%">
+        <ellipse cx="8" cy="6" rx="70" ry="10" fill="#000" opacity=".22" filter="url(#treeShadow)"/>
+        <path d="M0,0 L -4,-130 C -4,-160 6,-180 2,-210" stroke="url(#trunk)" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <path d="M0,-60 C -30,-70 -55,-100 -70,-130" stroke="url(#trunk)" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M0,-90 C 30,-100 55,-130 78,-150" stroke="url(#trunk)" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <g class="growTree" data-idx="0">
+          <ellipse cx="-70" cy="-135" rx="48" ry="44" fill="#2E4B23" opacity=".95"/><ellipse cx="-20" cy="-170" rx="62" ry="58" fill="#2E4B23" opacity=".95"/>
+          <ellipse cx="40" cy="-155" rx="54" ry="50" fill="#2E4B23" opacity=".95"/><ellipse cx="80" cy="-175" rx="46" ry="44" fill="#2E4B23" opacity=".95"/>
+          <ellipse cx="20" cy="-220" rx="54" ry="48" fill="#2E4B23" opacity=".95"/>
+          <ellipse cx="-60" cy="-140" rx="42" ry="38" fill="url(#canopyNear)"/><ellipse cx="-10" cy="-175" rx="56" ry="52" fill="url(#canopyNear)"/>
+          <ellipse cx="46" cy="-160" rx="48" ry="44" fill="url(#canopyNear)"/><ellipse cx="86" cy="-180" rx="40" ry="38" fill="url(#canopyNear)"/>
+          <ellipse cx="24" cy="-222" rx="48" ry="42" fill="url(#canopyNear)"/>
+          <g fill="#B8D48A" opacity=".55"><ellipse cx="-22" cy="-192" rx="10" ry="7"/><ellipse cx="40" cy="-176" rx="8" ry="6"/><ellipse cx="10" cy="-232" rx="10" ry="6"/></g>
+        </g>
+      </g>
+      <g transform="translate(-20,820)" class="sway" style="transform-origin:20px 100%">
+        <ellipse cx="20" cy="6" rx="50" ry="8" fill="#000" opacity=".2" filter="url(#treeShadow)"/>
+        <path d="M20,0 L 18,-220" stroke="url(#trunk)" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <g class="growTree" data-idx="1">
+          <path d="M20,-60 C -20,-90 -20,-120 20,-140 C 60,-120 60,-90 20,-60 Z" fill="#2A4620"/>
+          <path d="M20,-100 C -30,-130 -30,-170 20,-190 C 70,-170 70,-130 20,-100 Z" fill="#2E4B23"/>
+          <path d="M20,-140 C -22,-170 -22,-210 20,-230 C 62,-210 62,-170 20,-140 Z" fill="url(#canopyNear)"/>
+          <path d="M20,-180 C -14,-210 -14,-250 20,-268 C 54,-250 54,-210 20,-180 Z" fill="url(#canopyNear)"/>
+        </g>
+      </g>
+      <!-- Right cluster: date palm -->
+      <g transform="translate(1450,720)" class="micro" style="animation-delay:-2s">
+        <line x1="0" y1="0" x2="0" y2="-55" stroke="url(#trunk)" stroke-width="6"/>
+        <ellipse cx="-12" cy="-65" rx="26" ry="32" fill="url(#canopyMid)" opacity=".9"/>
+        <ellipse cx="10" cy="-78" rx="24" ry="28" fill="url(#canopyMid)" opacity=".95"/>
+        <ellipse cx="0" cy="-90" rx="28" ry="26" fill="url(#canopyMid)"/>
+      </g>
+      <g transform="translate(1490,800)" class="sway slow" style="transform-origin:0 100%; animation-delay:-3s">
+        <ellipse cx="0" cy="6" rx="58" ry="9" fill="#000" opacity=".24" filter="url(#treeShadow)"/>
+        <path d="M0,0 L -2,-280" stroke="url(#trunkDate)" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <g stroke="#3A2814" stroke-width="1" opacity=".7">
+          <line x1="-8" y1="-30" x2="8" y2="-30"/><line x1="-8" y1="-60" x2="8" y2="-60"/>
+          <line x1="-8" y1="-90" x2="8" y2="-90"/><line x1="-8" y1="-120" x2="8" y2="-120"/>
+          <line x1="-8" y1="-150" x2="8" y2="-150"/><line x1="-8" y1="-210" x2="8" y2="-210"/>
+        </g>
+        <g class="growTree" data-idx="2" transform="translate(0,-280)">
+          <g fill="#1F3A18" opacity=".95">
+            <path d="M0,0 C -30,-20 -120,-34 -180,-24 C -120,-10 -50,-4 0,0 Z"/><path d="M0,0 C 30,-20 120,-34 180,-24 C 120,-10 50,-4 0,0 Z"/>
+            <path d="M0,0 C -40,-50 -140,-90 -210,-80 C -140,-50 -60,-24 0,0 Z"/><path d="M0,0 C 40,-50 140,-90 210,-80 C 140,-50 60,-24 0,0 Z"/>
+            <path d="M0,0 C -10,-70 -60,-140 -110,-168 C -70,-116 -24,-48 0,0 Z"/><path d="M0,0 C 10,-70 60,-140 110,-168 C 70,-116 24,-48 0,0 Z"/>
+          </g>
+          <g fill="#3B6E2E">
+            <path d="M0,2 C -24,-16 -100,-28 -160,-18 C -100,-6 -44,-2 0,2 Z"/><path d="M0,2 C 24,-16 100,-28 160,-18 C 100,-6 44,-2 0,2 Z"/>
+            <path d="M0,2 C -34,-42 -116,-80 -180,-70 C -116,-42 -46,-20 0,2 Z"/><path d="M0,2 C 34,-42 116,-80 180,-70 C 116,-42 46,-20 0,2 Z"/>
+          </g>
+          <g fill="#8B5A1E" opacity=".95">
+            <circle cx="-8" cy="12" r="2.4"/><circle cx="0" cy="14" r="2.4"/><circle cx="8" cy="12" r="2.4"/>
+          </g>
+        </g>
+      </g>
+      <g transform="translate(1610,830)" class="sway slower" style="transform-origin:0 100%">
+        <ellipse cx="0" cy="6" rx="60" ry="9" fill="#000" opacity=".2" filter="url(#treeShadow)"/>
+        <path d="M0,0 L -4,-180 C -4,-210 4,-220 -2,-240" stroke="url(#trunk)" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <g class="growTree" data-idx="3">
+          <ellipse cx="-60" cy="-130" rx="42" ry="38" fill="#2E4B23"/><ellipse cx="-20" cy="-170" rx="56" ry="52" fill="#2E4B23"/>
+          <ellipse cx="30" cy="-160" rx="50" ry="46" fill="#2E4B23"/><ellipse cx="-4" cy="-210" rx="52" ry="44" fill="#2E4B23"/>
+          <ellipse cx="-54" cy="-134" rx="36" ry="32" fill="url(#canopyNear)"/><ellipse cx="-16" cy="-174" rx="50" ry="46" fill="url(#canopyNear)"/>
+          <ellipse cx="32" cy="-164" rx="44" ry="40" fill="url(#canopyNear)"/><ellipse cx="-2" cy="-212" rx="46" ry="40" fill="url(#canopyNear)"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Growing plant center -->
+  <div class="layer flex items-end justify-center pointer-events-none" data-depth="0.1">
+    <svg viewBox="0 0 600 540" width="560" height="500" class="opacity-95 max-w-[72vw]">
+      <defs>
+        <linearGradient id="stem" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#1F5F3A"/><stop offset="1" stop-color="#10B981"/></linearGradient>
+        <linearGradient id="leaf" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#0E6A42"/></linearGradient>
+        <radialGradient id="seedGlow"><stop offset="0" stop-color="#F4C77B" stop-opacity=".9"/><stop offset="1" stop-color="#F4C77B" stop-opacity="0"/></radialGradient>
+        <linearGradient id="grainGrad" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#F4C77B"/><stop offset="1" stop-color="#C9954A"/></linearGradient>
+      </defs>
+      <ellipse cx="300" cy="520" rx="220" ry="16" fill="#0B1220" opacity=".18"/>
+      <ellipse cx="300" cy="520" rx="110" ry="10" fill="url(#seedGlow)"/>
+      <path id="p-stem" d="M300,520 C 298,440 306,380 300,320 C 294,260 308,210 300,150 C 294,110 306,80 300,30" stroke="url(#stem)" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g id="leaves">
+        <path class="leaf" d="M300,440 C 236,430 204,408 172,376 C 216,402 258,418 300,426 Z" fill="url(#leaf)"/>
+        <path class="leaf" d="M300,410 C 364,400 394,378 428,346 C 394,376 352,396 300,406 Z" fill="url(#leaf)"/>
+        <path class="leaf" d="M300,340 C 226,330 190,306 154,268 C 206,298 254,318 300,328 Z" fill="url(#leaf)"/>
+        <path class="leaf" d="M300,300 C 374,290 412,268 454,232 C 404,268 350,288 300,294 Z" fill="url(#leaf)"/>
+        <path class="leaf" d="M300,240 C 246,232 218,210 192,182 C 232,210 270,224 300,230 Z" fill="url(#leaf)"/>
+        <path class="leaf" d="M300,200 C 358,192 384,170 412,144 C 376,178 336,192 300,194 Z" fill="url(#leaf)"/>
+      </g>
+      <g id="crown" transform="translate(300,30)" opacity="0">
+        <g fill="url(#grainGrad)">
+          <ellipse cx="0" cy="-4" rx="3.5" ry="10"/><ellipse cx="-7" cy="2" rx="3" ry="9" transform="rotate(-20 -7 2)"/>
+          <ellipse cx="7" cy="2" rx="3" ry="9" transform="rotate(20 7 2)"/><ellipse cx="0" cy="12" rx="3.5" ry="10"/>
+        </g>
+        <circle r="16" fill="#F4C77B" opacity=".2"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Flares -->
+  <div class="layer pointer-events-none" data-depth="0.3" aria-hidden="true">
+    <div class="flare" style="left:62%; top:24%; width:260px; height:260px; opacity:.45"></div>
+    <div class="flare" style="left:68%; top:28%; width:80px; height:80px; opacity:.6; background: radial-gradient(circle, rgba(255,245,220,0.95), transparent 70%);"></div>
+  </div>
+
+  <!-- Hotspots -->
+  <div class="layer" id="hotspots" style="pointer-events:none;">
+    <button class="hotspot" data-topic="drone" style="pointer-events:auto; top:30%; left:46%;" aria-label="About the drone">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 4h3m6 0h3M2 12h3m6 0h3M4 2v3m8-3v3m-8 6v3m8-3v3M6 6h4v4H6z" stroke="currentColor" stroke-width="1.3"/></svg>
+    </button>
+    <button class="hotspot" data-topic="forestry" style="pointer-events:auto; top:62%; left:9%;" aria-label="About forestry">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 14V6M8 6L4 9h8L8 6z M8 10L3 14h10L8 10z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="hotspot" data-topic="palm" style="pointer-events:auto; top:58%; right:9%;" aria-label="About date palms">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 14V6M8 6c-2-2-5-2-5-2M8 6c2-2 5-2 5-2M8 6c-1-3-4-4-4-4M8 6c1-3 4-4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <button class="hotspot" data-topic="wadi" style="pointer-events:auto; top:78%; left:44%;" aria-label="About the wadi">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 8c2-2 4 2 6 0s4-2 6 0M2 12c2-2 4 2 6 0s4-2 6 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <button class="hotspot" data-topic="field" style="pointer-events:auto; top:82%; left:72%;" aria-label="About the field">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 12h12M2 9h12M2 6h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- Orbs -->
+  <div class="layer pointer-events-none" id="orbs-layer">
+    <button class="orb pointer-events-auto" data-orb data-topic="crops" style="left:5%; top:16%;" data-depth="0.24">
+      <div class="spark"></div><div class="k">Crops · Horticulture</div>
+      <div class="v tabular"><span data-count="47" data-suffix="%">0%</span> yield</div>
+      <div class="s">Open & protected production</div>
+      <div class="cta-hint">Learn more <svg width="10" height="10" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </button>
+    <button class="orb pointer-events-auto" data-orb data-topic="soil" style="right:5%; top:14%;" data-depth="0.32">
+      <div class="spark"></div><div class="k">Soil · Telemetry</div>
+      <div class="v">AI-driven</div><div class="s">12,800 sensors · live</div>
+      <div class="cta-hint">Learn more <svg width="10" height="10" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </button>
+    <button class="orb pointer-events-auto" data-orb data-topic="water" style="left:8%; bottom:20%;" data-depth="0.38">
+      <div class="spark"></div><div class="k">Water · Land</div>
+      <div class="v tabular"><span data-count="38" data-suffix="%">0%</span> saved</div>
+      <div class="s">Desertification prevention</div>
+      <div class="cta-hint">Learn more <svg width="10" height="10" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </button>
+    <button class="orb pointer-events-auto" data-orb data-topic="livestock" style="right:8%; bottom:24%;" data-depth="0.3">
+      <div class="spark"></div><div class="k">Livestock · Aquaculture</div>
+      <div class="v">Integrated</div><div class="s">Regenerative protocols</div>
+      <div class="cta-hint">Learn more <svg width="10" height="10" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </button>
+  </div>
+
+  <!-- Hero copy -->
+  <div class="relative z-10 h-full max-w-[1440px] mx-auto px-6 md:px-10 flex flex-col justify-center items-center text-center">
+    <div class="pt-20 md:pt-24"></div>
+    <div id="eyebrow" class="chip mb-8" style="opacity:0"><span class="dot"></span> Precision agriculture consulting · Est. 2014</div>
+    <h1 class="display text-[clamp(64px,11vw,184px)] select-none">
+      <span class="word"><span>Green</span></span> <span class="word"><span>Wadi</span></span>
+    </h1>
+    <p id="tagline" class="mt-10 md:mt-14 text-[clamp(22px,2.6vw,42px)] font-light" style="letter-spacing:.05em; color:#1E2A3A">
+      <span class="word"><span>Precision.</span></span>&nbsp;
+      <span class="word"><span>Growth.</span></span>&nbsp;
+      <span class="word"><span>Legacy.</span></span>
+    </p>
+    <p id="supporting" class="mt-7 md:mt-9 max-w-[64ch] text-[15px] md:text-[17px] leading-relaxed" style="opacity:0; color:#1E2A3A">
+      Technological innovation at the service of agriculture — data, agronomy and patient capital working across crops, horticulture, livestock, aquaculture and land conservation to unlock efficiency, growth and generational legacy.
+    </p>
+    <div id="ctas" class="mt-9 flex flex-col sm:flex-row items-center gap-3" style="opacity:0">
+      <a href="scope.html" class="btn btn-primary lg">Explore our scope
+        <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button class="btn btn-ghost lg" id="storyBtn">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.2" stroke="#0F172A" stroke-width="1.3"/><path d="M8 7.2v5.6L13 10 8 7.2z" fill="#0F172A"/></svg>
+        Watch the cinematic story <span style="color:#64748B; font-size:12px">· 2 min</span>
+      </button>
+    </div>
+    <p id="interactHint" class="mt-8 text-xs tracking-[.22em] uppercase" style="color:#64748B; opacity:0">↓ Tap any card or hotspot to explore</p>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><span class="bar"></span></div>
+</section>
+
+<!-- Detail drawer -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <button class="close" id="drawerClose" aria-label="Close">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <div id="drawerContent"></div>
+</aside>
+
+<!-- Stats strip -->
+<section id="impact" class="section" style="background:#F8F9F5">
+  <div class="wrap">
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-16">
+      <div class="max-w-[48ch]">
+        <div class="eyebrow mb-4">— The field record</div>
+        <h2 class="h2">Technological innovation, compounded across seasons.</h2>
+      </div>
+      <p class="body max-w-[42ch]">From baseline soil sampling to five-year stewardship reviews, every engagement is instrumented end-to-end — efficiency and growth verified by independent audits.</p>
+    </div>
+    <svg id="stat-line" class="w-full h-4 mb-10" viewBox="0 0 1600 4" preserveAspectRatio="none">
+      <path id="statLinePath" d="M0,2 L1600,2" stroke="#0F172A" stroke-width="1" fill="none"/>
+    </svg>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-y-14 gap-x-8">
+      <div class="stat"><div class="stat-num tabular"><span data-count="47" data-suffix="%">0</span></div><div class="hairline my-4 opacity-70"></div><div class="stat-label mb-2">Avg. yield uplift</div><div class="stat-desc">Across 184 high-value farms in 12 countries.</div></div>
+      <div class="stat"><div class="stat-num tabular"><span data-count="12" data-suffix="">0</span></div><div class="hairline my-4 opacity-70"></div><div class="stat-label mb-2">Countries</div><div class="stat-desc">From the Arabian Wadi to the Andean foothills.</div></div>
+      <div class="stat"><div class="stat-num tabular"><span data-count="184" data-suffix="+">0</span></div><div class="hairline my-4 opacity-70"></div><div class="stat-label mb-2">Farms transformed</div><div class="stat-desc">Multigenerational operations across every sector.</div></div>
+      <div class="stat"><div class="stat-num serif">Net<span class="unit">·0</span></div><div class="hairline my-4 opacity-70"></div><div class="stat-label mb-2">Carbon pathways</div><div class="stat-desc">5- and 25-year plans for every client.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Sectors grid -->
+<section class="section" style="background:#F2F4EC">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— Our scope</div>
+    <h2 class="h2 mb-12 max-w-[20ch]">Twelve sectors, one connected practice.</h2>
+    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">01</div><div class="h3">Crops</div><p class="small mt-2">Cereals, oilseeds, pulses — precision rotations.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">02</div><div class="h3">Horticulture</div><p class="small mt-2">Fruit, vegetables, high-value specialty lines.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">03</div><div class="h3">Open field production</div><p class="small mt-2">Broad-acre optimisation and water stewardship.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">04</div><div class="h3">Protected production</div><p class="small mt-2">Greenhouse, net-house and vertical systems.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">05</div><div class="h3">Livestock</div><p class="small mt-2">Welfare-first intensification and traceability.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">06</div><div class="h3">Aquaculture</div><p class="small mt-2">Closed-loop, species-appropriate production.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">07</div><div class="h3">Post-harvest</div><p class="small mt-2">Cold chain, sorting, traceable logistics.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">08</div><div class="h3">Agro-industry</div><p class="small mt-2">Processing integration and value capture.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">09</div><div class="h3">Forestry</div><p class="small mt-2">Silviculture, agroforestry, native species.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">10</div><div class="h3">Land conservation</div><p class="small mt-2">Soil, watersheds, biodiversity corridors.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">11</div><div class="h3">Desertification prevention</div><p class="small mt-2">Drylands rehabilitation at scale.</p></a>
+      <a href="scope.html" class="card"><div class="eyebrow mb-3">12</div><div class="h3">Environmental protection</div><p class="small mt-2">Compliance, monitoring, restoration.</p></a>
+    </div>
+  </div>
+</section>
+
+<div id="gw-footer-mount"></div>
+<script src="/js/gw.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+// Letter split
+document.querySelectorAll('.word').forEach(word => {
+  const inner = word.querySelector('span'); if (!inner) return;
+  const text = inner.textContent; inner.textContent = ''; inner.style.display = 'inline-block';
+  [...text].forEach(ch => { const s = document.createElement('span'); s.textContent = ch === ' ' ? '\u00A0' : ch; s.className = 'letter'; inner.appendChild(s); });
+});
+gsap.set('.letter', { yPercent: 110 });
+// Intro timeline
+const introTL = gsap.timeline({ defaults: { ease: "expo.out" } });
+introTL
+  .to('#lbTop', { yPercent: -100, duration: 1.6, ease: "power4.inOut" }, 0)
+  .to('#lbBot', { yPercent: 100, duration: 1.6, ease: "power4.inOut" }, 0)
+  .to('#eyebrow', { opacity: 1, duration: 1 }, 0.8)
+  .to('h1 .word:nth-child(1) .letter', { yPercent: 0, duration: 1.2, stagger: 0.04 }, 0.9)
+  .to('h1 .word:nth-child(2) .letter', { yPercent: 0, duration: 1.2, stagger: 0.04 }, 1.1)
+  .to('#tagline .letter', { yPercent: 0, duration: 1, stagger: 0.018 }, 1.55)
+  .to('#supporting', { opacity: 1, duration: 1.2 }, 1.9)
+  .to('#ctas', { opacity: 1, duration: 1 }, 2.1)
+  .to('#interactHint', { opacity: 1, duration: 1 }, 2.35)
+  .from('.orb', { opacity: 0, y: 40, scale: 0.9, stagger: 0.14, duration: 1.2, ease: "power3.out" }, 1.4)
+  .from('.hotspot', { opacity: 0, scale: 0.4, stagger: 0.1, duration: 0.9, ease: "back.out(1.8)" }, 2.4);
+// Tree growth
+gsap.set('.growTree', { transformOrigin:'50% 100%', scale:0.1, opacity:0 });
+gsap.to('.growTree', { scale:1, opacity:1, duration:2.4, stagger:0.25, ease:"power3.out", delay:0.8 });
+// Drone animation
+(function(){
+  const drone = document.getElementById('drone');
+  const trail = document.getElementById('droneTrail');
+  const points = [{x:-160,y:240,r:0},{x:360,y:170,r:-4},{x:820,y:230,r:2},{x:1280,y:150,r:-3},{x:1780,y:210,r:0}];
+  const tl = gsap.timeline({ repeat: -1 });
+  tl.set(drone, { attr:{ transform:`translate(${points[0].x},${points[0].y}) rotate(${points[0].r})`}});
+  for (let i=1;i<points.length;i++){
+    tl.to(drone, { duration: 5.2 + i*0.3, ease:"sine.inOut", attr:{ transform:`translate(${points[i].x},${points[i].y}) rotate(${points[i].r})` }});
+  }
+  tl.set(drone, { attr:{ transform:`translate(${points[0].x},${points[0].y}) rotate(${points[0].r})` }});
+  if (trail){
+    const d = `M ${points[0].x+20} ${points[0].y+20} ` + points.slice(1).map((p,i)=>{
+      const prev = points[i]; const cx=(prev.x+p.x)/2; const cy=Math.min(prev.y,p.y)-20;
+      return `Q ${cx+20} ${cy+20} ${p.x+20} ${p.y+20}`;
+    }).join(' ');
+    trail.setAttribute('d', d);
+    const len = trail.getTotalLength();
+    trail.style.strokeDasharray = `${len*0.15} ${len}`;
+    gsap.to(trail, { strokeDashoffset:-len, duration:10, ease:"none", repeat:-1 });
+  }
+})();
+// Plant loop
+(function(){
+  const stem = document.getElementById('p-stem');
+  const leaves = document.querySelectorAll('#leaves .leaf');
+  const crown = document.getElementById('crown');
+  const stemLen = stem.getTotalLength();
+  stem.style.strokeDasharray = stemLen; stem.style.strokeDashoffset = stemLen;
+  leaves.forEach(l => gsap.set(l, { transformOrigin:"300px 520px", scale:0, opacity:0 }));
+  gsap.set(crown, { scale:0, opacity:0, transformOrigin:"0 0" });
+  function loop(){
+    const tl = gsap.timeline({ onComplete:()=>{ gsap.set(stem,{strokeDashoffset:stemLen}); leaves.forEach(l=>gsap.set(l,{scale:0,opacity:0})); gsap.set(crown,{scale:0,opacity:0}); setTimeout(loop,500); }});
+    tl.to(stem,{strokeDashoffset:0,duration:4.2,ease:"power2.out"},0)
+      .to(leaves,{scale:1,opacity:1,duration:1.2,ease:"back.out(1.6)",stagger:0.3},1)
+      .to(crown,{scale:1,opacity:1,duration:1.1,ease:"back.out(2)"},3.8)
+      .to({},{duration:2.8})
+      .to([stem,...leaves,crown],{opacity:0,duration:1.4,ease:"power2.inOut",stagger:0.02});
+  }
+  loop();
+})();
+// Mouse parallax
+const hero = document.getElementById('hero');
+const layers = hero.querySelectorAll('[data-depth]');
+const orbs = hero.querySelectorAll('[data-orb]');
+const mouse = { x:0, y:0, tx:0, ty:0 };
+hero.addEventListener('mousemove', e => { const r = hero.getBoundingClientRect(); mouse.tx = ((e.clientX-r.left)/r.width - 0.5)*2; mouse.ty = ((e.clientY-r.top)/r.height - 0.5)*2; });
+hero.addEventListener('mouseleave', () => { mouse.tx=0; mouse.ty=0; });
+gsap.ticker.add(() => {
+  mouse.x += (mouse.tx-mouse.x)*0.055; mouse.y += (mouse.ty-mouse.y)*0.055;
+  layers.forEach(l => { const d = parseFloat(l.dataset.depth||0.1); gsap.set(l, { x:-mouse.x*70*d, y:-mouse.y*45*d }); });
+  const now = performance.now()/1000;
+  orbs.forEach((o,i) => {
+    const d = parseFloat(o.dataset.depth||0.2);
+    const fx = Math.sin(now*0.55+i)*6, fy = Math.cos(now*0.48+i*1.2)*9;
+    const r = o.getBoundingClientRect(), hr = hero.getBoundingClientRect();
+    const ox = r.left+r.width/2-hr.left, oy = r.top+r.height/2-hr.top;
+    const mx = (mouse.x*0.5+0.5)*hr.width, my=(mouse.y*0.5+0.5)*hr.height;
+    const dx = mx-ox, dy = my-oy, dist = Math.hypot(dx,dy), pull = Math.max(0, 1 - dist/380);
+    if (pull > 0.15) o.classList.add('hovering'); else o.classList.remove('hovering');
+    gsap.set(o,{ x:-mouse.x*45*d + fx + dx*0.08*pull, y:-mouse.y*32*d + fy + dy*0.08*pull });
+  });
+});
+// Particles
+(function(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  const DPR = Math.min(window.devicePixelRatio||1, 2);
+  function resize(){ canvas.width = hero.clientWidth*DPR; canvas.height = hero.clientHeight*DPR; canvas.style.width = hero.clientWidth+'px'; canvas.style.height = hero.clientHeight+'px'; }
+  resize(); window.addEventListener('resize', resize);
+  const ps = [];
+  for (let i=0;i<90;i++){ const k = Math.random(); ps.push({ x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:(Math.random()*1.8+0.5)*DPR, vx:(Math.random()-0.5)*0.25*DPR, vy:-(Math.random()*0.4+0.12)*DPR, a:Math.random()*0.6+0.25, kind:k<0.35?'amber':(k<0.7?'green':'white'), tw:Math.random()*Math.PI*2 }); }
+  function step(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ps.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.tw+=0.022;
+      if(p.y<-10){ p.y=canvas.height+10; p.x=Math.random()*canvas.width; }
+      if(p.x<-10) p.x=canvas.width+10; if(p.x>canvas.width+10) p.x=-10;
+      const al = p.a*(0.55+0.45*Math.sin(p.tw));
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      let fill,shadow;
+      if(p.kind==='amber'){ fill=`rgba(244,199,123,${al})`; shadow='rgba(244,199,123,0.6)'; }
+      else if(p.kind==='green'){ fill=`rgba(16,185,129,${al*0.9})`; shadow='rgba(16,185,129,0.55)'; }
+      else{ fill=`rgba(255,245,220,${al*0.8})`; shadow='rgba(255,245,220,0.55)'; }
+      ctx.fillStyle=fill; ctx.shadowColor=shadow; ctx.shadowBlur=10*DPR; ctx.fill();
+    });
+    requestAnimationFrame(step);
+  }
+  step();
+})();
+// Scroll parallax
+gsap.to('#layer-hills', { yPercent:14, ease:"none", scrollTrigger:{ trigger:'#hero', start:"top top", end:"bottom top", scrub:0.8 }});
+gsap.to('#orbs-layer', { yPercent:-22, ease:"none", scrollTrigger:{ trigger:'#hero', start:"top top", end:"bottom top", scrub:0.8 }});
+// Counters
+document.querySelectorAll('[data-count]').forEach(el => {
+  const end = +el.dataset.count, suffix = el.dataset.suffix||'', obj = {v:0};
+  ScrollTrigger.create({ trigger: el, start:"top 85%", once:true, onEnter:()=>gsap.to(obj,{v:end, duration:2.2, ease:"power3.out", onUpdate:()=> el.textContent = Math.round(obj.v) + suffix }) });
+});
+const sp = document.getElementById('statLinePath');
+if(sp){ const L=sp.getTotalLength(); sp.style.strokeDasharray=L; sp.style.strokeDashoffset=L; ScrollTrigger.create({ trigger:'#stat-line', start:"top 85%", once:true, onEnter:()=>gsap.to(sp,{ strokeDashoffset:0, duration:1.8, ease:"power2.out" }) }); }
+gsap.from('.stat', { y:24, opacity:0, duration:1, stagger:0.12, ease:"power3.out", scrollTrigger:{ trigger:'#impact', start:"top 75%" }});
+// Drawer
+const topics = {
+  crops:{ title:'Crops & Horticulture', kicker:'Sector 01 · 02', body:'Precision rotations across cereals, oilseeds, pulses, fruit and vegetables. We combine agronomic trial data with satellite and drone multispectral scans to raise yields while cutting inputs.', bullets:['Variable-rate seeding & fertigation','Pest & disease early warning','Soil-microbiome recovery protocols'], stat:['47%','average yield uplift across 184 farms'] },
+  soil:{ title:'Soil Intelligence & Telemetry', kicker:'Platform', body:'12,800 in-ground sensors continuously report moisture, EC, temperature and nutrient flux. A privacy-respecting ML layer converts the stream into daily agronomic decisions.', bullets:['Sub-hourly telemetry at field resolution','Forecasted irrigation schedules','Soil-carbon accrual tracking'], stat:['-38%','water use vs. regional baseline'] },
+  water:{ title:'Water & Land Conservation', kicker:'Sector 10 · 11', body:'Drylands rehabilitation, watershed restoration, and desertification prevention. Engineered swales and keyline planting paired with native species corridors.', bullets:['Wadi recharge & swale systems','Halophyte pioneer planting','Biodiversity corridor design'], stat:['12','countries across three climate zones'] },
+  livestock:{ title:'Livestock & Aquaculture', kicker:'Sector 05 · 06', body:'Integrated livestock with rotational grazing and closed-loop aquaculture paired to horticulture for nutrient cycling. Welfare-first, traceability end-to-end.', bullets:['Aquaponic & IMTA systems','Pasture rotation & fodder trees','Generational stewardship plans'], stat:['100-yr','stewardship horizon'] },
+  drone:{ title:'Multispectral scouting · W-07', kicker:'Field asset', body:'Autonomous fixed-wing and quad-rotor fleet mapping NDVI, NDRE, thermal and LWIR. Weekly cadence, field-to-cloud in under seven minutes.', bullets:['NDVI / NDRE / thermal stacks','Plant-level disease detection','Cold-store sensor cross-checks'], stat:['7 min','field → cloud latency'] },
+  forestry:{ title:'Forestry & agroforestry', kicker:'Sector 09', body:'Silviculture plans, native species reintroduction, agroforestry designs that interleave tree cover with productive ground. Every planting is tagged and monitored for 25 years.', bullets:['Native-species restoration','Carbon-accrued plantings','Agroforestry yield plans'], stat:['25-yr','growth telemetry'] },
+  palm:{ title:'Date palm & arid-zone tree crops', kicker:'Specialty', body:'Heritage date-palm cultivar preservation and modern canopy-management. Yield and grade improved through precision pollination, fruit thinning and micro-irrigation.', bullets:['Cultivar conservation','Precision pollination','Micro-irrigation retrofit'], stat:['+2 grades','average fruit-quality lift'] },
+  wadi:{ title:'The Wadi system', kicker:'Landscape', body:'Our namesake landform — seasonal valleys that ribbon through arid regions. We treat every wadi as a living infrastructure: recharge, filtration, refugia and productive corridor at once.', bullets:['Recharge pond engineering','Riparian restoration','Flood-risk modelling'], stat:['3×','soil moisture retention'] },
+  field:{ title:'Open-field production', kicker:'Sector 03', body:'Broad-acre optimisation — rotation design, residue management, variable-rate inputs. Independent audits verify both yield and soil-carbon deltas.', bullets:['Residue & cover-crop programs','Variable-rate nutrient plans','Soil-carbon verification'], stat:['ISO 14064','carbon verification'] }
+};
+const drawer = document.getElementById('drawer');
+const dContent = document.getElementById('drawerContent');
+function renderDrawer(t){
+  const d = topics[t]; if(!d) return;
+  dContent.innerHTML = `
+    <div class="eyebrow" style="color:#64748B">${d.kicker}</div>
+    <h3 class="h2" style="font-size:36px; line-height:1.05; margin-top:12px">${d.title}</h3>
+    <p class="body" style="margin-top:16px">${d.body}</p>
+    <ul style="margin-top:18px; display:flex; flex-direction:column; gap:10px;">
+      ${d.bullets.map(b=>`<li style="display:flex; gap:10px; align-items:flex-start; font-size:14px; color:#1E2A3A;"><span style="margin-top:7px; width:5px; height:5px; border-radius:999px; background:#10B981; flex-shrink:0;"></span>${b}</li>`).join('')}
     </ul>
-    <br />
-  </header>
+    <div style="margin-top:22px; padding:18px; border-radius:16px; background:#F2F4EC; border:1px solid rgba(15,23,42,.07);">
+      <div class="stat-num" style="font-size:54px">${d.stat[0]}</div>
+      <div class="small" style="margin-top:4px">${d.stat[1]}</div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:22px;">
+      <a class="btn btn-primary" href="scope.html">See full scope <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="btn btn-ghost" href="contacts.html">Talk to us</a>
+    </div>`;
+  drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false');
+}
+function closeDrawer(){ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); }
+document.querySelectorAll('[data-topic]').forEach(el => el.addEventListener('click', () => renderDrawer(el.dataset.topic)));
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
+document.getElementById('storyBtn').addEventListener('click', () => renderDrawer('drone'));
+</script>
 </body>
 </html>

@@ -1,36 +1,80 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Clients</title>
-  <link href="/css/StyleSheet1.css" rel="stylesheet" />
-  <link href="/css/cli.css" rel="stylesheet" />
-  <script src="/js/auth.js"></script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Clients — Green Wadi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{ padding: 100px 0 60px; background: radial-gradient(60% 50% at 80% 20%, rgba(244,199,123,0.35), transparent 60%), #F8F9F5;}
+  .logo-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 1px; background: rgba(15,23,42,0.08); border:1px solid rgba(15,23,42,0.08); border-radius: 14px; overflow:hidden;}
+  .logo-cell{ background:#fff; padding: 26px; height: 120px; display:flex; align-items:center; justify-content:center; font-family:"Fraunces",serif; font-weight:400; font-size:18px; color:#1E2A3A; letter-spacing:-0.01em; text-align:center;}
+  .case{ border:1px solid rgba(15,23,42,0.08); border-radius: 20px; background:#fff; padding: 28px; position:relative; overflow:hidden; }
+  .case .img{ aspect-ratio: 16/9; border-radius:14px; margin-bottom:18px; }
+  .c1{ background:linear-gradient(135deg,#F2D9B2,#6F9C5A); }
+  .c2{ background:linear-gradient(135deg,#A9D1C2,#0F7B52); }
+  .c3{ background:linear-gradient(135deg,#E9A864,#8B5A1E); }
+  .quote{ font-family:"Fraunces",serif; font-weight:300; font-size:clamp(24px,2.6vw,36px); letter-spacing:-0.015em; line-height:1.2; color:#1E2A3A;}
+  .stat-row{ display:grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 18px; }
+  .stat-row .v{ font-family:"Fraunces",serif; font-size:32px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52;}
+  .stat-row .l{ font-size:11.5px; text-transform:uppercase; letter-spacing:.14em; color:#64748B; margin-top:2px;}
+</style>
 </head>
-<body>
-  <header>
-    <a id="name" href="/index.html">
-      <img id="logo" src="/images/logo.jpg" alt="Logo" />
-    </a>
-    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
-    <ul id="lists">
-      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
-      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
-      <li id="scope"><a href="/scope.html">Our Scope</a></li>
-      <li id="services"><a href="/services.html">Services</a></li>
-      <li id="activities"><a href="/activities.html">Activities</a></li>
-      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
-      <li id="clients"><a href="/clients.html">Clients</a></li>
-      <li id="login"><a href="/login.html">Log In</a></li>
-      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
-      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
-      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
-    </ul>
-    <br />
-  </header>
-
-  <div id="ContentPlaceHolder1">
-    <h1 id="titles">Clients</h1>
-    <img id="im" src="/images/clients.png" alt="Clients Image" />
+<body data-page="clients">
+<section class="intro">
+  <div class="wrap">
+    <div class="eyebrow mb-5">— Clients</div>
+    <h1 class="h1 max-w-[22ch]">184 farms. 12 countries. Three generations already served.</h1>
+    <p class="body max-w-[62ch] mt-8">Our clients are families, family offices, sovereign funds, ministries and operating companies who think across generations. A selection, with permission, below.</p>
   </div>
+</section>
+<section class="section" style="padding-top:40px">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— Selected clients</div>
+    <div class="logo-grid">
+      <div class="logo-cell">Al Wadi Estates</div>
+      <div class="logo-cell">Ribeira Grande</div>
+      <div class="logo-cell">Atacama Agro</div>
+      <div class="logo-cell">Farm No.07</div>
+      <div class="logo-cell">Casa Horta</div>
+      <div class="logo-cell">MOA Program</div>
+      <div class="logo-cell">Oryx Pastoral</div>
+      <div class="logo-cell">Vega del Sur</div>
+      <div class="logo-cell">Sovereign Trust N.</div>
+      <div class="logo-cell">Lusitano Olives</div>
+      <div class="logo-cell">Dakhla Palms</div>
+      <div class="logo-cell">Ministry of Land</div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— Case studies</div>
+    <h2 class="h2 mb-10 max-w-[20ch]">Three estates, three seasons, three outcomes.</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="case"><div class="img c1"></div><div class="eyebrow mb-2">Wadi, Oman</div><h3 class="h3">Date palm recovery</h3><p class="small mt-2">Heritage cultivar preserved; precision pollination reintroduced after a 40-year gap.</p>
+        <div class="stat-row"><div><div class="v">+2</div><div class="l">Fruit grades</div></div><div><div class="v">-32%</div><div class="l">Water use</div></div><div><div class="v">8y</div><div class="l">Partnership</div></div></div></div>
+      <div class="case"><div class="img c2"></div><div class="eyebrow mb-2">Alentejo, Portugal</div><h3 class="h3">Olive → agroforestry</h3><p class="small mt-2">Monoculture olive converted to polyculture; carbon verified by ISO 14064.</p>
+        <div class="stat-row"><div><div class="v">+51%</div><div class="l">Revenue</div></div><div><div class="v">Net·0</div><div class="l">Carbon</div></div><div><div class="v">11y</div><div class="l">Partnership</div></div></div></div>
+      <div class="case"><div class="img c3"></div><div class="eyebrow mb-2">Atacama, Chile</div><h3 class="h3">Drylands rehab</h3><p class="small mt-2">Sovereign program: 12,000 hectares of halophyte-led recovery.</p>
+        <div class="stat-row"><div><div class="v">12k</div><div class="l">Hectares</div></div><div><div class="v">3×</div><div class="l">Soil moisture</div></div><div><div class="v">6y</div><div class="l">In progress</div></div></div></div>
+    </div>
+  </div>
+</section>
+<section class="section" style="background:#F2F4EC">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— In their words</div>
+    <div class="grid md:grid-cols-2 gap-12">
+      <div><p class="quote">"Green Wadi showed up in year one, year five and year ten. Our agronomist now runs the system better than they did."</p><div class="small mt-6">— Principal, Ribeira Grande (Portugal)</div></div>
+      <div><p class="quote">"They will not tell you what you want to hear. They tell you what the soil is telling them."</p><div class="small mt-6">— Secretary General, MOA Program</div></div>
+    </div>
+  </div>
+</section>
+<script src="/js/gw.js"></script>
 </body>
 </html>

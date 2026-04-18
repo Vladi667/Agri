@@ -1,69 +1,84 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Who Are We</title>
-  <link href="/css/StyleSheet1.css" rel="stylesheet" />
-  <link href="/css/who.css" rel="stylesheet" />
-  <script src="/js/auth.js"></script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Who we are — Green Wadi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ padding-top: 72px; background:#F8F9F5; }
+  .hero-about{ position:relative; overflow:hidden; padding: 100px 0 80px; background:
+    radial-gradient(60% 50% at 80% 20%, rgba(244,199,123,0.4), transparent 60%),
+    linear-gradient(180deg, #F8F9F5 0%, #F2F4EC 100%); }
+  .portrait{ aspect-ratio: 3/4; border-radius: 18px; background: linear-gradient(135deg,#C9A06A,#6F9C5A); position:relative; overflow:hidden; }
+  .portrait::after{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%); }
+  .portrait .initials{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:"Fraunces",serif; font-weight:300; font-size:72px; color:rgba(255,255,255,0.9); letter-spacing:-0.02em;}
+  .timeline{ position:relative; padding-left: 28px; }
+  .timeline::before{ content:""; position:absolute; left:8px; top:10px; bottom:10px; width:1px; background: linear-gradient(180deg, var(--green), var(--green-deep), transparent);}
+  .tl-item{ position:relative; padding: 14px 0 28px; }
+  .tl-item::before{ content:""; position:absolute; left:-25px; top:22px; width:11px; height:11px; border-radius:999px; background:#fff; border:2px solid var(--green-deep); }
+  .pill{ display:inline-block; padding:4px 10px; border-radius:999px; background:#fff; border:1px solid rgba(15,23,42,0.08); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:#64748B;}
+</style>
 </head>
-<body>
-  <header>
-    <a id="name" href="/index.html">
-      <img id="logo" src="/images/logo.jpg" alt="Logo" />
-    </a>
-    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
-    <ul id="lists">
-      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
-      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
-      <li id="scope"><a href="/scope.html">Our Scope</a></li>
-      <li id="services"><a href="/services.html">Services</a></li>
-      <li id="activities"><a href="/activities.html">Activities</a></li>
-      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
-      <li id="clients"><a href="/clients.html">Clients</a></li>
-      <li id="login"><a href="/login.html">Log In</a></li>
-      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
-      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
-      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
-    </ul>
-    <br />
-  </header>
-
-  <div id="ContentPlaceHolder1">
-    <div class="hero-section">
-      <h1 class="organic-title">Who We Are</h1>
-
-      <div class="floating-content">
-        <div class="history-item">
-          <div class="history-year"></div>
-          <p><span class="highlight-phrase">"Green Wadi Ltd."</span> started as a one-man operation when Mr. Friedman left the Ministry of Agriculture of Israel to become an independent consultant 10 years ago.</p>
-        </div>
-
-        <div class="nature-divider"></div>
-
-        <div class="history-item">
-          <div class="history-year"></div>
-          <p>In 2018, due to the expansion of projects, Green Wadi became a limited company employing experts as needed to be efficient and successful. We are committed to providing our clients with quick answers and solutions.</p>
-        </div>
-
-        <div class="nature-divider"></div>
-
-        <div class="history-item">
-          <p>Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.</p>
-        </div>
-
-        <div class="nature-divider"></div>
-
-        <div class="history-item">
-          <p>We offer diverse services, technology, know-how, and training required for the upgrading and construction of existing and new agricultural and agro-industrial enterprises.</p>
-        </div>
-
-        <div class="nature-divider"></div>
-
-        <div class="history-item">
-          <p>Our successful projects have earned Green Wadi a reputation for delivering measurable value for the long term.</p>
-        </div>
+<body data-page="whorwe">
+<section class="hero-about">
+  <div class="wrap">
+    <div class="eyebrow mb-5">— Who we are</div>
+    <h1 class="h1 max-w-[22ch]">A consultancy of agronomists, data scientists and patient operators.</h1>
+    <p class="body max-w-[62ch] mt-8">Founded in 2014 between Muscat and Lisbon, Green Wadi exists to serve families, institutions and governments who believe that agriculture is a hundred-year craft — and that technology, deployed with restraint, is how we keep it that way.</p>
+  </div>
+</section>
+<section class="section" style="padding-top:32px">
+  <div class="wrap grid md:grid-cols-2 gap-16 items-start">
+    <div>
+      <div class="eyebrow mb-4">— Our philosophy</div>
+      <h2 class="h2 max-w-[18ch]">Small decisions, compounded across seasons.</h2>
+      <p class="body mt-6 max-w-[52ch]">We resist single-season heroics. Every recommendation is tested on-farm, measured independently, and revisited five years later. If a protocol doesn't hold up at year five, it doesn't ship.</p>
+      <div class="flex flex-wrap gap-2 mt-8">
+        <span class="pill">Independent</span><span class="pill">Patient</span>
+        <span class="pill">Data-native</span><span class="pill">Field-first</span>
+        <span class="pill">Multi-generational</span>
       </div>
     </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="portrait"><div class="initials">AK</div></div>
+      <div class="portrait" style="background:linear-gradient(135deg,#6F9C5A,#1F5F3A)"><div class="initials">MR</div></div>
+      <div class="portrait" style="background:linear-gradient(135deg,#E9A864,#C9A06A)"><div class="initials">SL</div></div>
+      <div class="portrait" style="background:linear-gradient(135deg,#1F5F3A,#0B1220)"><div class="initials">JP</div></div>
+    </div>
   </div>
+</section>
+<section class="section" style="background:#F2F4EC">
+  <div class="wrap grid md:grid-cols-[340px_1fr] gap-16">
+    <div>
+      <div class="eyebrow mb-4">— Our journey</div>
+      <h2 class="h2">A decade of patient fieldwork.</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><div class="pill mb-2">2014</div><div class="h3">Founded in Muscat</div><p class="body mt-2 max-w-[52ch]">Three agronomists and one data scientist set up shop with a single commitment: five-year reviews on every engagement.</p></div>
+      <div class="tl-item"><div class="pill mb-2">2017</div><div class="h3">First 100 farms</div><p class="body mt-2 max-w-[52ch]">Cereal, olive and date palm clients across the Arabian peninsula. The soil-telemetry platform ships v1.</p></div>
+      <div class="tl-item"><div class="pill mb-2">2020</div><div class="h3">Desertification practice</div><p class="body mt-2 max-w-[52ch]">A partnership with three sovereign funds brings drylands rehabilitation into the core offering.</p></div>
+      <div class="tl-item"><div class="pill mb-2">2023</div><div class="h3">Aquaculture & forestry</div><p class="body mt-2 max-w-[52ch]">Integrated multi-trophic aquaculture joins the catalogue. Agroforestry becomes a standalone practice.</p></div>
+      <div class="tl-item"><div class="pill mb-2">2026</div><div class="h3">184 farms, 12 countries</div><p class="body mt-2 max-w-[52ch]">Independent auditors verify a 47% average yield uplift and a 38% reduction in water use.</p></div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— Principles</div>
+    <h2 class="h2 mb-12 max-w-[20ch]">Four principles we will not negotiate.</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="card"><div class="h3">No proprietary lock-in</div><p class="small mt-3">Clients own their data, their models, their soil. We leave — the knowledge stays.</p></div>
+      <div class="card"><div class="h3">Independent audit</div><p class="small mt-3">Every yield and water claim is verified by a third party before it leaves our offices.</p></div>
+      <div class="card"><div class="h3">Native first</div><p class="small mt-3">Local cultivars, local species, local hands. Imports are a last resort, never a default.</p></div>
+      <div class="card"><div class="h3">Generational horizon</div><p class="small mt-3">Our plans run to year 100. We bill for a decade and consult for a lifetime.</p></div>
+    </div>
+  </div>
+</section>
+<script src="/js/gw.js"></script>
 </body>
 </html>

@@ -1,87 +1,76 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>What Are We</title>
-  <link href="/css/StyleSheet1.css" rel="stylesheet" />
-  <script src="/js/auth.js"></script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>What we are — Green Wadi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{ padding: 100px 0 60px; background: radial-gradient(60% 50% at 70% 20%, rgba(244,199,123,0.4), transparent 60%), radial-gradient(40% 40% at 20% 80%, rgba(16,185,129,0.12), transparent 60%), #F8F9F5;}
+  .manifesto{ font-family:"Fraunces",serif; font-weight:300; letter-spacing:-0.02em; font-size:clamp(28px,3.6vw,52px); line-height:1.15; color:#1E2A3A;}
+  .manifesto em{ font-style: normal; color: var(--green-deep); }
+  .value-ring{ position:relative; aspect-ratio:1; max-width: 520px; margin: 0 auto; }
+  .value-ring .center{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center;}
+  .value-ring .node{ position:absolute; width:140px; padding:14px; border-radius: 16px; background:#fff; border:1px solid rgba(15,23,42,0.08); box-shadow: 0 10px 24px -12px rgba(15,23,42,0.18); text-align:center;}
+  .value-ring .node .k{ font-family:"Fraunces",serif; font-size:18px; font-weight:400;}
+  .value-ring .node .d{ font-size:11.5px; color:#64748B; margin-top:4px; line-height:1.4;}
+  .value-ring .n1{ top:0; left:50%; transform: translate(-50%,-20%);}
+  .value-ring .n2{ top:50%; right:0; transform: translate(20%,-50%);}
+  .value-ring .n3{ bottom:0; left:50%; transform: translate(-50%,20%);}
+  .value-ring .n4{ top:50%; left:0; transform: translate(-20%,-50%);}
+  .value-ring svg{ position:absolute; inset:0; width:100%; height:100%; }
+</style>
 </head>
-<body>
-  <header>
-    <a id="name" href="/index.html">
-      <img id="logo" src="/images/logo.jpg" alt="Logo" />
-    </a>
-    <div class="welcome-message" id="welcomeMsg">Welcome Guest</div>
-    <ul id="lists">
-      <li id="homepage"><a href="/index.html">Green Wadi</a></li>
-      <li id="whorwe"><a href="/whorwe.html">Who Are We</a></li>
-      <li id="scope"><a href="/scope.html">Our Scope</a></li>
-      <li id="services"><a href="/services.html">Services</a></li>
-      <li id="activities"><a href="/activities.html">Activities</a></li>
-      <li id="gallery"><a href="/whatrwe.html">What Are We</a></li>
-      <li id="clients"><a href="/clients.html">Clients</a></li>
-      <li id="login"><a href="/login.html">Log In</a></li>
-      <li id="page1" style="display:none"><a href="/contacts.html">Contacts</a></li>
-      <li id="table" style="display:none"><a href="/table.html">Table</a></li>
-      <li id="logoutq" style="display:none"><a href="#" onclick="logout(); return false;">Logout</a></li>
-    </ul>
-    <br />
-  </header>
-
-  <div id="ContentPlaceHolder1">
-    <div class="agriculture-hero">
-      <h1 class="main-heading">Agricultural Development Excellence</h1>
-      <h2 class="sub-heading">Is What We Are</h2>
-
-      <p class="mission-statement">
-        Green Wadi will increase global agricultural production to mitigate hunger and malnutrition,
-        pave the way for food self-sufficiency and security; strengthen the rural community and
-        improve its livelihood, while protecting the environment and natural resources.
-      </p>
-
-      <div class="principle-grid">
-        <div class="principle-card">
-          <div class="principle-number">01</div>
-          <div class="principle-content">
-            <strong>Developing and introducing suitable agricultural practices, agro-technology, and post-harvest technology.</strong>
-          </div>
-        </div>
-
-        <div class="principle-card">
-          <div class="principle-number">02</div>
-          <div class="principle-content">
-            <strong>Enhancing and building capacity</strong> at all levels of the agricultural value chain.
-          </div>
-        </div>
-
-        <div class="principle-card">
-          <div class="principle-number">03</div>
-          <div class="principle-content">
-            <strong>Adopting a results and success-oriented approach.</strong>
-          </div>
-        </div>
-
-        <div class="principle-card">
-          <div class="principle-number">04</div>
-          <div class="principle-content">
-            <strong>Focusing on customer satisfaction.</strong>
-          </div>
-        </div>
-
-        <div class="principle-card">
-          <div class="principle-number">05</div>
-          <div class="principle-content">
-            <strong>Making a long-term commitment</strong> to our customers and their projects.
-          </div>
-        </div>
-
-        <div class="principle-card">
-          <div class="principle-number">06</div>
-          <div class="principle-content">
-            <strong>Providing optimal tailor-made solutions</strong> for any given condition.
-          </div>
-        </div>
-      </div>
+<body data-page="whatrwe">
+<section class="intro">
+  <div class="wrap">
+    <div class="eyebrow mb-5">— What we are</div>
+    <h1 class="h1 max-w-[22ch]">Not a software house. Not a fund. A consultancy that plants.</h1>
+    <p class="body max-w-[62ch] mt-8">Green Wadi is a small, independent consultancy. We build tools because the market does not; we keep them small because complexity kills farms.</p>
+  </div>
+</section>
+<section class="section" style="padding-top: 40px">
+  <div class="wrap">
+    <div class="eyebrow mb-4">— Manifesto</div>
+    <p class="manifesto max-w-[38ch]">We believe agriculture is the <em>slowest form of intelligence</em> — a hundred-year craft that rewards <em>patience, proof and restraint</em>. Technology is our tool. The <em>land is the client</em>.</p>
+  </div>
+</section>
+<section class="section" style="background:#F2F4EC">
+  <div class="wrap grid md:grid-cols-[1fr_1fr] gap-16 items-center">
+    <div>
+      <div class="eyebrow mb-4">— Values</div>
+      <h2 class="h2 max-w-[16ch]">Four values, arranged around the land.</h2>
+      <p class="body mt-6 max-w-[50ch]">Every decision — a hire, a tool, a client, a protocol — is tested against these four. If it fails one, it does not happen.</p>
+    </div>
+    <div class="value-ring">
+      <svg viewBox="0 0 520 520" fill="none"><circle cx="260" cy="260" r="180" stroke="#1F5F3A" stroke-width="1" stroke-dasharray="4 6" opacity=".4"/></svg>
+      <div class="center"><div><div class="eyebrow">Centered on</div><div class="h3" style="font-size:26px; margin-top:4px">The land</div></div></div>
+      <div class="node n1"><div class="k">Patience</div><div class="d">Year-5 reviews, always on us.</div></div>
+      <div class="node n2"><div class="k">Proof</div><div class="d">Third-party audit on every claim.</div></div>
+      <div class="node n3"><div class="k">Restraint</div><div class="d">The simplest protocol that holds.</div></div>
+      <div class="node n4"><div class="k">Stewardship</div><div class="d">100-year plans, always open.</div></div>
     </div>
   </div>
+</section>
+<section class="section">
+  <div class="wrap grid md:grid-cols-2 gap-12">
+    <div>
+      <div class="eyebrow mb-4">— Structure</div>
+      <h2 class="h2 max-w-[20ch]">A partnership of 24 people, on purpose.</h2>
+      <p class="body mt-5 max-w-[52ch]">We will never grow past forty. Seniors work directly with clients. There are no junior account managers and no sales team.</p>
+    </div>
+    <div>
+      <div class="eyebrow mb-4">— Governance</div>
+      <h2 class="h2 max-w-[20ch]">Employee-owned, independently audited.</h2>
+      <p class="body mt-5 max-w-[52ch]">100% held by the partners who do the work. Accounts audited annually by a Big Four firm; the full report is shared with every client.</p>
+    </div>
+  </div>
+</section>
+<script src="/js/gw.js"></script>
 </body>
 </html>

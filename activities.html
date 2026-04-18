@@ -4,125 +4,167 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Activities — Green Wadi</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
-  body{ padding-top:72px; background:#F8F9F5; }
-  .intro{
-    padding: 100px 0 60px;
-    background: radial-gradient(60% 50% at 30% 20%, rgba(16,185,129,0.14), transparent 60%),
-      radial-gradient(40% 40% at 80% 80%, rgba(244,199,123,0.2), transparent 60%),
+  body { padding-top: 72px; background: #F8F9F5; overflow-x: hidden; }
+
+  /* Floating orbs */
+  .orb-bg { position: fixed; pointer-events: none; border-radius: 999px; filter: blur(90px); z-index: 0; }
+  .orb-bg-1 { width: 600px; height: 600px; top: -100px; left: 10%; background: radial-gradient(circle, rgba(16,185,129,0.14), transparent 70%); animation: o1 22s ease-in-out infinite; }
+  .orb-bg-2 { width: 500px; height: 500px; bottom: 15vh; right: -80px; background: radial-gradient(circle, rgba(244,199,123,0.18), transparent 70%); animation: o2 26s ease-in-out infinite; }
+  @keyframes o1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(60px,80px);} }
+  @keyframes o2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-50px,-70px);} }
+
+  /* Hero */
+  .hero-inner {
+    padding: 96px 0 56px;
+    background:
+      radial-gradient(60% 50% at 30% 20%, rgba(16,185,129,0.12), transparent 60%),
+      radial-gradient(40% 40% at 80% 80%, rgba(244,199,123,0.18), transparent 60%),
       #F8F9F5;
+    position: relative; overflow: hidden;
   }
-  .map-hero{
-    margin: 0 0 64px;
-    border-radius: 22px; overflow:hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+
+  /* Map container — 80vw, dramatic 3D */
+  .map-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 48px 0;
+    position: relative;
   }
-  .map-hero img{ width:100%; display:block; }
-  .activity{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 56px 0; border-top:1px solid rgba(15,23,42,0.08); align-items:center;}
-  .activity:nth-child(even) .visual{ order: -1; }
-  @media (max-width: 900px){
-    .activity{ grid-template-columns: 1fr; gap: 24px; }
-    .activity:nth-child(even) .visual{ order:0; }
+
+  /* Pulsing dots overlay */
+  .dot-overlay {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 5;
   }
-  .visual{ aspect-ratio: 4/3; border-radius: 20px; overflow:hidden; position:relative; }
-  .v-field{ background: linear-gradient(180deg,#F2D9B2 0%, #6F9C5A 50%, #1F5F3A 100%);}
-  .v-lab{ background: linear-gradient(135deg,#E9FBF3, #B9E6D0 60%, #0F7B52);}
-  .v-drone{ background: linear-gradient(180deg,#F6EBD4,#E8BF84);}
-  .v-classroom{ background: linear-gradient(135deg,#1F5F3A,#0B1220);}
-  .v-pond{ background: linear-gradient(180deg,#A9D1C2,#14B8A6 70%,#0F7B52);}
-  .v-forest{ background: linear-gradient(180deg,#3E6A34,#1E3A1E);}
-  .visual::after{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.35), transparent 60%);}
-  .badge{
-    position:absolute; top:16px; left:16px; padding:5px 12px; border-radius:999px;
-    background: rgba(255,255,255,0.85); font-size:11px; letter-spacing:.14em;
-    text-transform:uppercase; color:#1E2A3A; backdrop-filter: blur(8px);
+  .pulse-dot {
+    position: absolute;
+    width: 14px; height: 14px;
+    transform: translate(-50%, -50%);
   }
-  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
-  .stat-row .v{ font-family:"Fraunces",serif; font-size:28px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52; }
-  .stat-row .l{ font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:#64748B; margin-top:2px; }
+  .pulse-dot::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: 999px;
+    background: #10B981;
+    animation: pulseDot 2.2s ease-out infinite;
+  }
+  .pulse-dot::after {
+    content: "";
+    position: absolute; inset: -6px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(16,185,129,0.55);
+    animation: pulseDot 2.2s ease-out infinite;
+    animation-delay: 0.55s;
+  }
+  .pulse-dot .inner {
+    position: absolute; inset: 3px;
+    background: #fff; border-radius: 999px; z-index: 1;
+  }
+  @keyframes pulseDot {
+    0% { transform: scale(0.6); opacity: 0.9; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+
+  /* 3D scene */
+  .scene {
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+    width: 80vw;
+    max-width: 1200px;
+    position: relative;
+  }
+  .img-stage {
+    transform-style: preserve-3d;
+    transform: rotateX(18deg) rotateY(-4deg) scale(0.88);
+    opacity: 0;
+    transition: transform 1.2s cubic-bezier(0.2,0.8,0.2,1), opacity 1s ease, box-shadow 0.6s;
+    border-radius: 22px; overflow: hidden;
+    box-shadow: 0 60px 120px -30px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.1);
+    position: relative;
+  }
+  .img-stage.revealed {
+    transform: rotateX(0deg) rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  .img-stage:hover {
+    transform: rotateX(-3deg) rotateY(4deg) scale(1.02);
+    box-shadow: 0 80px 160px -40px rgba(0,0,0,0.6);
+  }
+  .img-3d { width: 100%; display: block; }
+  .img-reflection {
+    position: absolute; bottom: -40%; left: 0; right: 0; height: 40%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.08), transparent);
+    transform: scaleY(-1); opacity: 0.3; pointer-events: none;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+  }
+
+  .animate-text { opacity: 0; transform: translateY(40px); }
 </style>
 </head>
 <body data-page="activities">
 
-<section class="intro">
+<div class="orb-bg orb-bg-1" aria-hidden="true"></div>
+<div class="orb-bg orb-bg-2" aria-hidden="true"></div>
+
+<!-- Hero -->
+<section class="hero-inner" style="position:relative; z-index:1;">
   <div class="wrap">
-    <div class="eyebrow mb-5">— Activities</div>
-    <h1 class="h1 max-w-[22ch]">The work itself — on the ground, in the lab, above the canopy.</h1>
-    <p class="body max-w-[62ch] mt-8">Green Wadi operates across 12 countries, providing on-the-ground expertise in agriculture, rural development and land conservation. A selection of our practical field activities below.</p>
+    <div class="eyebrow mb-5 animate-text">— Activities</div>
+    <h1 class="h1 max-w-[20ch] animate-text">Activities</h1>
   </div>
 </section>
 
-<!-- World map hero visual -->
-<section style="padding:0 0 0">
-  <div class="wrap">
-    <div class="map-hero">
-      <img src="/images/worldmap.png" alt="Green Wadi Global Activities — 12 Countries" loading="lazy"/>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-      <div>
-        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">12</div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Countries</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Active field operations</div>
-      </div>
-      <div>
-        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">184<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Farms</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Transformed enterprises</div>
-      </div>
-      <div>
-        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">47<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">%</span></div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Avg. yield uplift</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Independently verified</div>
-      </div>
-      <div>
-        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">10<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Years</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Of field experience</div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- World map — dramatic 3D perspective -->
+<section class="section" style="padding-top: 24px; padding-bottom: 80px; position:relative; z-index:1;">
+  <div class="map-wrap">
+    <div class="scene">
+      <div class="img-stage" id="mapStage">
+        <img src="/images/worldmap.png" class="img-3d img-parallax" alt="Green Wadi Global Activities — 12 Countries"/>
+        <div class="img-reflection"></div>
 
-<!-- Activity rows -->
-<section class="section" style="padding-top:0">
-  <div class="wrap" id="actList"></div>
-</section>
-
-<!-- Seasonal calendar -->
-<section class="section" style="background:#F2F4EC">
-  <div class="wrap">
-    <div class="flex items-end justify-between flex-wrap gap-6 mb-12">
-      <div>
-        <div class="eyebrow mb-3">— Seasonal rhythm</div>
-        <h2 class="h2 max-w-[20ch]">A year on a Green Wadi farm.</h2>
-      </div>
-      <p class="body max-w-[40ch]">Every client sees the same rhythm: instrument, plant, scout, harvest, review. The rhythm is the product.</p>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="card">
-        <div class="eyebrow mb-2">Q1</div>
-        <div class="h3">Instrument</div>
-        <p class="small mt-2">Soil samples, sensor calibration, seasonal planning and baseline measurements.</p>
-      </div>
-      <div class="card">
-        <div class="eyebrow mb-2">Q2</div>
-        <div class="h3">Plant</div>
-        <p class="small mt-2">Variable-rate seeding, canopy training, early-season pest monitoring.</p>
-      </div>
-      <div class="card">
-        <div class="eyebrow mb-2">Q3</div>
-        <div class="h3">Scout</div>
-        <p class="small mt-2">Weekly drone passes, multispectral analysis, disease response protocols.</p>
-      </div>
-      <div class="card">
-        <div class="eyebrow mb-2">Q4</div>
-        <div class="h3">Harvest &amp; review</div>
-        <p class="small mt-2">Grade, store, independent audit, plan next season with verified data.</p>
+        <!-- Pulsing activity dots overlaid on the map -->
+        <div class="dot-overlay" aria-hidden="true">
+          <!-- Middle East / Israel -->
+          <div class="pulse-dot" style="top:42%; left:58%;" title="Israel">
+            <div class="inner"></div>
+          </div>
+          <!-- Africa (East) -->
+          <div class="pulse-dot" style="top:56%; left:55%; animation-delay:0.3s;" title="East Africa">
+            <div class="inner"></div>
+          </div>
+          <!-- Africa (West) -->
+          <div class="pulse-dot" style="top:51%; left:44%; animation-delay:0.6s;" title="West Africa">
+            <div class="inner"></div>
+          </div>
+          <!-- Gulf / Arabia -->
+          <div class="pulse-dot" style="top:46%; left:61%; animation-delay:0.9s;" title="Arabian Peninsula">
+            <div class="inner"></div>
+          </div>
+          <!-- Europe -->
+          <div class="pulse-dot" style="top:32%; left:48%; animation-delay:0.4s;" title="Europe">
+            <div class="inner"></div>
+          </div>
+          <!-- South Asia -->
+          <div class="pulse-dot" style="top:44%; left:68%; animation-delay:0.7s;" title="South Asia">
+            <div class="inner"></div>
+          </div>
+          <!-- Southeast Asia -->
+          <div class="pulse-dot" style="top:50%; left:76%; animation-delay:1s;" title="Southeast Asia">
+            <div class="inner"></div>
+          </div>
+          <!-- South America -->
+          <div class="pulse-dot" style="top:62%; left:28%; animation-delay:0.2s;" title="South America">
+            <div class="inner"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -131,56 +173,45 @@
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
-const acts = [
-  {
-    b:'Field', c:'v-field',
-    t:'On-farm trials',
-    d:'Every recommendation is tested against a control block on the client farm before it ships to the rest of the estate. Three seasons minimum, independent verification on every result.',
-    stats:[{v:'3', l:'Seasons min.'},{v:'100%', l:'Control tested'},{v:'ISO', l:'Verified'}]
-  },
-  {
-    b:'Lab', c:'v-lab',
-    t:'Soil &amp; tissue analysis',
-    d:'ISO-accredited soil, tissue and microbiome work. Results within 72 hours, paired with a clear recommendation — not just numbers. We translate data into action.',
-    stats:[{v:'72h', l:'Turnaround'},{v:'ISO', l:'Accredited'},{v:'Full', l:'Recommendation'}]
-  },
-  {
-    b:'Air', c:'v-drone',
-    t:'Multispectral scouting',
-    d:'NDVI, NDRE, thermal and LWIR stacks flown on a weekly cadence. Plant-level disease detection cross-checked against ground truth. Field-to-cloud in under seven minutes.',
-    stats:[{v:'7min', l:'Field to cloud'},{v:'NDVI', l:'+ NDRE + thermal'},{v:'Weekly', l:'Cadence'}]
-  },
-  {
-    b:'Teach', c:'v-classroom',
-    t:'Operator academy',
-    d:'We train the people on the farm to run the instruments after we leave. Two-week residency, local language, free to clients. Capacity building at every level of the value chain.',
-    stats:[{v:'2wk', l:'Residency'},{v:'Local', l:'Language'},{v:'Free', l:'For clients'}]
-  },
-  {
-    b:'Water', c:'v-pond',
-    t:'Aquaculture-horticulture pairing',
-    d:'IMTA ponds engineered to feed a matched horticultural block. Nutrient cycling monitored in real time, closing the loop between production systems for maximum efficiency.',
-    stats:[{v:'IMTA', l:'System design'},{v:'Real-time', l:'Monitoring'},{v:'Closed', l:'Nutrient loop'}]
-  },
-  {
-    b:'Forest', c:'v-forest',
-    t:'Native-species silviculture',
-    d:'Agroforestry designs that interleave productive tree cover with agricultural ground. Each planting is tagged and monitored for 25 years — land conservation as a long-term investment.',
-    stats:[{v:'25yr', l:'Monitoring'},{v:'Native', l:'Species first'},{v:'Tagged', l:'Every planting'}]
-  },
-];
-document.getElementById('actList').innerHTML = acts.map(a => `
-  <div class="activity">
-    <div class="visual ${a.c}"><div class="badge">${a.b}</div></div>
-    <div>
-      <div class="eyebrow mb-3">— Activity</div>
-      <h3 class="h2" style="font-size:clamp(28px,3.5vw,44px)">${a.t}</h3>
-      <p class="body mt-5 max-w-[52ch]">${a.d}</p>
-      <div class="stat-row">
-        ${a.stats.map(s=>`<div><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
-      </div>
-    </div>
-  </div>`).join('');
+gsap.registerPlugin(ScrollTrigger);
+
+// Text stagger on scroll
+gsap.utils.toArray('.animate-text').forEach(el => {
+  gsap.from(el, {
+    scrollTrigger: { trigger: el, start: 'top 90%' },
+    y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
+  });
+});
+
+// 3D image ScrollTrigger reveal
+document.querySelectorAll('.img-stage').forEach(el => {
+  ScrollTrigger.create({
+    trigger: el,
+    start: 'top 85%',
+    onEnter: () => el.classList.add('revealed')
+  });
+});
+
+// Mouse 3D tilt
+document.querySelectorAll('.img-stage').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `perspective(1400px) rotateX(${-y * 12}deg) rotateY(${x * 12}deg) scale(1.03)`;
+  });
+  el.addEventListener('mouseleave', () => {
+    if (el.classList.contains('revealed')) el.style.transform = '';
+  });
+});
+
+// Parallax on scroll
+gsap.utils.toArray('.img-parallax').forEach(el => {
+  gsap.to(el, {
+    scrollTrigger: { trigger: el, scrub: 1.5 },
+    y: -60, ease: 'none'
+  });
+});
 </script>
 </body>
 </html>

@@ -14,8 +14,8 @@
   const loginLink = session
     ? `<a href="#" class="btn btn-ghost" style="padding:.5rem 1rem; font-size:13px;" onclick="localStorage.removeItem('gw_token'); window.location.reload(); return false;">Log out</a>`
     : `<a href="login.html" class="btn btn-ghost" style="padding:.5rem 1rem; font-size:13px;">Log in</a>`;
-  const adminLinks = isAdmin ? `<a href="table.html" data-page="table">Portal</a>` : '';
-  const contactLink = session ? `<a href="contacts.html" data-page="contacts">Contact</a>` : '';
+  const adminLinks = isAdmin ? `<a href="table.html" data-page="table">Table</a>` : '';
+  const contactLink = session ? `<a href="contacts.html" data-page="contacts">Contacts</a>` : '';
   const nav = `
     <header class="gw-header" id="gwHeader">
       <div class="row">
@@ -23,12 +23,12 @@
           <img src="/images/logo.jpg" alt="Green Wadi" style="height:40px; border-radius:6px; object-fit:contain;">
         </a>
         <nav class="gw-nav" id="gwNav">
-          <a href="index.html" data-page="index">Home</a>
-          <a href="whorwe.html" data-page="whorwe">Who we are</a>
-          <a href="scope.html" data-page="scope">Our scope</a>
+          <a href="index.html" data-page="index">Green Wadi</a>
+          <a href="whorwe.html" data-page="whorwe">Who Are We</a>
+          <a href="scope.html" data-page="scope">Our Scope</a>
           <a href="services.html" data-page="services">Services</a>
           <a href="activities.html" data-page="activities">Activities</a>
-          <a href="whatrwe.html" data-page="whatrwe">What we are</a>
+          <a href="whatrwe.html" data-page="whatrwe">What Are We</a>
           <a href="clients.html" data-page="clients">Clients</a>
           ${contactLink}
           ${adminLinks}

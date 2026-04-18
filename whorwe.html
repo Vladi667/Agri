@@ -3,172 +3,218 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Who We Are — Green Wadi</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Who Are We — Green Wadi</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
-  body{ padding-top: 72px; background:#F8F9F5; }
-  .hero-about{
-    position:relative; overflow:hidden; padding: 100px 0 80px;
+  body { padding-top: 72px; background: #F8F9F5; overflow-x: hidden; }
+
+  /* Floating orbs */
+  .orb-bg { position: fixed; pointer-events: none; border-radius: 999px; filter: blur(90px); z-index: 0; }
+  .orb-bg-1 { width: 600px; height: 600px; top: -100px; right: -150px; background: radial-gradient(circle, rgba(233,168,100,0.2), transparent 70%); animation: o1 20s ease-in-out infinite; }
+  .orb-bg-2 { width: 400px; height: 400px; bottom: 15vh; left: -80px; background: radial-gradient(circle, rgba(16,185,129,0.14), transparent 70%); animation: o2 25s ease-in-out infinite; }
+  @keyframes o1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-50px,70px);} }
+  @keyframes o2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(60px,-50px);} }
+
+  /* Hero */
+  .hero-inner {
+    padding: 96px 0 80px;
     background:
-      radial-gradient(60% 50% at 80% 20%, rgba(244,199,123,0.4), transparent 60%),
-      radial-gradient(40% 40% at 10% 80%, rgba(16,185,129,0.1), transparent 60%),
-      linear-gradient(180deg, #F8F9F5 0%, #F2F4EC 100%);
+      radial-gradient(70% 50% at 80% 0%, rgba(244,199,123,0.35), transparent 60%),
+      radial-gradient(40% 40% at 10% 90%, rgba(16,185,129,0.12), transparent 60%),
+      #F8F9F5;
+    position: relative; overflow: hidden;
   }
-  .visual-panel{
-    border-radius: 22px; overflow: hidden; position: relative;
-    box-shadow: 0 32px 80px -24px rgba(15,23,42,0.22);
+  .clip-reveal {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.9s cubic-bezier(0.2,0.8,0.2,1);
   }
-  .visual-panel img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .timeline{ position:relative; padding-left: 28px; }
-  .timeline::before{ content:""; position:absolute; left:8px; top:10px; bottom:10px; width:1px; background: linear-gradient(180deg, var(--green), var(--green-deep), transparent);}
-  .tl-item{ position:relative; padding: 14px 0 28px; }
-  .tl-item::before{ content:""; position:absolute; left:-25px; top:22px; width:11px; height:11px; border-radius:999px; background:#fff; border:2px solid var(--green-deep); }
-  .pill{ display:inline-block; padding:4px 10px; border-radius:999px; background:#fff; border:1px solid rgba(15,23,42,0.08); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:#64748B;}
-  .philosophy-card{
-    background:#fff; border:1px solid rgba(15,23,42,0.08); border-radius:18px; padding:24px;
-    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s;
+  .clip-reveal.revealed { clip-path: inset(0% 0 0 0); }
+
+  /* Split layout */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 60px;
+    align-items: start;
   }
-  .philosophy-card:hover{ transform:translateY(-3px); box-shadow:0 20px 48px -24px rgba(15,23,42,0.18); border-color:rgba(16,185,129,0.3); }
-  .philosophy-card .icon{ width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#E9FBF3,#B9E6D0); display:flex; align-items:center; justify-content:center; color:#0F7B52; margin-bottom:14px;}
-  blockquote{ font-family:"Fraunces",serif; font-weight:300; font-size:clamp(24px,2.8vw,40px); letter-spacing:-0.015em; line-height:1.22; color:#1E2A3A; }
-  blockquote em{ font-style:normal; color:var(--green-deep); }
+  @media (min-width: 900px) {
+    .split {
+      grid-template-columns: 1fr 1fr;
+    }
+    .img-col { position: sticky; top: 100px; }
+  }
+
+  /* 3D image scene */
+  .scene { perspective: 1400px; perspective-origin: 50% 40%; }
+  .img-stage {
+    transform-style: preserve-3d;
+    transform: rotateX(18deg) rotateY(-4deg) scale(0.88);
+    opacity: 0;
+    transition: transform 1.2s cubic-bezier(0.2,0.8,0.2,1), opacity 1s ease, box-shadow 0.6s;
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 60px 120px -30px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+  .img-stage.revealed {
+    transform: rotateX(0deg) rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+  .img-stage:hover {
+    transform: rotateX(-3deg) rotateY(4deg) scale(1.02);
+    box-shadow: 0 80px 160px -40px rgba(0,0,0,0.6);
+  }
+  .img-3d { width: 100%; display: block; }
+  .img-reflection {
+    position: absolute; bottom: -40%; left: 0; right: 0; height: 40%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.08), transparent);
+    transform: scaleY(-1); opacity: 0.3; pointer-events: none;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+  }
+
+  /* Paragraph clip reveal */
+  .para-wrap { overflow: hidden; }
+  .para-inner {
+    transform: translateY(40px);
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.2,0.8,0.2,1), opacity 0.8s ease;
+  }
+  .para-inner.in { transform: translateY(0); opacity: 1; }
+
+  .animate-text { opacity: 0; transform: translateY(40px); }
 </style>
 </head>
 <body data-page="whorwe">
 
-<section class="hero-about">
+<div class="orb-bg orb-bg-1" aria-hidden="true"></div>
+<div class="orb-bg orb-bg-2" aria-hidden="true"></div>
+
+<!-- Hero -->
+<section class="hero-inner">
+  <div class="wrap" style="position:relative; z-index:1;">
+    <div class="eyebrow mb-5 animate-text">— Who Are We</div>
+    <h1 class="h1 max-w-[26ch] animate-text" style="transition-delay:0.08s;">Agricultural Development Excellence — by people who live it.</h1>
+  </div>
+</section>
+
+<!-- Split: text left, sticky image right -->
+<section class="section" style="padding-top: 64px; position:relative; z-index:1;">
   <div class="wrap">
-    <div class="eyebrow mb-5">— Who we are</div>
-    <h1 class="h1 max-w-[26ch]">Agricultural Development Excellence — by people who live it.</h1>
-    <p class="body max-w-[64ch] mt-8">Green Wadi started as a one-man operation when Mr. Shmuel Friedman left the Ministry of Agriculture of Israel to become an independent consultant. A decade of field work across 12 countries later, we remain committed to delivering measurable, long-term value.</p>
-  </div>
-</section>
+    <div class="split">
 
-<!-- Story + Image -->
-<section class="section" style="padding-top:48px">
-  <div class="wrap grid md:grid-cols-2 gap-16 items-start">
-    <div>
-      <div class="eyebrow mb-4">— Our story</div>
-      <h2 class="h2 max-w-[18ch]">From one agronomist to a global practice.</h2>
-      <div class="body mt-6 space-y-5 max-w-[56ch]">
-        <p>Green Wadi Ltd. started as a one-man operation when Mr. Friedman left the Ministry of Agriculture of Israel to become an independent consultant 10 years ago.</p>
-        <p>In 2018, due to the expansion of projects, Green Wadi became a limited company employing experts as needed to be efficient and successful. We are committed to providing our clients with quick answers and solutions.</p>
-        <p>Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.</p>
-        <p>We offer diverse services, technology, know-how, and training required for the upgrading and construction of existing and new agricultural and agro-industrial enterprises.</p>
-        <p>Our successful projects have earned Green Wadi a reputation for delivering measurable value for the long term.</p>
-      </div>
-      <div class="flex flex-wrap gap-2 mt-8">
-        <span class="pill">Est. 2014 · Israel</span>
-        <span class="pill">Independent</span>
-        <span class="pill">Field-first</span>
-        <span class="pill">12 Countries</span>
-        <span class="pill">Multi-generational</span>
-      </div>
-    </div>
-    <div class="visual-panel" style="aspect-ratio:3/4; max-height:600px;">
-      <img src="/images/image.png" alt="Green Wadi — agricultural operations" loading="lazy"/>
-    </div>
-  </div>
-</section>
+      <!-- Text column -->
+      <div>
+        <div class="eyebrow mb-6 animate-text">— Our story</div>
 
-<!-- Timeline -->
-<section class="section" style="background:#F2F4EC">
-  <div class="wrap grid md:grid-cols-[320px_1fr] gap-16">
-    <div>
-      <div class="eyebrow mb-4">— Our journey</div>
-      <h2 class="h2">A decade of patient fieldwork.</h2>
-      <p class="body mt-5 max-w-[42ch]">From a single consultant to a trusted partner of sovereign funds and private investors across three continents.</p>
-    </div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="pill mb-3">2014</div>
-        <div class="h3">Founded in Israel</div>
-        <p class="body mt-2 max-w-[52ch]">Shmuel Friedman leaves the Ministry of Agriculture of Israel to establish an independent agricultural consultancy — Green Wadi.</p>
-      </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2016</div>
-        <div class="h3">First international projects</div>
-        <p class="body mt-2 max-w-[52ch]">Green Wadi expands beyond Israel, bringing Israeli agro-technology and expertise to clients across the region.</p>
-      </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2018</div>
-        <div class="h3">Incorporated as Green Wadi Ltd.</div>
-        <p class="body mt-2 max-w-[52ch]">Due to expansion of projects, Green Wadi became a limited company employing domain experts as needed to be efficient and successful.</p>
-      </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2020</div>
-        <div class="h3">Rural development &amp; food security</div>
-        <p class="body mt-2 max-w-[52ch]">Governments and development funds begin partnering with Green Wadi for national-scale food security and rural development programs.</p>
-      </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2024</div>
-        <div class="h3">184 farms · 12 countries</div>
-        <p class="body mt-2 max-w-[52ch]">Green Wadi now operates across 12 countries, having transformed over 184 agricultural enterprises with measurable, lasting results.</p>
-      </div>
-    </div>
-  </div>
-</section>
+        <div class="para-wrap" style="margin-bottom: 28px;">
+          <p class="body para-inner" style="max-width:56ch; font-size:17px; line-height:1.75;">
+            "Green Wadi Ltd." started as a one-man operation when Mr. Friedman left the Ministry of Agriculture of Israel to become an independent consultant 10 years ago.
+          </p>
+        </div>
 
-<!-- Philosophy cards -->
-<section class="section">
-  <div class="wrap">
-    <div class="eyebrow mb-4">— Our philosophy</div>
-    <h2 class="h2 mb-4 max-w-[22ch]">Results-oriented. Customer-focused. Long-term committed.</h2>
-    <p class="body mb-12 max-w-[60ch]">Every engagement is built on these four principles. If a recommendation does not serve the client's long-term interest, it does not happen.</p>
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="philosophy-card">
-        <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 22V12M12 12l-4 4M12 12l4 4M5 3h14a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+        <div class="para-wrap" style="margin-bottom: 28px;">
+          <p class="body para-inner" style="max-width:56ch; font-size:17px; line-height:1.75;">
+            In 2018, due to the expansion of projects, Green Wadi became a limited company employing experts as needed to be efficient and successful. We are committed to providing our clients with quick answers and solutions.
+          </p>
         </div>
-        <div class="h3" style="font-size:18px">Results-oriented</div>
-        <p class="small mt-3">Adopting a results and success-oriented approach in every mandate. Outcomes are measured, verified, and shared.</p>
-      </div>
-      <div class="philosophy-card">
-        <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        </div>
-        <div class="h3" style="font-size:18px">Customer-focused</div>
-        <p class="small mt-3">Focusing on customer satisfaction above all else. We provide quick answers and tailor-made solutions for every condition.</p>
-      </div>
-      <div class="philosophy-card">
-        <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-        </div>
-        <div class="h3" style="font-size:18px">Long-term commitment</div>
-        <p class="small mt-3">Making a long-term commitment to our customers and their projects. We are in it for the season — and the generation.</p>
-      </div>
-      <div class="philosophy-card">
-        <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div class="h3" style="font-size:18px">Tailor-made solutions</div>
-        <p class="small mt-3">Providing optimal tailor-made solutions for any given condition. No two farms are alike; no two plans should be either.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Quote / Mission -->
-<section class="section" style="background:#0B1220">
-  <div class="wrap">
-    <div class="eyebrow mb-6" style="color:#64748B">— Our mission</div>
-    <blockquote class="max-w-[32ch]" style="color:#F8F9F5">
-      Green Wadi will increase global agricultural production to <em>mitigate hunger and malnutrition</em>, pave the way for <em>food self-sufficiency and security</em> — while protecting the environment and natural resources.
-    </blockquote>
-    <div class="mt-10 flex flex-col sm:flex-row gap-3">
-      <a href="services.html" class="btn btn-primary lg">Our services
-        <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="scope.html" class="btn btn-ghost lg" style="color:#F8F9F5; border-color:rgba(255,255,255,0.2);">Our scope</a>
+        <div class="para-wrap" style="margin-bottom: 28px;">
+          <p class="body para-inner" style="max-width:56ch; font-size:17px; line-height:1.75;">
+            Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.
+          </p>
+        </div>
+
+        <div class="para-wrap" style="margin-bottom: 28px;">
+          <p class="body para-inner" style="max-width:56ch; font-size:17px; line-height:1.75;">
+            We offer diverse services, technology, know-how, and training required for the upgrading and construction of existing and new agricultural and agro-industrial enterprises.
+          </p>
+        </div>
+
+        <div class="para-wrap" style="margin-bottom: 48px;">
+          <p class="body para-inner" style="max-width:56ch; font-size:17px; line-height:1.75;">
+            Our successful projects have earned Green Wadi a reputation for delivering measurable value for the long term.
+          </p>
+        </div>
+
+        <div class="animate-text flex flex-wrap gap-3 mt-4">
+          <a href="services.html" class="btn btn-primary">Our Services
+            <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="scope.html" class="btn btn-ghost">Our Scope</a>
+        </div>
+      </div>
+
+      <!-- Sticky image column -->
+      <div class="img-col">
+        <div class="scene">
+          <div class="img-stage" id="whoImg">
+            <img src="/images/image.png" class="img-3d img-parallax" alt="Green Wadi — agricultural operations"/>
+            <div class="img-reflection"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Text stagger on scroll
+gsap.utils.toArray('.animate-text').forEach((el, i) => {
+  gsap.from(el, {
+    scrollTrigger: { trigger: el, start: 'top 90%' },
+    y: 40, opacity: 0, duration: 0.9, delay: i * 0.06, ease: 'power3.out'
+  });
+});
+
+// Paragraph clip reveals with stagger
+document.querySelectorAll('.para-inner').forEach((el, i) => {
+  ScrollTrigger.create({
+    trigger: el.parentElement,
+    start: 'top 88%',
+    onEnter: () => {
+      setTimeout(() => el.classList.add('in'), i * 120);
+    }
+  });
+});
+
+// 3D image ScrollTrigger reveal
+document.querySelectorAll('.img-stage').forEach(el => {
+  ScrollTrigger.create({
+    trigger: el,
+    start: 'top 85%',
+    onEnter: () => el.classList.add('revealed')
+  });
+});
+
+// Mouse 3D tilt
+document.querySelectorAll('.img-stage').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `perspective(1400px) rotateX(${-y * 12}deg) rotateY(${x * 12}deg) scale(1.03)`;
+  });
+  el.addEventListener('mouseleave', () => {
+    if (el.classList.contains('revealed')) el.style.transform = '';
+  });
+});
+
+// Parallax on scroll
+gsap.utils.toArray('.img-parallax').forEach(el => {
+  gsap.to(el, {
+    scrollTrigger: { trigger: el, scrub: 1.5 },
+    y: -60, ease: 'none'
+  });
+});
+</script>
 </body>
 </html>

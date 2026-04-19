@@ -34,557 +34,614 @@
   .stat-label{ color:#8C9AAE; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;}
   .stat-desc{ color:#1E2A3A; font-size:14px; max-width:26ch; line-height:1.45;}
   @keyframes scrollDown { 0%{transform:translateY(0)} 100%{transform:translateY(300%)} }
+
+  /* ── Wind animations ── */
+  @keyframes windSway {
+    0%   { transform: rotate(0deg); }
+    18%  { transform: rotate(1.8deg); }
+    38%  { transform: rotate(-0.7deg); }
+    58%  { transform: rotate(2.1deg); }
+    78%  { transform: rotate(-0.5deg); }
+    100% { transform: rotate(0deg); }
+  }
+  @keyframes windSwayAlt {
+    0%   { transform: rotate(0deg); }
+    22%  { transform: rotate(-1.5deg); }
+    48%  { transform: rotate(1.9deg); }
+    72%  { transform: rotate(-0.6deg); }
+    100% { transform: rotate(0deg); }
+  }
+  @keyframes windSwayFast {
+    0%   { transform: rotate(0deg); }
+    15%  { transform: rotate(2.2deg); }
+    40%  { transform: rotate(-1.0deg); }
+    62%  { transform: rotate(2.6deg); }
+    82%  { transform: rotate(-0.8deg); }
+    100% { transform: rotate(0deg); }
+  }
+  @keyframes frondWave {
+    0%,100% { transform: rotate(0deg); }
+    35%     { transform: rotate(5deg); }
+    65%     { transform: rotate(-2.5deg); }
+  }
+  @keyframes grassWave {
+    0%,100% { transform: rotate(-5deg) skewX(-3deg); }
+    50%     { transform: rotate(5deg) skewX(3deg); }
+  }
+  @keyframes cloudDrift {
+    0%   { transform: translateX(0px); }
+    100% { transform: translateX(120px); }
+  }
+  .wind-a { animation: windSway    7.5s cubic-bezier(0.45,0.05,0.55,0.95) infinite; }
+  .wind-b { animation: windSwayAlt 6.0s cubic-bezier(0.45,0.05,0.55,0.95) infinite 1.3s; }
+  .wind-c { animation: windSway    9.0s cubic-bezier(0.45,0.05,0.55,0.95) infinite 0.7s; }
+  .wind-d { animation: windSwayFast 4.5s cubic-bezier(0.45,0.05,0.55,0.95) infinite 2.1s; }
+  .wind-frond { animation: frondWave 3.8s ease-in-out infinite; transform-origin: 0% 50%; }
+  .wind-grass { animation: grassWave 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
 </style>
 </head>
 <body data-page="index" class="antialiased">
 
-<section id="hero" style="position:relative;width:100%;height:100svh;min-height:800px;overflow:hidden;background:#1a2a1a;">
+<section id="hero" style="position:relative;width:100%;height:100svh;min-height:800px;overflow:hidden;background:#0d1a0d;">
 
-  <!-- Film grain overlay -->
-  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:50;pointer-events:none;opacity:0.045;" xmlns="http://www.w3.org/2000/svg">
-    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <!-- Film grain -->
+  <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:50;pointer-events:none;opacity:0.04;">
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="1" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
     <rect width="100%" height="100%" filter="url(#grain)"/>
   </svg>
 
-  <!-- Letterbox bars -->
-  <div id="lb-top" style="position:absolute;top:0;left:0;right:0;height:10vh;background:#0a0f0a;z-index:45;transform-origin:50% 0%;"></div>
-  <div id="lb-bot" style="position:absolute;bottom:0;left:0;right:0;height:10vh;background:#0a0f0a;z-index:45;transform-origin:50% 100%;"></div>
+  <!-- Letterbox -->
+  <div id="lb-top" style="position:absolute;top:0;left:0;right:0;height:9vh;background:#0a100a;z-index:45;transform-origin:50% 0%;"></div>
+  <div id="lb-bot" style="position:absolute;bottom:0;left:0;right:0;height:9vh;background:#0a100a;z-index:45;transform-origin:50% 100%;"></div>
 
-  <!-- Camera perspective container -->
-  <div id="cam" style="position:absolute;inset:0;perspective:1200px;overflow:hidden;">
-    <div id="scene" style="position:absolute;left:-20%;top:-20%;width:140%;height:140%;transform-style:preserve-3d;transform:scale(1) translateY(-5%);">
+  <!-- Scene container — zoom target -->
+  <div id="scene" style="position:absolute;left:-15%;top:-15%;width:130%;height:130%;overflow:hidden;">
 
-      <!-- LAYER: Sky -->
-      <svg id="l-sky" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="skyGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#1a3a6a"/>
-            <stop offset="0.42" stop-color="#7a4a1a"/>
-            <stop offset="0.72" stop-color="#c87820"/>
-            <stop offset="1" stop-color="#e8a840"/>
-          </linearGradient>
-          <radialGradient id="sunGrad" cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0" stop-color="#fffef0" stop-opacity="1"/>
-            <stop offset="0.28" stop-color="#ffe8a0" stop-opacity="0.9"/>
-            <stop offset="0.55" stop-color="#ffd080" stop-opacity="0.7"/>
-            <stop offset="1" stop-color="#ffd080" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="hazeGrad" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#e8a840" stop-opacity="0"/>
-            <stop offset="0.3" stop-color="#f0b850" stop-opacity="0.55"/>
-            <stop offset="0.7" stop-color="#f0b850" stop-opacity="0.55"/>
-            <stop offset="1" stop-color="#e8a840" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <rect width="1920" height="1080" fill="url(#skyGrad)"/>
-        <!-- Large sun -->
-        <circle cx="1440" cy="580" r="240" fill="url(#sunGrad)"/>
-        <circle cx="1440" cy="580" r="72" fill="#fffef0" opacity="0.95"/>
-        <!-- Lens flare circles -->
-        <circle cx="1440" cy="580" r="110" fill="none" stroke="#fffef0" stroke-width="1" opacity="0.18"/>
-        <circle cx="1440" cy="580" r="170" fill="none" stroke="#ffd080" stroke-width="1" opacity="0.1"/>
-        <circle cx="1380" cy="560" r="22" fill="#fffef0" opacity="0.07"/>
-        <circle cx="1320" cy="540" r="12" fill="#ffd080" opacity="0.1"/>
-        <!-- Atmospheric haze band -->
-        <rect x="0" y="530" width="1920" height="140" fill="url(#hazeGrad)" opacity="0.5"/>
-      </svg>
+    <!-- ── LAYER 1: SKY ── -->
+    <svg id="l-sky" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="skyG" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%"   stop-color="#0d2545"/>
+          <stop offset="28%"  stop-color="#1e4878"/>
+          <stop offset="55%"  stop-color="#a04818"/>
+          <stop offset="76%"  stop-color="#d07022"/>
+          <stop offset="100%" stop-color="#f0a030"/>
+        </linearGradient>
+        <radialGradient id="sunHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#fff8d0" stop-opacity="0.55"/>
+          <stop offset="40%"  stop-color="#ffd070" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#ffb840" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#fffde0" stop-opacity="0.92"/>
+          <stop offset="50%"  stop-color="#ffd870" stop-opacity="0.65"/>
+          <stop offset="100%" stop-color="#ffb840" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="hazeG" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%"   stop-color="#f0a030" stop-opacity="0"/>
+          <stop offset="25%"  stop-color="#f8b840" stop-opacity="0.6"/>
+          <stop offset="75%"  stop-color="#f8b840" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#f0a030" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect width="1920" height="1080" fill="url(#skyG)"/>
+      <!-- Sun halo (very large soft glow) -->
+      <ellipse cx="1380" cy="598" rx="380" ry="340" fill="url(#sunHalo)"/>
+      <!-- Sun glow -->
+      <ellipse cx="1380" cy="598" rx="175" ry="160" fill="url(#sunGlow)"/>
+      <!-- Sun disc -->
+      <circle cx="1380" cy="598" r="64" fill="#fffde8" opacity="0.96"/>
+      <circle cx="1380" cy="598" r="42" fill="#ffffff" opacity="0.88"/>
+      <!-- Lens flares -->
+      <circle cx="1380" cy="598" r="108" fill="none" stroke="#fffce0" stroke-width="1.2" opacity="0.14"/>
+      <circle cx="1380" cy="598" r="160" fill="none" stroke="#ffd880" stroke-width="0.8" opacity="0.09"/>
+      <circle cx="1300" cy="562" r="18" fill="#fffde0" opacity="0.07"/>
+      <circle cx="1235" cy="530" r="10" fill="#ffd080" opacity="0.09"/>
+      <!-- Horizon haze -->
+      <rect x="0" y="540" width="1920" height="170" fill="url(#hazeG)" opacity="0.65"/>
+    </svg>
 
-      <!-- LAYER: God rays -->
-      <svg id="l-rays" style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:screen;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="ray1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="rgba(255,220,120,0.7)"/><stop offset="1" stop-color="rgba(255,220,120,0)"/></linearGradient>
-          <linearGradient id="ray2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="rgba(255,200,100,0.55)"/><stop offset="1" stop-color="rgba(255,200,100,0)"/></linearGradient>
-        </defs>
-        <g opacity="0.4" transform="translate(1440,580)">
-          <path d="M0,0 L-680,500 L-620,500 Z" fill="url(#ray1)" opacity="0.38"/>
-          <path d="M0,0 L-420,500 L-360,500 Z" fill="url(#ray1)" opacity="0.45"/>
-          <path d="M0,0 L-180,500 L-110,500 Z" fill="url(#ray2)" opacity="0.5"/>
-          <path d="M0,0 L  60,500 L 130,500 Z" fill="url(#ray2)" opacity="0.42"/>
-          <path d="M0,0 L 280,500 L 360,500 Z" fill="url(#ray1)" opacity="0.36"/>
-          <path d="M0,0 L 500,500 L 580,500 Z" fill="url(#ray1)" opacity="0.28"/>
+    <!-- ── LAYER 2: GOD RAYS (screen blend) ── -->
+    <svg id="l-rays" style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:screen;opacity:0.38;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="rayG" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#ffd070" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#ffd070" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <g transform="translate(1380,598)">
+        <path d="M0,0 L-720,482 L-658,482 Z" fill="url(#rayG)" opacity="0.30"/>
+        <path d="M0,0 L-480,482 L-418,482 Z" fill="url(#rayG)" opacity="0.38"/>
+        <path d="M0,0 L-230,482 L-162,482 Z" fill="url(#rayG)" opacity="0.45"/>
+        <path d="M0,0 L  40,482 L 108,482 Z" fill="url(#rayG)" opacity="0.42"/>
+        <path d="M0,0 L 280,482 L 352,482 Z" fill="url(#rayG)" opacity="0.34"/>
+        <path d="M0,0 L 520,482 L 592,482 Z" fill="url(#rayG)" opacity="0.26"/>
+      </g>
+    </svg>
+
+    <!-- ── LAYER 3: WISPY CLOUDS (slow drift) ── -->
+    <svg id="l-clouds" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <g opacity="0.28" fill="#fff8f0">
+        <!-- Cloud 1 -->
+        <g style="animation:cloudDrift 55s linear infinite;">
+          <ellipse cx="280" cy="220" rx="140" ry="28"/>
+          <ellipse cx="340" cy="208" rx="90" ry="22"/>
+          <ellipse cx="200" cy="215" rx="70" ry="18"/>
         </g>
-      </svg>
+        <!-- Cloud 2 -->
+        <g style="animation:cloudDrift 75s linear infinite 18s;">
+          <ellipse cx="800" cy="160" rx="180" ry="24"/>
+          <ellipse cx="880" cy="148" rx="110" ry="20"/>
+          <ellipse cx="710" cy="155" rx="80" ry="18"/>
+        </g>
+        <!-- Cloud 3 (faint) -->
+        <g style="animation:cloudDrift 90s linear infinite 35s;" opacity="0.6">
+          <ellipse cx="1550" cy="190" rx="150" ry="22"/>
+          <ellipse cx="1630" cy="180" rx="95" ry="18"/>
+        </g>
+      </g>
+    </svg>
 
-      <!-- LAYER: Far mountains -->
-      <svg id="l-mtn-far" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <filter id="mtnBlur"><feGaussianBlur stdDeviation="4"/></filter>
-          <linearGradient id="mtnFarGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#6a7a8a"/>
-            <stop offset="1" stop-color="#4a5a6a"/>
-          </linearGradient>
-        </defs>
-        <g filter="url(#mtnBlur)" opacity="0.85">
-          <path d="M0,560 L80,480 L180,530 L280,450 L420,510 L560,440 L680,500 L800,430 L920,490 L1060,420 L1180,475 L1300,430 L1440,480 L1580,420 L1700,470 L1820,440 L1920,460 L1920,580 L0,580 Z" fill="url(#mtnFarGrad)"/>
-          <path d="M0,590 L100,510 L220,555 L360,490 L500,540 L650,470 L780,525 L920,465 L1060,510 L1200,455 L1340,500 L1480,455 L1620,500 L1760,460 L1920,490 L1920,610 L0,610 Z" fill="#5a6a78" opacity="0.7"/>
-        </g>
-      </svg>
+    <!-- ── LAYER 4: FAR MOUNTAINS (blue-grey atmospheric) ── -->
+    <svg id="l-mtn-far" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="mtnBlur"><feGaussianBlur stdDeviation="5"/></filter>
+        <linearGradient id="mtnFarG" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%"  stop-color="#7080a0"/>
+          <stop offset="100%" stop-color="#506070"/>
+        </linearGradient>
+      </defs>
+      <g filter="url(#mtnBlur)">
+        <!-- Ridge 1 (furthest, highest) -->
+        <path d="M-20,590 C 50,548 110,502 190,532 C 270,562 330,488 420,516
+                 C 510,544 570,468 660,496 C 750,524 820,452 920,480
+                 C 1020,508 1080,444 1180,468 C 1280,492 1340,432 1440,456
+                 C 1540,480 1610,422 1720,446 C 1830,470 1900,428 1940,438
+                 L1940,622 L-20,622 Z" fill="url(#mtnFarG)" opacity="0.88"/>
+        <!-- Ridge 2 (slightly lower, darker) -->
+        <path d="M-20,618 C 80,588 160,608 260,594 C 360,580 450,602 550,588
+                 C 650,574 740,596 840,582 C 940,568 1030,590 1130,576
+                 C 1230,562 1320,584 1420,570 C 1520,556 1620,578 1940,562
+                 L1940,648 L-20,648 Z" fill="#586878" opacity="0.75"/>
+      </g>
+    </svg>
 
-      <!-- LAYER: Mid mountains -->
-      <svg id="l-mtn-mid" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="mtnMidGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#5a7a5a"/>
-            <stop offset="0.5" stop-color="#4a6848"/>
-            <stop offset="1" stop-color="#2e4830"/>
-          </linearGradient>
-        </defs>
-        <path d="M0,620 L140,530 L260,590 L400,510 L540,575 L700,495 L860,560 L1020,490 L1180,545 L1340,490 L1480,540 L1640,490 L1780,535 L1920,505 L1920,660 L0,660 Z" fill="url(#mtnMidGrad)"/>
-        <!-- Ridge detail -->
-        <path d="M0,648 L160,568 L300,615 L460,548 L610,600 L760,535 L900,588 L1060,528 L1200,572 L1360,528 L1500,568 L1660,525 L1800,558 L1920,538 L1920,665 L0,665 Z" fill="#3a5a3a" opacity="0.6"/>
-      </svg>
+    <!-- ── LAYER 5: MID MOUNTAINS (olive-green) ── -->
+    <svg id="l-mtn-mid" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="mtnMidG" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%"  stop-color="#5a7858"/>
+          <stop offset="100%" stop-color="#3e5840"/>
+        </linearGradient>
+        <filter id="mtnMidBlur"><feGaussianBlur stdDeviation="2.5"/></filter>
+      </defs>
+      <g filter="url(#mtnMidBlur)">
+        <path d="M-20,658 C 60,628 150,648 250,632 C 350,616 440,640 540,625
+                 C 640,610 730,634 830,619 C 930,604 1020,626 1120,612
+                 C 1220,598 1310,620 1410,606 C 1510,592 1600,614 1700,600
+                 C 1800,586 1880,607 1940,595
+                 L1940,725 L-20,725 Z" fill="url(#mtnMidG)" opacity="0.95"/>
+        <path d="M-20,705 C 90,682 190,698 300,685 C 410,672 510,690 620,677
+                 C 730,664 830,681 940,668 C 1050,655 1150,672 1260,660
+                 C 1370,648 1470,665 1580,652 C 1690,639 1790,656 1940,644
+                 L1940,762 L-20,762 Z" fill="#4a6848" opacity="0.85"/>
+      </g>
+    </svg>
 
-      <!-- LAYER: Terraced hills -->
-      <svg id="l-hills" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="hillGrad1" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#8a9a68"/>
-            <stop offset="1" stop-color="#5a7840"/>
-          </linearGradient>
-          <linearGradient id="hillGrad2" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#6a8a4a"/>
-            <stop offset="1" stop-color="#3a5a28"/>
-          </linearGradient>
-          <linearGradient id="hillGrad3" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#4a7a38"/>
-            <stop offset="1" stop-color="#2a4a1a"/>
-          </linearGradient>
-        </defs>
-        <!-- Hill wave 1 -->
-        <path d="M0,680 C200,640 380,670 560,650 C760,628 920,668 1100,645 C1300,620 1480,658 1680,640 C1780,632 1860,645 1920,638 L1920,780 L0,780 Z" fill="url(#hillGrad1)"/>
-        <!-- Terrace wall lines on hill 1 -->
-        <g stroke="#5a6a3a" stroke-width="1" opacity="0.35" fill="none">
-          <path d="M0,700 C200,660 380,688 560,670 C760,650 920,685 1100,665 C1300,643 1480,677 1680,660"/>
-          <path d="M0,720 C200,680 380,706 560,688 C760,668 920,702 1100,683 C1300,662 1480,694 1680,678"/>
-          <path d="M0,740 C200,700 380,724 560,706 C760,686 920,718 1100,700 C1300,680 1480,710 1680,694"/>
-        </g>
-        <!-- Olive grove clusters on hill 1 -->
-        <g fill="#4a6035" opacity="0.7">
-          <ellipse cx="220" cy="658" rx="18" ry="10"/><ellipse cx="248" cy="651" rx="14" ry="8"/><ellipse cx="200" cy="650" rx="12" ry="7"/>
-          <ellipse cx="480" cy="663" rx="16" ry="9"/><ellipse cx="505" cy="656" rx="12" ry="7"/>
-          <ellipse cx="820" cy="655" rx="20" ry="11"/><ellipse cx="848" cy="648" rx="15" ry="8"/><ellipse cx="798" cy="648" rx="13" ry="7"/>
-          <ellipse cx="1140" cy="652" rx="18" ry="10"/><ellipse cx="1165" cy="645" rx="14" ry="8"/>
-          <ellipse cx="1450" cy="648" rx="16" ry="9"/><ellipse cx="1478" cy="641" rx="13" ry="7"/>
-        </g>
-        <!-- Olive silver sheen -->
-        <g fill="#a0b878" opacity="0.35">
-          <ellipse cx="222" cy="654" rx="10" ry="5"/><ellipse cx="484" cy="659" rx="9" ry="5"/>
-          <ellipse cx="824" cy="651" rx="11" ry="5"/><ellipse cx="1143" cy="648" rx="10" ry="5"/>
-        </g>
-        <!-- Hill wave 2 -->
-        <path d="M0,730 C180,700 360,728 560,710 C760,690 900,722 1080,705 C1280,686 1440,716 1640,700 C1760,692 1850,706 1920,700 L1920,820 L0,820 Z" fill="url(#hillGrad2)"/>
-        <!-- Terrace walls hill 2 -->
-        <g stroke="#4a5a2a" stroke-width="1" opacity="0.3" fill="none">
-          <path d="M0,748 C180,718 360,744 560,728 C760,710 900,739 1080,723 C1280,706 1440,733 1640,718"/>
-          <path d="M0,766 C180,736 360,760 560,745 C760,728 900,756 1080,740 C1280,724 1440,749 1640,736"/>
-        </g>
-        <!-- Hill wave 3 -->
-        <path d="M0,775 C160,750 340,772 540,758 C760,742 920,768 1120,752 C1320,736 1500,760 1700,748 C1820,742 1880,750 1920,746 L1920,860 L0,860 Z" fill="url(#hillGrad3)"/>
-      </svg>
+    <!-- ── LAYER 6: TERRACED HILLS ── -->
+    <svg id="l-hills" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="hillG1" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%"  stop-color="#8a9e68"/>
+          <stop offset="100%" stop-color="#5e7848"/>
+        </linearGradient>
+        <linearGradient id="hillG2" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%"  stop-color="#708858"/>
+          <stop offset="100%" stop-color="#4a6838"/>
+        </linearGradient>
+        <linearGradient id="hillG3" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%"  stop-color="#5a7848"/>
+          <stop offset="100%" stop-color="#3a5830"/>
+        </linearGradient>
+      </defs>
+      <!-- Hill wave 1 -->
+      <path d="M-20,752 C 60,730 160,748 260,734 C 360,720 460,742 560,728
+               C 660,714 760,736 860,722 C 960,708 1060,730 1160,716
+               C 1260,702 1360,724 1460,710 C 1560,696 1660,718 1940,705
+               L1940,842 L-20,842 Z" fill="url(#hillG1)"/>
+      <!-- Hill wave 2 -->
+      <path d="M-20,818 C 80,798 190,812 300,800 C 410,788 520,806 630,792
+               C 740,778 848,796 960,783 C 1072,770 1180,788 1290,775
+               C 1400,762 1512,779 1940,766
+               L1940,898 L-20,898 Z" fill="url(#hillG2)"/>
+      <!-- Hill wave 3 (foreground edge) -->
+      <path d="M-20,878 C 60,860 160,872 270,860 C 380,848 488,864 600,852
+               C 712,840 820,856 930,844 C 1040,832 1150,848 1260,836
+               C 1370,824 1480,840 1940,828
+               L1940,960 L-20,960 Z" fill="url(#hillG3)"/>
+      <!-- Terrace wall lines -->
+      <g stroke="#4e6038" stroke-width="0.9" fill="none" opacity="0.4">
+        <path d="M0,762 C400,746 800,768 1200,752 C1600,736 1800,754 1920,748"/>
+        <path d="M0,778 C400,762 800,784 1200,768 C1600,752 1800,770 1920,764"/>
+        <path d="M0,798 C400,782 800,804 1200,788 C1600,772 1800,790 1920,784"/>
+        <path d="M0,816 C400,800 800,822 1200,806 C1600,790 1800,808 1920,802"/>
+        <path d="M0,836 C400,820 800,842 1200,826 C1600,810 1800,828 1920,822"/>
+        <path d="M0,858 C400,842 800,864 1200,848 C1600,832 1800,850 1920,844"/>
+      </g>
+      <!-- Olive grove clusters on hills -->
+      <g fill="#4a6038" opacity="0.75">
+        <circle cx="180" cy="768" r="5"/><circle cx="192" cy="763" r="4"/><circle cx="170" cy="775" r="4"/><circle cx="200" cy="771" r="3"/>
+        <circle cx="380" cy="756" r="5"/><circle cx="394" cy="750" r="4"/><circle cx="368" cy="762" r="4"/>
+        <circle cx="580" cy="772" r="5"/><circle cx="595" cy="766" r="4"/><circle cx="568" cy="778" r="3"/>
+        <circle cx="760" cy="752" r="5"/><circle cx="775" cy="746" r="4"/><circle cx="748" cy="758" r="4"/>
+        <circle cx="960" cy="768" r="5"/><circle cx="975" cy="762" r="4"/><circle cx="948" cy="774" r="3"/>
+        <circle cx="1140" cy="750" r="5"/><circle cx="1155" cy="744" r="4"/><circle cx="1128" cy="756" r="4"/>
+        <circle cx="1340" cy="762" r="5"/><circle cx="1356" cy="756" r="4"/><circle cx="1328" cy="768" r="3"/>
+        <circle cx="1520" cy="748" r="5"/><circle cx="1536" cy="742" r="4"/><circle cx="1508" cy="754" r="4"/>
+        <circle cx="1720" cy="758" r="5"/><circle cx="1736" cy="752" r="4"/><circle cx="1708" cy="764" r="3"/>
+      </g>
+    </svg>
 
-      <!-- LAYER: Wadi -->
-      <svg id="l-wadi" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="wadiGrad" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#a8c8b8" stop-opacity="0.9"/>
-            <stop offset="0.4" stop-color="#78a898" stop-opacity="0.95"/>
-            <stop offset="0.7" stop-color="#88b8a8" stop-opacity="0.9"/>
-            <stop offset="1" stop-color="#68988a" stop-opacity="0.85"/>
-          </linearGradient>
-        </defs>
-        <!-- Winding river course S-curve -->
-        <path d="M-60,830 C180,810 300,790 500,800 C700,810 820,780 1000,790 C1180,800 1340,770 1540,780 C1700,788 1820,775 1980,780 L1980,850 C1820,845 1700,858 1540,850 C1340,840 1180,868 1000,858 C820,848 700,875 500,868 C300,860 180,880 -60,870 Z" fill="url(#wadiGrad)"/>
-        <!-- River highlight lines -->
-        <path d="M-60,838 C200,820 320,800 520,810 C720,820 840,792 1020,802 C1200,812 1360,782 1560,792 C1720,800 1840,787 1980,792" stroke="#d8e8e0" stroke-width="1.5" fill="none" opacity="0.6"/>
-        <path d="M-60,848 C200,830 320,812 520,820 C720,830 840,803 1020,812 C1200,821 1360,793 1560,802 C1720,810 1840,797 1980,802" stroke="#c8ddd5" stroke-width="1" fill="none" opacity="0.4"/>
-        <!-- Ripple ellipses -->
-        <ellipse cx="320" cy="838" rx="28" ry="6" fill="#c8e0d8" opacity="0.35"/>
-        <ellipse cx="760" cy="825" rx="22" ry="5" fill="#c8e0d8" opacity="0.3"/>
-        <ellipse cx="1200" cy="830" rx="32" ry="6" fill="#c8e0d8" opacity="0.35"/>
-        <ellipse cx="1640" cy="820" rx="24" ry="5" fill="#c8e0d8" opacity="0.3"/>
-      </svg>
+    <!-- ── LAYER 7: VALLEY FLOOR (fields + wadi) ── -->
+    <svg id="l-valley" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <!-- Wadi river -->
+      <path d="M-50,900 C 120,878 240,904 400,886 C 560,868 650,892 820,876
+               C 990,860 1080,882 1250,868 C 1420,854 1520,875 1700,862
+               C 1820,852 1900,868 1960,860"
+            stroke="#88b0a0" stroke-width="28" fill="none" opacity="0.88" stroke-linecap="round"/>
+      <!-- Wadi highlight -->
+      <path d="M-50,896 C 120,874 240,900 400,882 C 560,864 650,888 820,872"
+            stroke="#c0ddd5" stroke-width="5" fill="none" opacity="0.45" stroke-linecap="round"/>
+      <!-- Wadi shimmer dots -->
+      <g fill="#c8e0d8" opacity="0.35">
+        <ellipse cx="200" cy="888" rx="12" ry="3"/><ellipse cx="450" cy="882" rx="10" ry="3"/>
+        <ellipse cx="700" cy="876" rx="14" ry="3"/><ellipse cx="960" cy="870" rx="11" ry="3"/>
+        <ellipse cx="1200" cy="864" rx="13" ry="3"/><ellipse cx="1450" cy="858" rx="10" ry="3"/>
+      </g>
+      <!-- Agricultural fields -->
+      <!-- Wheat field (golden) -->
+      <rect x="380" y="858" width="260" height="108" fill="#c0980a" opacity="0.82" rx="2"/>
+      <g stroke="#a07808" stroke-width="1" opacity="0.45" fill="none">
+        <line x1="380" y1="868" x2="640" y2="868"/><line x1="380" y1="880" x2="640" y2="880"/>
+        <line x1="380" y1="892" x2="640" y2="892"/><line x1="380" y1="904" x2="640" y2="904"/>
+        <line x1="380" y1="916" x2="640" y2="916"/><line x1="380" y1="928" x2="640" y2="928"/>
+        <line x1="380" y1="940" x2="640" y2="940"/>
+      </g>
+      <!-- Green crop field -->
+      <rect x="680" y="844" width="200" height="118" fill="#3e7028" opacity="0.88" rx="2"/>
+      <g stroke="#2e5820" stroke-width="1" opacity="0.4" fill="none">
+        <line x1="680" y1="855" x2="880" y2="855"/><line x1="680" y1="868" x2="880" y2="868"/>
+        <line x1="680" y1="881" x2="880" y2="881"/><line x1="680" y1="894" x2="880" y2="894"/>
+        <line x1="680" y1="907" x2="880" y2="907"/><line x1="680" y1="920" x2="880" y2="920"/>
+        <line x1="680" y1="933" x2="880" y2="933"/>
+      </g>
+      <!-- Bare earth field -->
+      <rect x="900" y="852" width="180" height="112" fill="#a87040" opacity="0.80" rx="2"/>
+      <!-- Another green field -->
+      <rect x="1100" y="840" width="220" height="124" fill="#4a7830" opacity="0.85" rx="2"/>
+      <!-- Pale wheat -->
+      <rect x="1340" y="848" width="195" height="118" fill="#b88c18" opacity="0.78" rx="2"/>
+      <!-- Irrigation channels between fields -->
+      <g stroke="#6898a0" stroke-width="3" opacity="0.55">
+        <line x1="660" y1="840" x2="660" y2="970"/>
+        <line x1="892" y1="835" x2="892" y2="968"/>
+        <line x1="1092" y1="832" x2="1092" y2="968"/>
+        <line x1="1334" y1="830" x2="1334" y2="968"/>
+        <line x1="1540" y1="836" x2="1540" y2="968"/>
+      </g>
+    </svg>
 
-      <!-- LAYER: Fields -->
-      <svg id="l-fields" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="wheatGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#c4a832"/><stop offset="1" stop-color="#a08020"/>
-          </linearGradient>
-          <linearGradient id="cropGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#5a8a3a"/><stop offset="1" stop-color="#3a6020"/>
-          </linearGradient>
-          <linearGradient id="earthGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#c4956a"/><stop offset="1" stop-color="#9a6a40"/>
-          </linearGradient>
-        </defs>
-        <!-- Field blocks alternating -->
-        <path d="M0,858 L320,848 L320,940 L0,950 Z" fill="url(#wheatGrad)"/>
-        <path d="M320,843 L620,835 L620,930 L320,940 Z" fill="url(#cropGrad)"/>
-        <path d="M620,830 L920,822 L920,920 L620,930 Z" fill="url(#earthGrad)"/>
-        <path d="M920,817 L1200,810 L1200,910 L920,920 Z" fill="url(#wheatGrad)"/>
-        <path d="M1200,805 L1500,798 L1500,898 L1200,910 Z" fill="url(#cropGrad)"/>
-        <path d="M1500,793 L1800,787 L1800,888 L1500,898 Z" fill="url(#wheatGrad)"/>
-        <path d="M1800,783 L1920,778 L1920,878 L1800,888 Z" fill="url(#earthGrad)"/>
-        <!-- Second row fields -->
-        <path d="M0,948 L400,935 L400,1020 L0,1030 Z" fill="url(#cropGrad)"/>
-        <path d="M400,930 L760,918 L760,1005 L400,1020 Z" fill="url(#wheatGrad)"/>
-        <path d="M760,913 L1120,902 L1120,992 L760,1005 Z" fill="url(#cropGrad)"/>
-        <path d="M1120,897 L1480,887 L1480,978 L1120,992 Z" fill="url(#earthGrad)"/>
-        <path d="M1480,882 L1920,870 L1920,965 L1480,978 Z" fill="url(#wheatGrad)"/>
-        <!-- Crop row lines -->
-        <g stroke="#2e4419" stroke-width="0.8" opacity="0.35" fill="none">
-          <path d="M0,870 L320,860"/><path d="M0,882 L320,872"/><path d="M0,894 L320,884"/><path d="M0,906 L320,896"/>
-          <path d="M920,830 L1200,822"/><path d="M920,842 L1200,834"/><path d="M920,854 L1200,846"/>
-          <path d="M1500,804 L1800,798"/><path d="M1500,816 L1800,810"/><path d="M1500,828 L1800,822"/>
-        </g>
-        <g stroke="#3a6825" stroke-width="0.8" opacity="0.3" fill="none">
-          <path d="M320,854 L620,845"/><path d="M320,866 L620,857"/><path d="M320,878 L620,869"/>
-          <path d="M1200,816 L1500,808"/><path d="M1200,828 L1500,820"/>
-        </g>
-        <!-- Irrigation channel lines -->
-        <g stroke="#7890a0" stroke-width="1" opacity="0.4" fill="none">
-          <line x1="320" y1="843" x2="320" y2="940"/>
-          <line x1="620" y1="830" x2="620" y2="930"/>
-          <line x1="920" y1="817" x2="920" y2="920"/>
-          <line x1="1200" y1="805" x2="1200" y2="910"/>
-          <line x1="1500" y1="793" x2="1500" y2="898"/>
-          <line x1="1800" y1="783" x2="1800" y2="888"/>
-        </g>
-      </svg>
+    <!-- ── LAYER 8: LEFT SIDE TREES (wind animated) ── -->
+    <svg id="l-trees-left" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
 
-      <!-- LAYER: Foreground trees -->
-      <svg id="l-trees" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="palmTrunk" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#2a1d10"/><stop offset="0.5" stop-color="#6a4820"/><stop offset="1" stop-color="#2a1d10"/>
-          </linearGradient>
-          <linearGradient id="oliveTrunk" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#2e2010"/><stop offset="0.5" stop-color="#5a3e1e"/><stop offset="1" stop-color="#2e2010"/>
-          </linearGradient>
-          <radialGradient id="oliveCanopy" cx="0.35" cy="0.35" r="0.7">
-            <stop offset="0" stop-color="#8ab070"/><stop offset="0.5" stop-color="#5a7840"/><stop offset="1" stop-color="#2a4018"/>
-          </radialGradient>
-          <filter id="shadowBlur"><feGaussianBlur stdDeviation="6"/></filter>
-          <filter id="treeSoftBlur"><feGaussianBlur stdDeviation="0.8"/></filter>
-        </defs>
+      <!-- Ground shadow for left trees -->
+      <ellipse cx="75" cy="962" rx="42" ry="8" fill="#000" opacity="0.12"/>
+      <ellipse cx="220" cy="972" rx="62" ry="10" fill="#000" opacity="0.14"/>
 
-        <!-- Palm 1: x=80, tall, left edge -->
-        <g transform="translate(80,1080)">
-          <ellipse cx="0" cy="-2" rx="55" ry="10" fill="#0a0f0a" opacity="0.3" filter="url(#shadowBlur)"/>
-          <!-- Segmented trunk -->
-          <path d="M0,0 C-2,-80 2,-160 -1,-240 C-3,-300 1,-340 0,-400" stroke="url(#palmTrunk)" stroke-width="14" fill="none" stroke-linecap="round"/>
-          <!-- Trunk ring marks -->
-          <g stroke="#3a2814" stroke-width="1.5" opacity="0.6">
-            <line x1="-8" y1="-50" x2="8" y2="-50"/><line x1="-8" y1="-100" x2="8" y2="-100"/>
-            <line x1="-8" y1="-150" x2="8" y2="-150"/><line x1="-8" y1="-200" x2="8" y2="-200"/>
-            <line x1="-8" y1="-250" x2="8" y2="-250"/><line x1="-8" y1="-300" x2="8" y2="-300"/>
-            <line x1="-8" y1="-350" x2="8" y2="-350"/>
-          </g>
-          <!-- Frond crown at -400 -->
-          <g transform="translate(0,-400)">
-            <g fill="#1a3812" opacity="0.9">
-              <path d="M0,0 C-30,-25 -130,-45 -210,-32 C-130,-14 -55,-5 0,0 Z"/>
-              <path d="M0,0 C30,-25 130,-45 210,-32 C130,-14 55,-5 0,0 Z"/>
-              <path d="M0,0 C-45,-60 -165,-105 -240,-92 C-162,-56 -68,-26 0,0 Z"/>
-              <path d="M0,0 C45,-60 165,-105 240,-92 C162,-56 68,-26 0,0 Z"/>
-              <path d="M0,0 C-14,-80 -72,-158 -130,-188 C-80,-130 -30,-56 0,0 Z"/>
-              <path d="M0,0 C14,-80 72,-158 130,-188 C80,-130 30,-56 0,0 Z"/>
-              <path d="M0,0 C-65,-22 -108,-88 -85,-140 C-56,-88 -16,-32 0,0 Z"/>
-              <path d="M0,0 C65,-22 108,-88 85,-140 C56,-88 16,-32 0,0 Z"/>
-              <path d="M0,0 C-8,-90 8,-90 0,-170 C-8,-90 8,-90 0,0 Z" opacity="0.7"/>
-            </g>
-            <g fill="#3b6e2e">
-              <path d="M0,2 C-26,-20 -112,-36 -180,-24 C-112,-8 -47,-2 0,2 Z"/>
-              <path d="M0,2 C26,-20 112,-36 180,-24 C112,-8 47,-2 0,2 Z"/>
-              <path d="M0,2 C-38,-48 -140,-90 -205,-78 C-138,-48 -55,-20 0,2 Z"/>
-              <path d="M0,2 C38,-48 140,-90 205,-78 C138,-48 55,-20 0,2 Z"/>
-              <path d="M0,2 C-10,-68 -60,-142 -112,-170 C-66,-118 -24,-46 0,2 Z"/>
-              <path d="M0,2 C10,-68 60,-142 112,-170 C66,-118 24,-46 0,2 Z"/>
-            </g>
-            <!-- Sun highlight on fronds -->
-            <g fill="#a0d060" opacity="0.4">
-              <path d="M0,2 C-10,-20 -55,-30 -80,-24 C-55,-12 -25,-5 0,2 Z"/>
-              <path d="M0,2 C10,-20 55,-30 80,-24 C55,-12 25,-5 0,2 Z"/>
-            </g>
-            <!-- Date clusters -->
-            <g fill="#8b5a1e" opacity="0.85">
-              <circle cx="-8" cy="18" r="3.5"/><circle cx="0" cy="20" r="4"/>
-              <circle cx="10" cy="18" r="3.5"/><circle cx="-4" cy="26" r="3"/>
-              <circle cx="6" cy="26" r="3"/>
-            </g>
-          </g>
+      <!-- TALL CYPRESS — left edge, sways as unit -->
+      <g class="wind-a" style="transform-origin: 75px 962px;">
+        <!-- Trunk -->
+        <rect x="71" y="820" width="8" height="142" fill="#3e2814" rx="2"/>
+        <rect x="73" y="820" width="4" height="142" fill="#5a3c1e" rx="1"/>
+        <!-- Canopy stacked ellipses (dark to lighter top) -->
+        <ellipse cx="75" cy="930" rx="26" ry="19" fill="#162a14"/>
+        <ellipse cx="75" cy="910" rx="29" ry="21" fill="#1a3018"/>
+        <ellipse cx="75" cy="890" rx="28" ry="20" fill="#1e3a1c"/>
+        <ellipse cx="75" cy="869" rx="26" ry="19" fill="#234420"/>
+        <ellipse cx="75" cy="848" rx="24" ry="18" fill="#284e24"/>
+        <ellipse cx="75" cy="828" rx="22" ry="17" fill="#2e5828"/>
+        <ellipse cx="75" cy="810" rx="20" ry="15" fill="#34622c"/>
+        <ellipse cx="75" cy="793" rx="17" ry="14" fill="#3c6c32"/>
+        <ellipse cx="75" cy="778" rx="14" ry="12" fill="#447638"/>
+        <ellipse cx="75" cy="764" rx="11" ry="10" fill="#4c803e"/>
+        <ellipse cx="75" cy="752" rx="8"  ry="8"  fill="#568a44"/>
+        <ellipse cx="75" cy="742" rx="5"  ry="6"  fill="#60944a"/>
+        <!-- Sun-highlight left face (sun is to the right) -->
+        <ellipse cx="68" cy="860" rx="7" ry="18" fill="#4a7040" opacity="0.40"/>
+        <ellipse cx="68" cy="808" rx="6" ry="14" fill="#527848" opacity="0.35"/>
+      </g>
+
+      <!-- MEDIUM CYPRESS — slightly right and behind -->
+      <g class="wind-b" style="transform-origin: 145px 958px; opacity:0.85;">
+        <rect x="141" y="836" width="7" height="122" fill="#3e2814" rx="2"/>
+        <ellipse cx="145" cy="918" rx="20" ry="15" fill="#162a14"/>
+        <ellipse cx="145" cy="900" rx="23" ry="17" fill="#1e3a1c"/>
+        <ellipse cx="145" cy="882" rx="22" ry="16" fill="#234420"/>
+        <ellipse cx="145" cy="864" rx="20" ry="15" fill="#284e24"/>
+        <ellipse cx="145" cy="847" rx="18" ry="14" fill="#2e5828"/>
+        <ellipse cx="145" cy="831" rx="16" ry="13" fill="#34622c"/>
+        <ellipse cx="145" cy="817" rx="13" ry="11" fill="#3c6c32"/>
+        <ellipse cx="145" cy="804" rx="10" ry="9"  fill="#447638"/>
+        <ellipse cx="145" cy="793" rx="7"  ry="7"  fill="#4c803e"/>
+        <ellipse cx="145" cy="784" rx="5"  ry="5"  fill="#568a44"/>
+      </g>
+
+      <!-- OLIVE TREE — gnarled, mid-left -->
+      <g class="wind-c" style="transform-origin: 225px 972px;">
+        <!-- Ground shadow -->
+        <!-- Gnarled trunk (multi-path) -->
+        <path d="M225,972 C223,950 220,928 222,906 C219,884 225,862 223,840 C220,818 226,800 224,782"
+              stroke="#5a3c1e" stroke-width="11" fill="none" stroke-linecap="round"/>
+        <path d="M225,972 C223,952 221,930 222,908 C219,886 225,864 223,842"
+              stroke="#7a5830" stroke-width="6"  fill="none" stroke-linecap="round"/>
+        <!-- Branch left -->
+        <path d="M223,900 C208,886 192,870 178,850" stroke="#5a3c1e" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <!-- Branch right -->
+        <path d="M223,880 C238,866 254,850 264,832" stroke="#5a3c1e" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <!-- Canopy — overlapping silver-green ellipses -->
+        <ellipse cx="210" cy="848" rx="40" ry="32" fill="#6a7c5c" opacity="0.90"/>
+        <ellipse cx="234" cy="838" rx="44" ry="34" fill="#748868" opacity="0.90"/>
+        <ellipse cx="248" cy="854" rx="36" ry="28" fill="#7c9070" opacity="0.88"/>
+        <ellipse cx="220" cy="824" rx="38" ry="30" fill="#849878" opacity="0.88"/>
+        <ellipse cx="196" cy="836" rx="32" ry="26" fill="#6e8464" opacity="0.88"/>
+        <ellipse cx="242" cy="820" rx="30" ry="24" fill="#8ca080" opacity="0.85"/>
+        <ellipse cx="210" cy="810" rx="26" ry="20" fill="#94a888" opacity="0.75"/>
+        <!-- Silver leaf highlights (olive trees are silvery on top) -->
+        <ellipse cx="224" cy="804" rx="20" ry="14" fill="#aab898" opacity="0.65"/>
+        <ellipse cx="244" cy="812" rx="16" ry="12" fill="#a2b090" opacity="0.60"/>
+        <ellipse cx="206" cy="818" rx="14" ry="10" fill="#aab898" opacity="0.55"/>
+      </g>
+
+    </svg>
+
+    <!-- ── LAYER 9: RIGHT SIDE TREES (wind animated) ── -->
+    <svg id="l-trees-right" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+
+      <!-- Ground shadows -->
+      <ellipse cx="1840" cy="958" rx="55" ry="9"  fill="#000" opacity="0.14"/>
+      <ellipse cx="1712" cy="968" rx="68" ry="11" fill="#000" opacity="0.14"/>
+
+      <!-- DATE PALM — right edge -->
+      <g class="wind-b" style="transform-origin: 1840px 958px;">
+        <!-- Trunk — segmented, slightly curved -->
+        <path d="M1840,958 C1839,928 1841,898 1840,868 C1839,838 1841,808 1840,778
+                 C1839,748 1841,718 1840,688 C1839,658 1841,628 1840,598
+                 C1839,578 1841,558 1840,540"
+              stroke="#4a2e14" stroke-width="15" fill="none" stroke-linecap="round"/>
+        <!-- Trunk shading -->
+        <path d="M1840,958 C1840,926 1840,896 1840,866 C1840,836 1840,806 1840,776
+                 C1840,746 1840,716 1840,686 C1840,656 1840,626 1840,596 C1840,576 1840,556 1840,538"
+              stroke="#6e4a28" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <!-- Trunk ring marks -->
+        <g stroke="#321e0c" stroke-width="1.8" opacity="0.55">
+          <line x1="1832" y1="920" x2="1848" y2="920"/>
+          <line x1="1832" y1="890" x2="1848" y2="890"/>
+          <line x1="1832" y1="860" x2="1848" y2="860"/>
+          <line x1="1832" y1="830" x2="1848" y2="830"/>
+          <line x1="1832" y1="800" x2="1848" y2="800"/>
+          <line x1="1832" y1="770" x2="1848" y2="770"/>
+          <line x1="1832" y1="740" x2="1848" y2="740"/>
+          <line x1="1832" y1="710" x2="1848" y2="710"/>
+          <line x1="1832" y1="680" x2="1848" y2="680"/>
+          <line x1="1832" y1="650" x2="1848" y2="650"/>
+          <line x1="1832" y1="620" x2="1848" y2="620"/>
+          <line x1="1832" y1="590" x2="1848" y2="590"/>
+          <line x1="1832" y1="562" x2="1848" y2="562"/>
         </g>
-
-        <!-- Olive 1: x=280, gnarled -->
-        <g transform="translate(280,1080)">
-          <ellipse cx="0" cy="-2" rx="80" ry="12" fill="#0a0f0a" opacity="0.28" filter="url(#shadowBlur)"/>
-          <!-- Gnarled trunk -->
-          <path d="M0,0 C-4,-40 4,-85 -2,-130 C-6,-165 5,-195 0,-240" stroke="url(#oliveTrunk)" stroke-width="16" fill="none" stroke-linecap="round"/>
-          <path d="M-2,-100 C-30,-115 -58,-140 -78,-168" stroke="url(#oliveTrunk)" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <path d="M-2,-120 C28,-134 55,-158 76,-185" stroke="url(#oliveTrunk)" stroke-width="8" fill="none" stroke-linecap="round"/>
-          <!-- Canopy: many overlapping ellipses silver-green -->
-          <g fill="#2a4018" opacity="0.95">
-            <ellipse cx="-70" cy="-178" rx="52" ry="46"/>
-            <ellipse cx="-15" cy="-215" rx="64" ry="57"/>
-            <ellipse cx="55" cy="-198" rx="56" ry="50"/>
-            <ellipse cx="88" cy="-210" rx="48" ry="44"/>
-            <ellipse cx="20" cy="-260" rx="58" ry="52"/>
-            <ellipse cx="-38" cy="-242" rx="44" ry="40"/>
-          </g>
-          <g fill="url(#oliveCanopy)">
-            <ellipse cx="-64" cy="-182" rx="46" ry="40"/>
-            <ellipse cx="-10" cy="-220" rx="58" ry="52"/>
-            <ellipse cx="58" cy="-202" rx="50" ry="46"/>
-            <ellipse cx="90" cy="-215" rx="42" ry="38"/>
-            <ellipse cx="22" cy="-264" rx="52" ry="48"/>
-          </g>
-          <!-- Silver-green sheen -->
-          <g fill="#b0c888" opacity="0.45">
-            <ellipse cx="-20" cy="-232" rx="16" ry="10"/><ellipse cx="48" cy="-215" rx="14" ry="9"/>
-            <ellipse cx="30" cy="-272" rx="15" ry="9"/><ellipse cx="-50" cy="-195" rx="12" ry="7"/>
-            <ellipse cx="80" cy="-228" rx="13" ry="8"/><ellipse cx="5" cy="-248" rx="11" ry="7"/>
-          </g>
-        </g>
-
-        <!-- Palm 2: x=560 -->
-        <g transform="translate(560,1080)">
-          <ellipse cx="0" cy="-2" rx="48" ry="9" fill="#0a0f0a" opacity="0.28" filter="url(#shadowBlur)"/>
-          <path d="M0,0 C-1,-70 1,-140 0,-210 C-2,-260 1,-300 0,-350" stroke="url(#palmTrunk)" stroke-width="12" fill="none" stroke-linecap="round"/>
-          <g stroke="#3a2814" stroke-width="1.2" opacity="0.55">
-            <line x1="-7" y1="-50" x2="7" y2="-50"/><line x1="-7" y1="-100" x2="7" y2="-100"/>
-            <line x1="-7" y1="-150" x2="7" y2="-150"/><line x1="-7" y1="-200" x2="7" y2="-200"/>
-            <line x1="-7" y1="-250" x2="7" y2="-250"/><line x1="-7" y1="-300" x2="7" y2="-300"/>
-          </g>
-          <g transform="translate(0,-350)">
-            <g fill="#1a3812" opacity="0.9">
-              <path d="M0,0 C-25,-22 -108,-38 -172,-26 C-108,-12 -46,-4 0,0 Z"/>
-              <path d="M0,0 C25,-22 108,-38 172,-26 C108,-12 46,-4 0,0 Z"/>
-              <path d="M0,0 C-38,-52 -138,-88 -200,-76 C-136,-46 -58,-20 0,0 Z"/>
-              <path d="M0,0 C38,-52 138,-88 200,-76 C136,-46 58,-20 0,0 Z"/>
-              <path d="M0,0 C-12,-70 -62,-138 -108,-164 C-68,-114 -26,-46 0,0 Z"/>
-              <path d="M0,0 C12,-70 62,-138 108,-164 C68,-114 26,-46 0,0 Z"/>
-              <path d="M0,0 C-55,-18 -90,-78 -70,-122 C-46,-76 -14,-28 0,0 Z"/>
-              <path d="M0,0 C55,-18 90,-78 70,-122 C46,-76 14,-28 0,0 Z"/>
-            </g>
-            <g fill="#3b6e2e">
-              <path d="M0,2 C-22,-17 -94,-30 -148,-20 C-94,-7 -40,-1 0,2 Z"/>
-              <path d="M0,2 C22,-17 94,-30 148,-20 C94,-7 40,-1 0,2 Z"/>
-              <path d="M0,2 C-32,-42 -118,-76 -172,-64 C-116,-38 -48,-16 0,2 Z"/>
-              <path d="M0,2 C32,-42 118,-76 172,-64 C116,-38 48,-16 0,2 Z"/>
-              <path d="M0,2 C-8,-58 -50,-118 -90,-142 C-56,-98 -20,-40 0,2 Z"/>
-              <path d="M0,2 C8,-58 50,-118 90,-142 C56,-98 20,-40 0,2 Z"/>
-            </g>
-          </g>
-        </g>
-
-        <!-- Olive 2: x=1340 right-side -->
-        <g transform="translate(1340,1080)">
-          <ellipse cx="0" cy="-2" rx="90" ry="13" fill="#0a0f0a" opacity="0.28" filter="url(#shadowBlur)"/>
-          <path d="M0,0 C3,-45 -3,-90 2,-135 C5,-172 -3,-210 0,-255" stroke="url(#oliveTrunk)" stroke-width="18" fill="none" stroke-linecap="round"/>
-          <path d="M2,-95 C32,-112 62,-138 82,-168" stroke="url(#oliveTrunk)" stroke-width="9" fill="none" stroke-linecap="round"/>
-          <path d="M2,-115 C-28,-132 -56,-158 -76,-188" stroke="url(#oliveTrunk)" stroke-width="9" fill="none" stroke-linecap="round"/>
-          <g fill="#2a4018" opacity="0.95">
-            <ellipse cx="72" cy="-178" rx="54" ry="48"/>
-            <ellipse cx="12" cy="-218" rx="68" ry="60"/>
-            <ellipse cx="-60" cy="-200" rx="58" ry="52"/>
-            <ellipse cx="-95" cy="-212" rx="50" ry="46"/>
-            <ellipse cx="-25" cy="-268" rx="62" ry="54"/>
-            <ellipse cx="45" cy="-248" rx="46" ry="42"/>
-          </g>
-          <g fill="url(#oliveCanopy)">
-            <ellipse cx="70" cy="-182" rx="48" ry="42"/>
-            <ellipse cx="14" cy="-222" rx="62" ry="56"/>
-            <ellipse cx="-58" cy="-204" rx="52" ry="48"/>
-            <ellipse cx="-93" cy="-216" rx="44" ry="40"/>
-            <ellipse cx="-22" cy="-272" rx="56" ry="50"/>
-          </g>
-          <g fill="#b0c888" opacity="0.45">
-            <ellipse cx="24" cy="-235" rx="18" ry="11"/><ellipse cx="-44" cy="-218" rx="15" ry="9"/>
-            <ellipse cx="-28" cy="-280" rx="16" ry="10"/><ellipse cx="60" cy="-195" rx="13" ry="8"/>
-            <ellipse cx="-75" cy="-228" rx="14" ry="8"/>
-          </g>
-        </g>
-
-        <!-- Palm 3: x=1600 tall, right -->
-        <g transform="translate(1600,1080)">
-          <ellipse cx="0" cy="-2" rx="52" ry="10" fill="#0a0f0a" opacity="0.3" filter="url(#shadowBlur)"/>
-          <path d="M0,0 C-2,-90 2,-180 -1,-270 C-3,-330 1,-370 0,-430" stroke="url(#palmTrunk)" stroke-width="15" fill="none" stroke-linecap="round"/>
-          <g stroke="#3a2814" stroke-width="1.5" opacity="0.6">
-            <line x1="-8" y1="-60" x2="8" y2="-60"/><line x1="-8" y1="-120" x2="8" y2="-120"/>
-            <line x1="-8" y1="-180" x2="8" y2="-180"/><line x1="-8" y1="-240" x2="8" y2="-240"/>
-            <line x1="-8" y1="-300" x2="8" y2="-300"/><line x1="-8" y1="-360" x2="8" y2="-360"/>
-          </g>
-          <g transform="translate(0,-430)">
-            <g fill="#1a3812" opacity="0.9">
-              <path d="M0,0 C-28,-24 -124,-42 -198,-30 C-124,-13 -52,-5 0,0 Z"/>
-              <path d="M0,0 C28,-24 124,-42 198,-30 C124,-13 52,-5 0,0 Z"/>
-              <path d="M0,0 C-42,-58 -155,-98 -228,-85 C-152,-53 -64,-24 0,0 Z"/>
-              <path d="M0,0 C42,-58 155,-98 228,-85 C152,-53 64,-24 0,0 Z"/>
-              <path d="M0,0 C-13,-76 -68,-150 -122,-178 C-76,-124 -28,-52 0,0 Z"/>
-              <path d="M0,0 C13,-76 68,-150 122,-178 C76,-124 28,-52 0,0 Z"/>
-              <path d="M0,0 C-62,-20 -102,-84 -80,-132 C-53,-82 -15,-30 0,0 Z"/>
-              <path d="M0,0 C62,-20 102,-84 80,-132 C53,-82 15,-30 0,0 Z"/>
-              <path d="M0,0 C0,-100 0,-100 0,-178 C0,-100 0,-100 0,0 Z" opacity="0.6"/>
-            </g>
-            <g fill="#3b6e2e">
-              <path d="M0,2 C-24,-19 -106,-33 -168,-22 C-106,-8 -44,-1 0,2 Z"/>
-              <path d="M0,2 C24,-19 106,-33 168,-22 C106,-8 44,-1 0,2 Z"/>
-              <path d="M0,2 C-36,-46 -134,-84 -196,-72 C-132,-44 -56,-18 0,2 Z"/>
-              <path d="M0,2 C36,-46 134,-84 196,-72 C132,-44 56,-18 0,2 Z"/>
-              <path d="M0,2 C-9,-65 -56,-135 -104,-162 C-62,-110 -22,-44 0,2 Z"/>
-              <path d="M0,2 C9,-65 56,-135 104,-162 C62,-110 22,-44 0,2 Z"/>
-            </g>
-            <g fill="#a0d060" opacity="0.35">
-              <path d="M0,2 C-12,-18 -58,-28 -84,-22 C-58,-10 -24,-3 0,2 Z"/>
-              <path d="M0,2 C12,-18 58,-28 84,-22 C58,-10 24,-3 0,2 Z"/>
-            </g>
-            <g fill="#8b5a1e" opacity="0.85">
-              <circle cx="-10" cy="16" r="3.5"/><circle cx="0" cy="18" r="4"/>
-              <circle cx="12" cy="16" r="3.5"/><circle cx="-5" cy="24" r="3"/><circle cx="7" cy="24" r="3"/>
+        <!-- Palm frond crown — each frond individually animated -->
+        <g transform="translate(1840,538)">
+          <!-- Frond 1: sweeping upper-left -->
+          <g class="wind-frond" style="animation-delay:0.0s;">
+            <path d="M0,0 C-18,-12 -70,-20 -148,-12" stroke="#162a10" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C-16,-10 -64,-17 -134,-10" stroke="#2a4820" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <g stroke="#1e3c18" stroke-width="1" opacity="0.5">
+              <path d="M-30,-6 C-32,-14 -36,-20 -38,-24"/><path d="M-55,-10 C-58,-18 -62,-25 -64,-30"/>
+              <path d="M-80,-12 C-83,-20 -87,-28 -89,-33"/><path d="M-108,-11 C-111,-19 -115,-27 -117,-32"/>
             </g>
           </g>
-        </g>
-
-        <!-- Palm 4: x=1840, partially off right -->
-        <g transform="translate(1840,1080)">
-          <path d="M0,0 C-1,-60 1,-120 0,-180 C-1,-220 1,-250 0,-295" stroke="url(#palmTrunk)" stroke-width="11" fill="none" stroke-linecap="round"/>
-          <g stroke="#3a2814" stroke-width="1.1" opacity="0.5">
-            <line x1="-6" y1="-50" x2="6" y2="-50"/><line x1="-6" y1="-100" x2="6" y2="-100"/>
-            <line x1="-6" y1="-150" x2="6" y2="-150"/><line x1="-6" y1="-200" x2="6" y2="-200"/><line x1="-6" y1="-245" x2="6" y2="-245"/>
+          <!-- Frond 2: upper-far-left -->
+          <g class="wind-frond" style="animation-delay:0.5s;">
+            <path d="M0,0 C-28,-28 -95,-55 -185,-48" stroke="#162a10" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C-25,-24 -86,-49 -168,-42" stroke="#2a4820" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           </g>
-          <g transform="translate(0,-295)">
-            <g fill="#1a3812" opacity="0.85">
-              <path d="M0,0 C-22,-19 -95,-33 -150,-22 C-95,-9 -40,-2 0,0 Z"/>
-              <path d="M0,0 C22,-19 95,-33 150,-22 C95,-9 40,-2 0,0 Z"/>
-              <path d="M0,0 C-32,-46 -118,-78 -172,-66 C-116,-40 -48,-16 0,0 Z"/>
-              <path d="M0,0 C32,-46 118,-78 172,-66 C116,-40 48,-16 0,0 Z"/>
-              <path d="M0,0 C-10,-62 -52,-124 -95,-148 C-58,-102 -20,-40 0,0 Z"/>
-              <path d="M0,0 C10,-62 52,-124 95,-148 C58,-102 20,-40 0,0 Z"/>
-            </g>
-            <g fill="#3b6e2e">
-              <path d="M0,2 C-18,-16 -80,-28 -124,-18 C-80,-6 -34,-1 0,2 Z"/>
-              <path d="M0,2 C18,-16 80,-28 124,-18 C80,-6 34,-1 0,2 Z"/>
-              <path d="M0,2 C-26,-38 -98,-66 -144,-56 C-96,-34 -40,-13 0,2 Z"/>
-              <path d="M0,2 C26,-38 98,-66 144,-56 C96,-34 40,-13 0,2 Z"/>
-            </g>
+          <!-- Frond 3: upper-left-down -->
+          <g class="wind-frond" style="animation-delay:1.0s;">
+            <path d="M0,0 C-38,-15 -110,-8 -175,18" stroke="#1a2e14" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C-34,-12 -100,-5 -160,16" stroke="#2e5024" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           </g>
-        </g>
-      </svg>
-
-      <!-- LAYER: Extreme foreground -->
-      <svg id="l-fg" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <filter id="fgBlur"><feGaussianBlur stdDeviation="1.5"/></filter>
-        </defs>
-        <g filter="url(#fgBlur)">
-          <!-- Dense grass base -->
-          <rect x="0" y="980" width="1920" height="100" fill="#1a2a0e" opacity="0.92"/>
-          <!-- Grass blade clusters -->
-          <g stroke="#2a4018" stroke-width="1.8" fill="none" opacity="0.9">
-            <path d="M20,1080 C18,1040 22,1010 15,985"/><path d="M32,1080 C35,1038 28,1008 33,980"/><path d="M44,1080 C40,1045 48,1015 38,988"/>
-            <path d="M58,1080 C62,1042 55,1012 60,984"/><path d="M72,1080 C68,1038 74,1006 65,982"/><path d="M88,1080 C90,1044 82,1014 88,986"/>
-            <path d="M105,1080 C102,1040 108,1010 99,985"/><path d="M120,1080 C124,1038 116,1008 122,980"/>
-            <path d="M145,1080 C140,1045 148,1015 138,988"/><path d="M162,1080 C165,1042 158,1012 164,984"/>
-            <path d="M185,1080 C182,1038 188,1006 178,982"/><path d="M205,1080 C208,1044 200,1014 206,986"/>
-            <path d="M228,1080 C224,1040 232,1010 222,985"/><path d="M248,1080 C252,1038 244,1008 250,980"/>
-            <path d="M275,1080 C270,1045 278,1015 268,988"/><path d="M298,1080 C302,1042 294,1012 300,984"/>
+          <!-- Frond 4: straight left -->
+          <g class="wind-frond" style="animation-delay:1.5s;">
+            <path d="M0,0 C-30,8 -100,15 -170,28" stroke="#1a2e14" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C-27,7 -90,13 -155,25" stroke="#2e5024" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           </g>
-          <!-- Lighter grass blades -->
-          <g stroke="#4a6828" stroke-width="1.2" fill="none" opacity="0.7">
-            <path d="M25,1080 C27,1045 20,1020 24,995"/><path d="M50,1080 C46,1048 54,1022 46,998"/>
-            <path d="M78,1080 C82,1046 74,1020 80,994"/><path d="M110,1080 C106,1048 114,1022 104,998"/>
-            <path d="M140,1080 C144,1046 136,1020 142,994"/><path d="M175,1080 C170,1048 178,1022 168,998"/>
-            <path d="M215,1080 C218,1046 210,1020 216,994"/><path d="M255,1080 C250,1048 258,1022 248,998"/>
-            <path d="M290,1080 C294,1046 286,1020 292,994"/>
+          <!-- Frond 5: slightly downward left -->
+          <g class="wind-frond" style="animation-delay:2.0s;">
+            <path d="M0,0 C-20,20 -65,45 -110,68" stroke="#1a2e14" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C-18,18 -58,40 -99,61" stroke="#2e5024" stroke-width="2" fill="none" stroke-linecap="round"/>
           </g>
-          <!-- Continue grass across full width in groups -->
-          <g stroke="#2a4018" stroke-width="1.8" fill="none" opacity="0.9">
-            <path d="M340,1080 C338,1040 344,1010 334,985"/><path d="M360,1080 C364,1038 356,1008 362,980"/>
-            <path d="M385,1080 C380,1045 388,1015 378,988"/><path d="M410,1080 C414,1042 406,1012 412,984"/>
-            <path d="M440,1080 C436,1038 442,1006 432,982"/><path d="M468,1080 C472,1044 464,1014 470,986"/>
-            <path d="M500,1080 C496,1040 504,1010 494,985"/><path d="M525,1080 C528,1038 520,1008 526,980"/>
-            <path d="M555,1080 C550,1045 558,1015 548,988"/><path d="M582,1080 C586,1042 578,1012 584,984"/>
-            <path d="M615,1080 C612,1038 618,1006 608,982"/><path d="M645,1080 C648,1044 640,1014 646,986"/>
-            <path d="M680,1080 C676,1040 684,1010 674,985"/><path d="M710,1080 C714,1038 706,1008 712,980"/>
-            <path d="M745,1080 C740,1045 748,1015 738,988"/><path d="M775,1080 C778,1042 770,1012 776,984"/>
-            <path d="M810,1080 C806,1038 812,1006 802,982"/><path d="M845,1080 C848,1044 840,1014 846,986"/>
-            <path d="M880,1080 C876,1040 884,1010 874,985"/><path d="M915,1080 C918,1038 910,1008 916,980"/>
-            <path d="M955,1080 C950,1045 958,1015 948,988"/><path d="M990,1080 C994,1042 986,1012 992,984"/>
-            <path d="M1030,1080 C1026,1038 1032,1006 1022,982"/><path d="M1065,1080 C1068,1044 1060,1014 1066,986"/>
-            <path d="M1105,1080 C1101,1040 1108,1010 1098,985"/><path d="M1140,1080 C1144,1038 1136,1008 1142,980"/>
-            <path d="M1180,1080 C1175,1045 1183,1015 1173,988"/><path d="M1215,1080 C1218,1042 1210,1012 1216,984"/>
-            <path d="M1255,1080 C1252,1038 1258,1006 1248,982"/><path d="M1290,1080 C1293,1044 1285,1014 1291,986"/>
-            <path d="M1330,1080 C1326,1040 1334,1010 1324,985"/><path d="M1365,1080 C1368,1038 1360,1008 1366,980"/>
-            <path d="M1405,1080 C1400,1045 1408,1015 1398,988"/><path d="M1440,1080 C1443,1042 1435,1012 1441,984"/>
-            <path d="M1480,1080 C1477,1038 1483,1006 1473,982"/><path d="M1515,1080 C1518,1044 1510,1014 1516,986"/>
-            <path d="M1555,1080 C1551,1040 1559,1010 1549,985"/><path d="M1590,1080 C1594,1038 1586,1008 1592,980"/>
-            <path d="M1630,1080 C1625,1045 1633,1015 1623,988"/><path d="M1665,1080 C1668,1042 1660,1012 1666,984"/>
-            <path d="M1705,1080 C1702,1038 1708,1006 1698,982"/><path d="M1740,1080 C1743,1044 1735,1014 1741,986"/>
-            <path d="M1780,1080 C1776,1040 1784,1010 1774,985"/><path d="M1815,1080 C1818,1038 1810,1008 1816,980"/>
-            <path d="M1855,1080 C1850,1045 1858,1015 1848,988"/><path d="M1890,1080 C1893,1042 1885,1012 1891,984"/>
+          <!-- Frond 6: upper-right -->
+          <g class="wind-frond" style="animation-delay:0.3s;">
+            <path d="M0,0 C18,-12 70,-20 148,-12" stroke="#162a10" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C16,-10 64,-17 134,-10" stroke="#2a4820" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           </g>
-          <!-- Wildflowers: amber and white dots on stems -->
-          <g>
-            <!-- Amber flowers -->
-            <g fill="#e8a030" opacity="0.85">
-              <circle cx="65" cy="975"/><circle cx="65" cy="975" r="5"/>
-              <circle cx="148" cy="972" r="4.5"/><circle cx="230" cy="976" r="5"/>
-              <circle cx="318" cy="973" r="4"/><circle cx="420" cy="975" r="5"/>
-              <circle cx="508" cy="971" r="4.5"/><circle cx="600" cy="974" r="5"/>
-              <circle cx="695" cy="972" r="4"/><circle cx="780" cy="975" r="5"/>
-              <circle cx="870" cy="971" r="4.5"/><circle cx="960" cy="973" r="5"/>
-              <circle cx="1050" cy="974" r="4"/><circle cx="1140" cy="972" r="5"/>
-              <circle cx="1225" cy="975" r="4.5"/><circle cx="1315" cy="971" r="5"/>
-              <circle cx="1405" cy="973" r="4"/><circle cx="1495" cy="975" r="5"/>
-              <circle cx="1580" cy="972" r="4.5"/><circle cx="1670" cy="974" r="5"/>
-              <circle cx="1755" cy="971" r="4"/><circle cx="1845" cy="973" r="5"/>
-            </g>
-            <!-- White flowers -->
-            <g fill="#f8f0e0" opacity="0.75">
-              <circle cx="105" cy="978" r="3.5"/><circle cx="192" cy="974" r="4"/>
-              <circle cx="278" cy="977" r="3.5"/><circle cx="370" cy="973" r="4"/>
-              <circle cx="460" cy="976" r="3.5"/><circle cx="548" cy="972" r="4"/>
-              <circle cx="640" cy="975" r="3.5"/><circle cx="728" cy="971" r="4"/>
-              <circle cx="825" cy="974" r="3.5"/><circle cx="915" cy="970" r="4"/>
-              <circle cx="1005" cy="976" r="3.5"/><circle cx="1095" cy="972" r="4"/>
-              <circle cx="1182" cy="975" r="3.5"/><circle cx="1272" cy="971" r="4"/>
-              <circle cx="1360" cy="974" r="3.5"/><circle cx="1450" cy="970" r="4"/>
-              <circle cx="1538" cy="975" r="3.5"/><circle cx="1625" cy="971" r="4"/>
-              <circle cx="1712" cy="974" r="3.5"/><circle cx="1800" cy="970" r="4"/>
-              <circle cx="1890" cy="975" r="3.5"/>
-            </g>
-            <!-- Flower stems -->
-            <g stroke="#3a5820" stroke-width="1" opacity="0.6">
-              <line x1="65" y1="980" x2="65" y2="1005"/><line x1="148" y1="977" x2="148" y2="1002"/>
-              <line x1="230" y1="981" x2="230" y2="1006"/><line x1="318" y1="978" x2="318" y2="1003"/>
-              <line x1="420" y1="980" x2="420" y2="1005"/><line x1="508" y1="976" x2="508" y2="1001"/>
-              <line x1="600" y1="979" x2="600" y2="1004"/><line x1="695" y1="977" x2="695" y2="1002"/>
-              <line x1="780" y1="980" x2="780" y2="1005"/><line x1="870" y1="976" x2="870" y2="1001"/>
-              <line x1="960" y1="978" x2="960" y2="1003"/><line x1="1050" y1="979" x2="1050" y2="1004"/>
-              <line x1="1140" y1="977" x2="1140" y2="1002"/><line x1="1225" y1="980" x2="1225" y2="1005"/>
-              <line x1="1315" y1="976" x2="1315" y2="1001"/><line x1="1405" y1="978" x2="1405" y2="1003"/>
-              <line x1="1495" y1="980" x2="1495" y2="1005"/><line x1="1580" y1="977" x2="1580" y2="1002"/>
-              <line x1="1670" y1="979" x2="1670" y2="1004"/><line x1="1755" y1="976" x2="1755" y2="1001"/>
-              <line x1="1845" y1="978" x2="1845" y2="1003"/>
-            </g>
+          <!-- Frond 7: upper-far-right -->
+          <g class="wind-frond" style="animation-delay:0.8s;">
+            <path d="M0,0 C28,-28 95,-55 185,-48" stroke="#162a10" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C25,-24 86,-49 168,-42" stroke="#2a4820" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- Frond 8: right -->
+          <g class="wind-frond" style="animation-delay:1.3s;">
+            <path d="M0,0 C30,8 100,15 170,28" stroke="#1a2e14" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C27,7 90,13 155,25" stroke="#2e5024" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- Frond 9: drooping right -->
+          <g class="wind-frond" style="animation-delay:1.8s;">
+            <path d="M0,0 C20,20 65,45 110,68" stroke="#1a2e14" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C18,18 58,40 99,61" stroke="#2e5024" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- Frond 10: straight up -->
+          <g class="wind-frond" style="animation-delay:2.4s;">
+            <path d="M0,0 C-4,-30 -6,-80 -2,-138" stroke="#1e3818" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M0,0 C-3,-28 -4,-76 -1,-124" stroke="#2e5028" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- Date clusters at crown base -->
+          <g fill="#8a5a18" opacity="0.88">
+            <circle cx="-8" cy="18" r="4"/><circle cx="2" cy="22" r="4.5"/>
+            <circle cx="12" cy="18" r="4"/><circle cx="-3" cy="28" r="3.5"/>
+            <circle cx="8" cy="27" r="3.5"/>
           </g>
         </g>
-      </svg>
+      </g>
 
-    </div><!-- /scene -->
-  </div><!-- /cam -->
+      <!-- BROADLEAF OAK — right side, large spreading -->
+      <g class="wind-c" style="transform-origin: 1712px 968px;">
+        <!-- Trunk -->
+        <path d="M1712,968 C1710,942 1706,916 1708,890 C1705,864 1712,838 1710,812
+                 C1707,786 1714,764 1712,740"
+              stroke="#4a2e14" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <path d="M1712,968 C1711,944 1708,918 1709,892 C1707,866 1712,840 1711,814"
+              stroke="#6a4828" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <!-- Major branches -->
+        <path d="M1711,860 C1688,842 1662,820 1638,794" stroke="#4a2e14" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <path d="M1711,840 C1736,820 1760,796 1782,770" stroke="#4a2e14" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <path d="M1712,800 C1694,780 1676,758 1660,730" stroke="#4a2e14" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M1712,812 C1732,792 1752,770 1770,742" stroke="#4a2e14" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <!-- Canopy — deep layered -->
+        <ellipse cx="1660" cy="812" rx="52" ry="46" fill="#243c20" opacity="0.95"/>
+        <ellipse cx="1720" cy="796" rx="62" ry="54" fill="#243c20" opacity="0.95"/>
+        <ellipse cx="1778" cy="808" rx="50" ry="44" fill="#243c20" opacity="0.92"/>
+        <ellipse cx="1690" cy="770" rx="56" ry="50" fill="#243c20" opacity="0.90"/>
+        <ellipse cx="1750" cy="758" rx="58" ry="52" fill="#243c20" opacity="0.88"/>
+        <!-- Mid-tone layer -->
+        <ellipse cx="1654" cy="816" rx="46" ry="40" fill="#3a5830" opacity="0.92"/>
+        <ellipse cx="1718" cy="800" rx="56" ry="48" fill="#3a5830" opacity="0.92"/>
+        <ellipse cx="1780" cy="812" rx="44" ry="38" fill="#3a5830" opacity="0.90"/>
+        <ellipse cx="1688" cy="774" rx="50" ry="44" fill="#3a5830" opacity="0.88"/>
+        <ellipse cx="1752" cy="762" rx="52" ry="46" fill="#3a5830" opacity="0.85"/>
+        <!-- Sun-lit highlights (right side facing sun) -->
+        <ellipse cx="1774" cy="800" rx="30" ry="26" fill="#507040" opacity="0.80"/>
+        <ellipse cx="1758" cy="754" rx="32" ry="28" fill="#507040" opacity="0.75"/>
+        <ellipse cx="1726" cy="790" rx="26" ry="22" fill="#587848" opacity="0.70"/>
+        <!-- Bright lit dabs -->
+        <ellipse cx="1780" cy="792" rx="12" ry="8" fill="#6a8850" opacity="0.60"/>
+        <ellipse cx="1764" cy="746" rx="11" ry="8" fill="#628050" opacity="0.55"/>
+        <ellipse cx="1734" cy="782" rx="9"  ry="7" fill="#6a8850" opacity="0.50"/>
+      </g>
+
+    </svg>
+
+    <!-- ── LAYER 10: FOREGROUND (grass, flowers) ── -->
+    <svg id="l-fg" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="fgVig" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#0a1408" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#0a1408" stop-opacity="0.85"/>
+        </linearGradient>
+      </defs>
+      <!-- Grass blade groups across bottom -->
+      <!-- Each group has wind animation with different delays -->
+      <g fill="none" stroke-linecap="round">
+        <!-- Dense grass: left cluster -->
+        <g class="wind-grass" style="transform-origin:40px 1080px; animation-delay:0.0s;" stroke="#2a4418" stroke-width="2.2">
+          <path d="M20,1080 C18,1042 10,1010 14,978"/><path d="M30,1080 C29,1044 23,1014 28,984"/>
+          <path d="M40,1080 C40,1038 36,1005 40,972"/><path d="M50,1080 C51,1042 47,1012 52,980"/>
+          <path d="M60,1080 C62,1044 58,1015 62,984"/>
+        </g>
+        <g class="wind-grass" style="transform-origin:100px 1080px; animation-delay:0.4s;" stroke="#344e22" stroke-width="2">
+          <path d="M80,1080 C78,1048 70,1018 75,986"/><path d="M92,1080 C91,1052 85,1022 90,990"/>
+          <path d="M104,1080 C104,1044 100,1014 105,982"/><path d="M116,1080 C117,1048 113,1018 118,986"/>
+        </g>
+        <!-- Mid-left cluster -->
+        <g class="wind-grass" style="transform-origin:280px 1080px; animation-delay:0.8s;" stroke="#2e4a1c" stroke-width="2.2">
+          <path d="M255,1080 C253,1040 245,1008 250,974"/><path d="M268,1080 C268,1044 262,1012 268,978"/>
+          <path d="M282,1080 C283,1040 279,1010 285,976"/><path d="M296,1080 C298,1044 294,1014 300,980"/>
+          <path d="M310,1080 C312,1040 308,1010 314,978"/>
+        </g>
+        <!-- Mid cluster -->
+        <g class="wind-grass" style="transform-origin:520px 1080px; animation-delay:0.2s;" stroke="#304c1e" stroke-width="2.2">
+          <path d="M495,1080 C494,1044 488,1012 494,978"/><path d="M508,1080 C508,1040 504,1010 510,976"/>
+          <path d="M522,1080 C523,1044 519,1014 525,980"/><path d="M536,1080 C538,1040 534,1010 540,978"/>
+          <path d="M550,1080 C552,1044 548,1015 554,984"/>
+        </g>
+        <!-- Center cluster -->
+        <g class="wind-grass" style="transform-origin:820px 1080px; animation-delay:0.6s;" stroke="#2a4418" stroke-width="2">
+          <path d="M795,1080 C794,1048 788,1016 794,982"/><path d="M808,1080 C808,1044 804,1013 810,979"/>
+          <path d="M822,1080 C823,1040 819,1010 825,976"/><path d="M836,1080 C837,1044 833,1014 839,980"/>
+          <path d="M850,1080 C851,1040 847,1010 853,978"/>
+        </g>
+        <!-- Right-center cluster -->
+        <g class="wind-grass" style="transform-origin:1100px 1080px; animation-delay:1.0s;" stroke="#344e22" stroke-width="2.2">
+          <path d="M1075,1080 C1074,1044 1068,1012 1074,978"/><path d="M1088,1080 C1088,1040 1084,1010 1090,976"/>
+          <path d="M1102,1080 C1103,1044 1099,1014 1105,980"/><path d="M1116,1080 C1118,1040 1114,1010 1120,978"/>
+          <path d="M1130,1080 C1132,1044 1128,1015 1134,984"/>
+        </g>
+        <!-- Right cluster -->
+        <g class="wind-grass" style="transform-origin:1420px 1080px; animation-delay:0.3s;" stroke="#2e4a1c" stroke-width="2">
+          <path d="M1395,1080 C1394,1048 1388,1016 1394,982"/><path d="M1408,1080 C1408,1044 1404,1013 1410,979"/>
+          <path d="M1422,1080 C1423,1040 1419,1010 1425,976"/><path d="M1436,1080 C1437,1044 1433,1014 1439,980"/>
+          <path d="M1450,1080 C1451,1040 1447,1010 1453,978"/>
+        </g>
+        <!-- Far-right cluster -->
+        <g class="wind-grass" style="transform-origin:1700px 1080px; animation-delay:0.7s;" stroke="#2a4418" stroke-width="2.2">
+          <path d="M1675,1080 C1674,1044 1668,1012 1674,978"/><path d="M1688,1080 C1688,1040 1684,1010 1690,976"/>
+          <path d="M1702,1080 C1703,1044 1699,1014 1705,980"/><path d="M1716,1080 C1718,1040 1714,1010 1720,978"/>
+          <path d="M1730,1080 C1732,1044 1728,1015 1734,984"/>
+        </g>
+        <!-- Rightmost cluster -->
+        <g class="wind-grass" style="transform-origin:1880px 1080px; animation-delay:0.9s;" stroke="#344e22" stroke-width="2">
+          <path d="M1858,1080 C1857,1048 1851,1018 1857,984"/><path d="M1870,1080 C1870,1044 1866,1014 1872,980"/>
+          <path d="M1882,1080 C1882,1040 1878,1010 1884,978"/><path d="M1894,1080 C1895,1044 1891,1015 1897,984"/>
+          <path d="M1906,1080 C1908,1044 1904,1016 1910,982"/>
+        </g>
+      </g>
+      <!-- Wildflowers scattered -->
+      <g>
+        <!-- Amber flowers -->
+        <g fill="#d4900a">
+          <circle cx="155" cy="990" r="4"/><circle cx="355" cy="1005" r="3.5"/><circle cx="640" cy="994" r="4"/>
+          <circle cx="920" cy="1002" r="3.5"/><circle cx="1180" cy="990" r="4"/><circle cx="1360" cy="1008" r="3.5"/>
+          <circle cx="1570" cy="996" r="4"/><circle cx="1800" cy="1002" r="3.5"/>
+        </g>
+        <g stroke="#8a6010" stroke-width="1.2" fill="none">
+          <line x1="155" y1="994" x2="155" y2="1010"/><line x1="355" y1="1009" x2="355" y2="1024"/>
+          <line x1="640" y1="998" x2="640" y2="1014"/><line x1="920" y1="1006" x2="920" y2="1022"/>
+          <line x1="1180" y1="994" x2="1180" y2="1010"/><line x1="1360" y1="1012" x2="1360" y2="1026"/>
+          <line x1="1570" y1="1000" x2="1570" y2="1016"/><line x1="1800" y1="1006" x2="1800" y2="1020"/>
+        </g>
+        <!-- White flowers -->
+        <g fill="#f0ece0" opacity="0.85">
+          <circle cx="78"  cy="1008" r="3"/><circle cx="460" cy="1012" r="3.5"/><circle cx="755" cy="998" r="3"/>
+          <circle cx="1040" cy="1015" r="3.5"/><circle cx="1280" cy="1003" r="3"/><circle cx="1490" cy="1018" r="3.5"/>
+          <circle cx="1670" cy="1005" r="3"/><circle cx="1920" cy="1010" r="3.5"/>
+        </g>
+      </g>
+      <!-- Dark vignette at very bottom -->
+      <rect x="0" y="980" width="1920" height="100" fill="url(#fgVig)"/>
+    </svg>
+
+  </div><!-- end #scene -->
 
   <!-- Hero copy -->
-  <div id="hero-copy" style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;opacity:0;transform:translateY(20px);">
-    <img src="/images/logo.jpg" alt="Green Wadi" style="width:clamp(70px,10vw,130px);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,0.5);margin-bottom:36px;"/>
-    <h1 style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(60px,10vw,160px);letter-spacing:-0.04em;line-height:0.9;color:#F8F9F5;text-shadow:0 4px 40px rgba(0,0,0,0.55);">Green Wadi</h1>
-    <p style="margin-top:24px;font-size:clamp(13px,1.8vw,20px);letter-spacing:0.26em;text-transform:uppercase;color:rgba(248,249,245,0.75);">Precision &nbsp;·&nbsp; Growth &nbsp;·&nbsp; Legacy</p>
+  <div id="hero-copy" style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;opacity:0;transform:translateY(16px);">
+    <img src="/images/logo.jpg" alt="Green Wadi" style="width:clamp(68px,9vw,120px);border-radius:12px;box-shadow:0 16px 50px rgba(0,0,0,0.55),0 0 0 1px rgba(255,255,255,0.12);margin-bottom:32px;"/>
+    <h1 style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(56px,9vw,148px);letter-spacing:-0.04em;line-height:0.88;color:#F8F9F5;text-shadow:0 3px 36px rgba(0,0,0,0.6);">Green Wadi</h1>
+    <p style="margin-top:22px;font-size:clamp(12px,1.6vw,18px);letter-spacing:0.26em;text-transform:uppercase;color:rgba(248,249,245,0.72);">Precision &nbsp;·&nbsp; Growth &nbsp;·&nbsp; Legacy</p>
   </div>
 
   <!-- Scroll indicator -->
-  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:8px;">
-    <span style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(248,249,245,0.5);">Scroll</span>
-    <div style="width:1px;height:44px;position:relative;overflow:hidden;background:linear-gradient(180deg,transparent,rgba(248,249,245,0.35));"><div style="position:absolute;inset:-40% 0 auto 0;height:40%;background:linear-gradient(180deg,transparent,#10B981);animation:scrollDown 2.4s cubic-bezier(.4,0,.2,1) infinite;"></div></div>
+  <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <span style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(248,249,245,0.48);">Scroll</span>
+    <div style="width:1px;height:42px;position:relative;overflow:hidden;background:linear-gradient(180deg,transparent,rgba(248,249,245,0.3));"><div style="position:absolute;inset:-40% 0 auto 0;height:40%;background:linear-gradient(180deg,transparent,#10B981);animation:scrollDown 2.4s cubic-bezier(.4,0,.2,1) infinite;"></div></div>
   </div>
 
 </section>
@@ -706,47 +763,43 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ── Letterbox open ──
-gsap.to('#lb-top', { scaleY: 0, duration: 1.4, ease: 'power3.inOut', delay: 0.3, transformOrigin: '50% 0%' });
-gsap.to('#lb-bot', { scaleY: 0, duration: 1.4, ease: 'power3.inOut', delay: 0.3, transformOrigin: '50% 100%' });
+gsap.to('#lb-top', { scaleY:0, duration:1.6, ease:'power3.inOut', delay:0.2, transformOrigin:'50% 0%' });
+gsap.to('#lb-bot', { scaleY:0, duration:1.6, ease:'power3.inOut', delay:0.2, transformOrigin:'50% 100%' });
 
-// ── Cinematic zoom timeline ──
-const zoomTL = gsap.timeline({ delay: 0.5 });
-zoomTL
-  .to('#scene',     { scale: 2.6, y: '-12%', duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-sky',     { yPercent: -3,   duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-rays',    { yPercent: -5,   duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-mtn-far', { yPercent: -8,   duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-mtn-mid', { yPercent: -16,  duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-hills',   { yPercent: -28,  duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-wadi',    { yPercent: -40,  duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-fields',  { yPercent: -55,  duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-trees',   { yPercent: -80,  duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#l-fg',      { yPercent: -120, duration: 14, ease: 'power1.inOut' }, 0)
-  .to('#hero-copy', { opacity: 1, y: 0, duration: 3, ease: 'power2.out' }, 5)
-  .to('#scene',     { scale: 2.65, duration: 8, ease: 'sine.inOut', repeat: -1, yoyo: true }, 14.5);
+// ── Very slight, slow cinematic zoom (scale 1 → 1.14 over 22s) ──
+gsap.to('#scene', { scale:1.14, duration:22, ease:'power1.inOut', delay:0.4,
+  onComplete: () => {
+    // After zoom, idle breathe ±1%
+    gsap.to('#scene', { scale:1.16, duration:9, ease:'sine.inOut', repeat:-1, yoyo:true });
+  }
+});
 
-// ── Mouse parallax (post-zoom) ──
+// ── Title fades in at t=2.5s ──
+gsap.to('#hero-copy', { opacity:1, y:0, duration:2.2, ease:'power2.out', delay:2.5 });
+
+// ── Mouse parallax ──
 const hero = document.getElementById('hero');
-let mx = 0, my = 0, tx = 0, ty = 0;
+let mx=0, my=0, tx=0, ty=0;
 hero.addEventListener('mousemove', e => {
   const r = hero.getBoundingClientRect();
-  tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
-  ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+  tx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+  ty = ((e.clientY - r.top)  / r.height - 0.5) * 2;
 });
-hero.addEventListener('mouseleave', () => { tx = 0; ty = 0; });
+hero.addEventListener('mouseleave', () => { tx=0; ty=0; });
 gsap.ticker.add(() => {
-  mx += (tx - mx) * 0.04;
-  my += (ty - my) * 0.04;
+  mx += (tx-mx)*0.04; my += (ty-my)*0.04;
   [
-    { id:'#l-sky',     d:0.02 },
-    { id:'#l-mtn-far', d:0.06 },
-    { id:'#l-mtn-mid', d:0.10 },
-    { id:'#l-hills',   d:0.16 },
-    { id:'#l-wadi',    d:0.22 },
-    { id:'#l-fields',  d:0.28 },
-    { id:'#l-trees',   d:0.36 },
-    { id:'#l-fg',      d:0.50 },
-  ].forEach(({ id, d }) => gsap.set(id, { x: -mx * 60 * d, y: -my * 35 * d }));
+    { id:'#l-sky',          d:0.02 },
+    { id:'#l-rays',         d:0.03 },
+    { id:'#l-clouds',       d:0.04 },
+    { id:'#l-mtn-far',      d:0.07 },
+    { id:'#l-mtn-mid',      d:0.12 },
+    { id:'#l-hills',        d:0.18 },
+    { id:'#l-valley',       d:0.24 },
+    { id:'#l-trees-left',   d:0.30 },
+    { id:'#l-trees-right',  d:0.30 },
+    { id:'#l-fg',           d:0.46 },
+  ].forEach(({id,d}) => gsap.set(id, { x:-mx*55*d, y:-my*32*d }));
 });
 
 // ── Friedman photo scroll reveal + mouse tilt ──

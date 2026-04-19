@@ -5,113 +5,46 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Activities — Green Wadi</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/globe.gl/dist/globe.gl.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
-  body { padding-top:72px; background:#F8F9F5; }
-  .intro {
+  body{ padding-top:72px; background:#F8F9F5; }
+  .intro{
     padding: 100px 0 60px;
     background: radial-gradient(60% 50% at 30% 20%, rgba(16,185,129,0.14), transparent 60%),
       radial-gradient(40% 40% at 80% 80%, rgba(244,199,123,0.2), transparent 60%),
       #F8F9F5;
   }
-  .activity { display:grid; grid-template-columns:1fr 1fr; gap:48px; padding:56px 0; border-top:1px solid rgba(15,23,42,0.08); align-items:center; }
-  .activity:nth-child(even) .visual { order:-1; }
-  @media(max-width:900px){
-    .activity { grid-template-columns:1fr; gap:24px; }
-    .activity:nth-child(even) .visual { order:0; }
+  .map-hero{
+    margin: 0 0 64px;
+    border-radius: 22px; overflow:hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
   }
-  .visual { aspect-ratio:4/3; border-radius:20px; overflow:hidden; position:relative; }
-  .v-field     { background:linear-gradient(180deg,#F2D9B2 0%,#6F9C5A 50%,#1F5F3A 100%); }
-  .v-lab       { background:linear-gradient(135deg,#E9FBF3,#B9E6D0 60%,#0F7B52); }
-  .v-drone     { background:linear-gradient(180deg,#F6EBD4,#E8BF84); }
-  .v-classroom { background:linear-gradient(135deg,#1F5F3A,#0B1220); }
-  .v-pond      { background:linear-gradient(180deg,#A9D1C2,#14B8A6 70%,#0F7B52); }
-  .v-forest    { background:linear-gradient(180deg,#3E6A34,#1E3A1E); }
-  .visual::after { content:""; position:absolute; inset:0; background:radial-gradient(circle at 70% 30%,rgba(255,255,255,0.35),transparent 60%); }
-  .badge { position:absolute; top:16px; left:16px; padding:5px 12px; border-radius:999px; background:rgba(255,255,255,0.85); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#1E2A3A; backdrop-filter:blur(8px); }
-  .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
-  .stat-row .v { font-family:"Fraunces",serif; font-size:28px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52; }
-  .stat-row .l { font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:#64748B; margin-top:2px; }
-
-  /* ── Globe Section ── */
-  #globe-section {
-    background: #020b04;
-    position: relative;
-    overflow: hidden;
+  .map-hero img{ width:100%; display:block; }
+  .activity{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 56px 0; border-top:1px solid rgba(15,23,42,0.08); align-items:center;}
+  .activity:nth-child(even) .visual{ order: -1; }
+  @media (max-width: 900px){
+    .activity{ grid-template-columns: 1fr; gap: 24px; }
+    .activity:nth-child(even) .visual{ order:0; }
   }
-  #globe-section::before {
-    content:'';
-    position:absolute; inset:0;
-    background: radial-gradient(ellipse 55% 55% at 28% 55%, rgba(16,185,129,0.07), transparent 70%);
-    pointer-events:none;
+  .visual{ aspect-ratio: 4/3; border-radius: 20px; overflow:hidden; position:relative; }
+  .v-field{ background: linear-gradient(180deg,#F2D9B2 0%, #6F9C5A 50%, #1F5F3A 100%);}
+  .v-lab{ background: linear-gradient(135deg,#E9FBF3, #B9E6D0 60%, #0F7B52);}
+  .v-drone{ background: linear-gradient(180deg,#F6EBD4,#E8BF84);}
+  .v-classroom{ background: linear-gradient(135deg,#1F5F3A,#0B1220);}
+  .v-pond{ background: linear-gradient(180deg,#A9D1C2,#14B8A6 70%,#0F7B52);}
+  .v-forest{ background: linear-gradient(180deg,#3E6A34,#1E3A1E);}
+  .visual::after{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.35), transparent 60%);}
+  .badge{
+    position:absolute; top:16px; left:16px; padding:5px 12px; border-radius:999px;
+    background: rgba(255,255,255,0.85); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:#1E2A3A; backdrop-filter: blur(8px);
   }
-  .globe-layout {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    min-height: 680px;
-    position: relative;
-  }
-  @media(max-width:960px) {
-    .globe-layout { grid-template-columns:1fr; min-height:auto; }
-    #globe-wrap   { height:460px !important; }
-    #country-card { border-left:none; border-top:1px solid rgba(16,185,129,0.15); }
-  }
-  #globe-wrap { height:680px; position:relative; }
-  #country-card {
-    border-left: 1px solid rgba(16,185,129,0.12);
-    background: rgba(3,12,5,0.97);
-    padding: 44px 36px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-  }
-  #country-card.fade { opacity:0; }
-
-  /* Dot nav */
-  .g-dot {
-    width:9px; height:9px; border-radius:50%;
-    border:none; cursor:pointer; padding:0;
-    background: rgba(255,255,255,0.15);
-    transition: all 0.35s cubic-bezier(0.2,0.8,0.2,1);
-  }
-  .g-dot.active {
-    background: #10B981;
-    transform: scale(1.55);
-    box-shadow: 0 0 10px rgba(16,185,129,0.7);
-    animation: dotPulse 2.2s ease-in-out infinite;
-  }
-  @keyframes dotPulse {
-    0%,100% { box-shadow:0 0 0 0 rgba(16,185,129,0.5); }
-    50%      { box-shadow:0 0 0 7px rgba(16,185,129,0); }
-  }
-
-  /* Progress bar */
-  #prog-bar {
-    height:2px;
-    background: linear-gradient(90deg,#10B981,#34d399);
-    border-radius:1px;
-    width:0%;
-    transition:width 5.2s linear;
-  }
-
-  /* Card inner elements */
-  .card-flag  { font-size:36px; line-height:1; }
-  .card-sector { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#10B981; margin-top:14px; }
-  .card-name  { font-family:'Fraunces',serif; font-size:clamp(26px,3vw,36px); color:#F8F9F5; line-height:1.05; margin-top:6px; letter-spacing:-0.02em; }
-  .card-head  { font-size:15px; font-weight:600; color:#F8F9F5; margin-top:18px; letter-spacing:-0.01em; }
-  .card-body  { font-size:13.5px; line-height:1.72; color:rgba(248,249,245,0.62); margin-top:10px; }
-  .card-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:22px; padding-top:18px; border-top:1px solid rgba(16,185,129,0.14); }
-  .cs-v { font-family:'Fraunces',serif; font-size:22px; font-weight:300; color:#10B981; line-height:1; }
-  .cs-l { font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(248,249,245,0.38); margin-top:4px; }
-  .card-foot { display:flex; justify-content:space-between; align-items:center; margin-top:14px; }
-  .card-counter { font-size:10px; color:rgba(248,249,245,0.28); letter-spacing:.06em; }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
+  .stat-row .v{ font-family:"Fraunces",serif; font-size:28px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52; }
+  .stat-row .l{ font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:#64748B; margin-top:2px; }
 </style>
 </head>
 <body data-page="activities">
@@ -124,64 +57,32 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════ -->
-<!--  3-D GLOBE SECTION                                      -->
-<!-- ═══════════════════════════════════════════════════════ -->
-<section id="globe-section">
-
-  <!-- Header -->
-  <div class="wrap" style="padding-top:72px; padding-bottom:44px;">
-    <div class="eyebrow mb-4" style="color:#10B981;">— Global Operations</div>
-    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:24px;">
-      <h2 class="h2" style="color:#F8F9F5; max-width:22ch; line-height:1.02;">
-        12 countries.<br>One practice.<br>Verified results.
-      </h2>
-      <p style="color:rgba(248,249,245,0.48); max-width:44ch; font-size:13.5px; line-height:1.75;">
-        The globe tours each country automatically — watch it rotate to every programme,
-        light the nation in green, and reveal what was built there.
-        Click any dot below to jump directly.
-      </p>
-    </div>
-  </div>
-
-  <!-- Globe + Card -->
-  <div class="globe-layout">
-    <div id="globe-wrap"></div>
-    <div id="country-card">
-      <div style="color:rgba(248,249,245,0.25); text-align:center; padding:60px 0; font-size:13px; letter-spacing:.1em; text-transform:uppercase;">
-        Initialising globe…
-      </div>
-    </div>
-  </div>
-
-  <!-- Dot navigation -->
-  <div id="globe-dots" style="display:flex; gap:14px; justify-content:center; padding:30px 0 52px; flex-wrap:wrap;"></div>
-
-</section>
-
-<!-- Stats strip (dark, continuing the globe section feel) -->
-<section style="padding:60px 0; background:#030e05; border-top:1px solid rgba(16,185,129,0.08);">
+<!-- World map hero visual -->
+<section style="padding:0 0 0">
   <div class="wrap">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div class="map-hero">
+      <img src="/images/worldmap.png" alt="Green Wadi Global Activities — 12 Countries" loading="lazy"/>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
       <div>
-        <div style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(48px,6vw,72px);letter-spacing:-0.03em;color:#F8F9F5;line-height:1;">12</div>
-        <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#10B981;margin-top:6px;">Countries</div>
-        <div style="color:rgba(248,249,245,0.48);font-size:13px;margin-top:4px;">Active field operations</div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">12</div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Countries</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Active field operations</div>
       </div>
       <div>
-        <div style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(48px,6vw,72px);letter-spacing:-0.03em;color:#F8F9F5;line-height:1;">184<span style="font-size:.5em;color:#10B981;vertical-align:super;">+</span></div>
-        <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#10B981;margin-top:6px;">Farms</div>
-        <div style="color:rgba(248,249,245,0.48);font-size:13px;margin-top:4px;">Transformed enterprises</div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">184<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Farms</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Transformed enterprises</div>
       </div>
       <div>
-        <div style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(48px,6vw,72px);letter-spacing:-0.03em;color:#F8F9F5;line-height:1;">47<span style="font-size:.5em;color:#10B981;vertical-align:super;">%</span></div>
-        <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#10B981;margin-top:6px;">Avg. yield uplift</div>
-        <div style="color:rgba(248,249,245,0.48);font-size:13px;margin-top:4px;">Independently verified</div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">47<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">%</span></div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Avg. yield uplift</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Independently verified</div>
       </div>
       <div>
-        <div style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(48px,6vw,72px);letter-spacing:-0.03em;color:#F8F9F5;line-height:1;">10<span style="font-size:.5em;color:#10B981;vertical-align:super;">+</span></div>
-        <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#10B981;margin-top:6px;">Years</div>
-        <div style="color:rgba(248,249,245,0.48);font-size:13px;margin-top:4px;">Of field experience</div>
+        <div style="font-family:'Fraunces',serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">10<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
+        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Years</div>
+        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Of field experience</div>
       </div>
     </div>
   </div>
@@ -203,27 +104,70 @@
       <p class="body max-w-[40ch]">Every client sees the same rhythm: instrument, plant, scout, harvest, review. The rhythm is the product.</p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="card"><div class="eyebrow mb-2">Q1</div><div class="h3">Instrument</div><p class="small mt-2">Soil samples, sensor calibration, seasonal planning and baseline measurements.</p></div>
-      <div class="card"><div class="eyebrow mb-2">Q2</div><div class="h3">Plant</div><p class="small mt-2">Variable-rate seeding, canopy training, early-season pest monitoring.</p></div>
-      <div class="card"><div class="eyebrow mb-2">Q3</div><div class="h3">Scout</div><p class="small mt-2">Weekly drone passes, multispectral analysis, disease response protocols.</p></div>
-      <div class="card"><div class="eyebrow mb-2">Q4</div><div class="h3">Harvest &amp; review</div><p class="small mt-2">Grade, store, independent audit, plan next season with verified data.</p></div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q1</div>
+        <div class="h3">Instrument</div>
+        <p class="small mt-2">Soil samples, sensor calibration, seasonal planning and baseline measurements.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q2</div>
+        <div class="h3">Plant</div>
+        <p class="small mt-2">Variable-rate seeding, canopy training, early-season pest monitoring.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q3</div>
+        <div class="h3">Scout</div>
+        <p class="small mt-2">Weekly drone passes, multispectral analysis, disease response protocols.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow mb-2">Q4</div>
+        <div class="h3">Harvest &amp; review</div>
+        <p class="small mt-2">Grade, store, independent audit, plan next season with verified data.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
-
-<!-- ═══════════════════════════ SCRIPTS ═══════════════════════════ -->
 <script>
-/* ── Activity rows ── */
 const acts = [
-  { b:'Field',     c:'v-field',     t:'On-farm trials',                d:'Every recommendation is tested against a control block on the client farm before it ships to the rest of the estate. Three seasons minimum, independent verification on every result.',                                                      stats:[{v:'3',    l:'Seasons min.'},{v:'100%',l:'Control tested'},{v:'ISO',   l:'Verified'}] },
-  { b:'Lab',       c:'v-lab',       t:'Soil &amp; tissue analysis',     d:'ISO-accredited soil, tissue and microbiome work. Results within 72 hours, paired with a clear recommendation — not just numbers. We translate data into action.',                                                                            stats:[{v:'72h',  l:'Turnaround'},{v:'ISO',  l:'Accredited'},{v:'Full',  l:'Recommendation'}] },
-  { b:'Air',       c:'v-drone',     t:'Multispectral scouting',         d:'NDVI, NDRE, thermal and LWIR stacks flown on a weekly cadence. Plant-level disease detection cross-checked against ground truth. Field-to-cloud in under seven minutes.',                                                                    stats:[{v:'7min', l:'Field to cloud'},{v:'NDVI',l:'+ NDRE + thermal'},{v:'Weekly',l:'Cadence'}] },
-  { b:'Teach',     c:'v-classroom', t:'Operator academy',               d:'We train the people on the farm to run the instruments after we leave. Two-week residency, local language, free to clients. Capacity building at every level of the value chain.',                                                           stats:[{v:'2wk',  l:'Residency'},{v:'Local',l:'Language'},{v:'Free', l:'For clients'}] },
-  { b:'Water',     c:'v-pond',      t:'Aquaculture-horticulture pairing',d:'IMTA ponds engineered to feed a matched horticultural block. Nutrient cycling monitored in real time, closing the loop between production systems for maximum efficiency.',                                                                  stats:[{v:'IMTA', l:'System design'},{v:'Real-time',l:'Monitoring'},{v:'Closed',l:'Nutrient loop'}] },
-  { b:'Forest',    c:'v-forest',    t:'Native-species silviculture',    d:'Agroforestry designs that interleave productive tree cover with agricultural ground. Each planting is tagged and monitored for 25 years — land conservation as a long-term investment.',                                                    stats:[{v:'25yr', l:'Monitoring'},{v:'Native',l:'Species first'},{v:'Tagged',l:'Every planting'}] },
+  {
+    b:'Field', c:'v-field',
+    t:'On-farm trials',
+    d:'Every recommendation is tested against a control block on the client farm before it ships to the rest of the estate. Three seasons minimum, independent verification on every result.',
+    stats:[{v:'3', l:'Seasons min.'},{v:'100%', l:'Control tested'},{v:'ISO', l:'Verified'}]
+  },
+  {
+    b:'Lab', c:'v-lab',
+    t:'Soil &amp; tissue analysis',
+    d:'ISO-accredited soil, tissue and microbiome work. Results within 72 hours, paired with a clear recommendation — not just numbers. We translate data into action.',
+    stats:[{v:'72h', l:'Turnaround'},{v:'ISO', l:'Accredited'},{v:'Full', l:'Recommendation'}]
+  },
+  {
+    b:'Air', c:'v-drone',
+    t:'Multispectral scouting',
+    d:'NDVI, NDRE, thermal and LWIR stacks flown on a weekly cadence. Plant-level disease detection cross-checked against ground truth. Field-to-cloud in under seven minutes.',
+    stats:[{v:'7min', l:'Field to cloud'},{v:'NDVI', l:'+ NDRE + thermal'},{v:'Weekly', l:'Cadence'}]
+  },
+  {
+    b:'Teach', c:'v-classroom',
+    t:'Operator academy',
+    d:'We train the people on the farm to run the instruments after we leave. Two-week residency, local language, free to clients. Capacity building at every level of the value chain.',
+    stats:[{v:'2wk', l:'Residency'},{v:'Local', l:'Language'},{v:'Free', l:'For clients'}]
+  },
+  {
+    b:'Water', c:'v-pond',
+    t:'Aquaculture-horticulture pairing',
+    d:'IMTA ponds engineered to feed a matched horticultural block. Nutrient cycling monitored in real time, closing the loop between production systems for maximum efficiency.',
+    stats:[{v:'IMTA', l:'System design'},{v:'Real-time', l:'Monitoring'},{v:'Closed', l:'Nutrient loop'}]
+  },
+  {
+    b:'Forest', c:'v-forest',
+    t:'Native-species silviculture',
+    d:'Agroforestry designs that interleave productive tree cover with agricultural ground. Each planting is tagged and monitored for 25 years — land conservation as a long-term investment.',
+    stats:[{v:'25yr', l:'Monitoring'},{v:'Native', l:'Species first'},{v:'Tagged', l:'Every planting'}]
+  },
 ];
 document.getElementById('actList').innerHTML = acts.map(a => `
   <div class="activity">
@@ -232,308 +176,11 @@ document.getElementById('actList').innerHTML = acts.map(a => `
       <div class="eyebrow mb-3">— Activity</div>
       <h3 class="h2" style="font-size:clamp(28px,3.5vw,44px)">${a.t}</h3>
       <p class="body mt-5 max-w-[52ch]">${a.d}</p>
-      <div class="stat-row">${a.stats.map(s=>`<div><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}</div>
+      <div class="stat-row">
+        ${a.stats.map(s=>`<div><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
+      </div>
     </div>
   </div>`).join('');
-
-
-/* ══════════════════════════════════════════════════════════
-   3-D GLOBE — Country Tour
-   ══════════════════════════════════════════════════════════ */
-
-const TOUR = [
-  {
-    geoName:'Israel', lat:31.5, lng:35.0, flag:'🇮🇱',
-    sector:'Precision Agriculture · R&D',
-    headline:'Home Base & Innovation Hub',
-    body:'The birthplace of Green Wadi. Working directly with Israel\'s Ministry of Agriculture, Shmuel Friedman developed precision drip irrigation, integrated soil telemetry, and crop management systems that now underpin every programme worldwide.',
-    stats:[{v:'30+ yr',l:'Field experience'},{v:'MoA',l:'Former Chief of Staff'},{v:'HQ',l:'Sde Yaakov'}]
-  },
-  {
-    geoName:'Jordan', lat:31.2, lng:36.5, flag:'🇯🇴',
-    sector:'Wadi Rehabilitation · Water',
-    headline:'Desert Water Recovery',
-    body:'Wadi recharge engineering and drip-irrigation retrofits across 18 arid farms in the Jordan Valley. Soil moisture retention tripled in trial plots; wadi baseflow restored for three consecutive dry seasons through engineered recharge ponds.',
-    stats:[{v:'18',l:'Farms'},{v:'3×',l:'Soil moisture'},{v:'Wadi',l:'Flow restored'}]
-  },
-  {
-    geoName:'Ethiopia', lat:9.1, lng:40.5, flag:'🇪🇹',
-    sector:'Cereals · Smallholder Scale-up',
-    headline:'Staple Crop Transformation',
-    body:'Large-scale cereal transformation across 40 smallholder cooperatives in the Rift Valley. Teff and sorghum yields lifted 52% through precision variety selection, variable-rate fertilisation, and post-harvest conditioning infrastructure.',
-    stats:[{v:'40',l:'Cooperatives'},{v:'+52%',l:'Yield uplift'},{v:'Teff',l:'+ Sorghum'}]
-  },
-  {
-    geoName:'Kenya', lat:-1.3, lng:37.0, flag:'🇰🇪',
-    sector:'Horticulture · Export Supply Chains',
-    headline:'High-Value Horticulture',
-    body:'Fresh-produce export supply chains for 12 Kenyan farms supplying EU retailers. Cold-chain design, pre-cool facilities and GlobalG.A.P. pack-house certification — all completed and compliant within a single growing season.',
-    stats:[{v:'12',l:'Export farms'},{v:'EU',l:'Certified'},{v:'One',l:'Season delivery'}]
-  },
-  {
-    geoName:'Rwanda', lat:-1.9, lng:29.9, flag:'🇷🇼',
-    sector:'Terracing · Soil Conservation',
-    headline:'Hillside Soil Restoration',
-    body:'Radical hillside terracing across Rwanda\'s volcanic highlands. Erosion rates cut by 78%, soil carbon baseline established, and 8,000 native tree seedlings planted in agroforestry corridors — part of a five-year stewardship plan.',
-    stats:[{v:'-78%',l:'Erosion'},{v:'8 K',l:'Native trees'},{v:'5 yr',l:'Carbon plan'}]
-  },
-  {
-    geoName:'Morocco', lat:31.8, lng:'-7.1', flag:'🇲🇦',
-    sector:'Agro-industry · Olive & Citrus',
-    headline:'Citrus & Olive Value Chains',
-    body:'Integrated olive and citrus agro-industry programme in the Souss-Massa region. Mill modernisation, EU PDO certification, and new export contracts — representing $4 M in additional annual revenue across nine producer cooperatives.',
-    stats:[{v:'9',l:'Cooperatives'},{v:'PDO',l:'EU certified'},{v:'$4 M',l:'New export value'}]
-  },
-  {
-    geoName:'Egypt', lat:26.0, lng:30.0, flag:'🇪🇬',
-    sector:'Irrigation · Delta Systems',
-    headline:'Nile Delta Modernisation',
-    body:'Drip and sub-surface irrigation retrofit across 22,000 ha in the Nile Delta. Water consumption fell 38% versus flood-irrigation benchmarks — with no reduction in cotton and vegetable yields across three consecutive seasons.',
-    stats:[{v:'22 K ha',l:'Retrofitted'},{v:'-38%',l:'Water use'},{v:'Cotton',l:'+ Vegetables'}]
-  },
-  {
-    geoName:'Azerbaijan', lat:40.1, lng:47.6, flag:'🇦🇿',
-    sector:'Viticulture · Precision Orchards',
-    headline:'Vineyard Precision Upgrade',
-    body:'Precision viticulture across six estates in the Shirvan corridor. Canopy management, soil micro-zoning, and micro-climate monitoring deployed; wine-grape quality index rose two full grades over two consecutive vintages.',
-    stats:[{v:'6',l:'Estates'},{v:'+2 grades',l:'Quality index'},{v:'Micro',l:'Climate zoned'}]
-  },
-  {
-    geoName:'India', lat:20.6, lng:78.9, flag:'🇮🇳',
-    sector:'Drip · Precision Farming',
-    headline:'Mass Drip Irrigation Rollout',
-    body:'Precision drip irrigation and crop advisory for 500 smallholder sugarcane and cotton farmers in Maharashtra. Participating farms reduced input costs 28% while lifting cane sucrose content 12% — generating an average $1,400 uplift per family.',
-    stats:[{v:'500',l:'Smallholders'},{v:'-28%',l:'Input costs'},{v:'+12%',l:'Sucrose content'}]
-  },
-  {
-    geoName:'Vietnam', lat:14.1, lng:108.3, flag:'🇻🇳',
-    sector:'Rice · Integrated Aquaculture',
-    headline:'Rice-Fish IMTA Systems',
-    body:'Integrated rice-fish IMTA systems across the Mekong Delta. Closed-loop nutrient cycling between paddy fields and freshwater fish ponds lifted combined farm revenues 44% — with zero additional water draw from the river system.',
-    stats:[{v:'+44%',l:'Revenue'},{v:'IMTA',l:'System'},{v:'Zero',l:'Water increase'}]
-  },
-  {
-    geoName:'Senegal', lat:14.5, lng:-14.5, flag:'🇸🇳',
-    sector:'Drylands · Groundnut Value Chain',
-    headline:'Sahel Drylands Rehabilitation',
-    body:'Groundnut value-chain development and anti-desertification planting along Senegal\'s Sahel fringe. 6,200 ha of degraded land returned to productive use through Farmer Managed Natural Regeneration (FMNR) — with women\'s cooperatives leading implementation.',
-    stats:[{v:'6.2 K ha',l:'Rehabilitated'},{v:'FMNR',l:'Technique'},{v:'Women',l:'Led cooperatives'}]
-  },
-  {
-    geoName:'Ghana', lat:7.9, lng:-1.0, flag:'🇬🇭',
-    sector:'Agroforestry · Cocoa Systems',
-    headline:'Cocoa Agroforestry Certification',
-    body:'Shade-grown cocoa agroforestry with 14 cooperatives in Brong-Ahafo. Native shade trees interplanted, soil carbon sequestration independently verified, and Rainforest Alliance certification achieved in 18 months — opening premium market access.',
-    stats:[{v:'14',l:'Cooperatives'},{v:'RA',l:'Certified'},{v:'18 mo',l:'Certification'}]
-  }
-];
-
-/* GeoJSON name variants for datasets that differ */
-const ALIASES = {
-  'Vietnam':    ['Vietnam','Viet Nam','Socialist Republic of Vietnam'],
-  'Morocco':    ['Morocco','Western Sahara','Maroc'],
-  'Egypt':      ['Egypt','Arab Republic of Egypt'],
-  'Azerbaijan': ['Azerbaijan'],
-  'India':      ['India'],
-  'Ghana':      ['Ghana'],
-  'Senegal':    ['Senegal'],
-};
-
-let globeIdx  = 0;
-let globeInst = null;
-let geoData   = null;
-let tourTimer = null;
-const DWELL   = 6200; // ms per country
-
-/* ── Name matching ── */
-function matchesIdx(featName, i) {
-  const cn = TOUR[i].geoName;
-  if (featName === cn) return true;
-  const al = ALIASES[cn];
-  return al ? al.includes(featName) : false;
-}
-function isAnyTourCountry(featName) {
-  return TOUR.some((_, i) => matchesIdx(featName, i));
-}
-
-/* ── Polygon accessors — read globeIdx from closure ── */
-function capColor(feat) {
-  const n = feat.properties.name || feat.properties.NAME || '';
-  if (matchesIdx(n, globeIdx))       return 'rgba(16,220,110,0.90)';
-  if (isAnyTourCountry(n))           return 'rgba(16,185,129,0.20)';
-  return 'rgba(255,255,255,0.04)';
-}
-function sideColor(feat) {
-  const n = feat.properties.name || feat.properties.NAME || '';
-  if (matchesIdx(n, globeIdx)) return 'rgba(16,220,110,0.45)';
-  return 'rgba(0,40,15,0.04)';
-}
-function polyAlt(feat) {
-  const n = feat.properties.name || feat.properties.NAME || '';
-  return matchesIdx(n, globeIdx) ? 0.06 : 0.005;
-}
-
-/* ── Card renderer ── */
-function renderCard(c, i) {
-  const card = document.getElementById('country-card');
-  card.classList.add('fade');
-  setTimeout(() => {
-    card.innerHTML = `
-      <div class="card-flag">${c.flag}</div>
-      <div class="card-sector">${c.sector}</div>
-      <div class="card-name">${c.geoName}</div>
-      <div class="card-head">${c.headline}</div>
-      <p class="card-body">${c.body}</p>
-      <div class="card-stats">
-        ${c.stats.map(s => `
-          <div>
-            <div class="cs-v">${s.v}</div>
-            <div class="cs-l">${s.l}</div>
-          </div>`).join('')}
-      </div>
-      <div style="margin-top:20px; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden; height:2px;">
-        <div id="prog-bar"></div>
-      </div>
-      <div class="card-foot">
-        <span class="card-counter">${i + 1} / ${TOUR.length}</span>
-        <span class="card-counter" style="color:rgba(16,185,129,0.5);">Auto-advancing →</span>
-      </div>`;
-    card.classList.remove('fade');
-    /* Kick progress bar */
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const bar = document.getElementById('prog-bar');
-        if (bar) bar.style.width = '100%';
-      });
-    });
-  }, 280);
-}
-
-/* ── Dot nav ── */
-function updateDots(i) {
-  document.querySelectorAll('.g-dot').forEach((d, j) => {
-    d.classList.toggle('active', j === i);
-  });
-}
-
-/* ── Jump to country ── */
-function jumpTo(i) {
-  globeIdx = i;
-  const c = TOUR[i];
-
-  /* Fly camera to country */
-  if (globeInst) {
-    globeInst.pointOfView({ lat: c.lat, lng: parseFloat(c.lng), altitude: 2.1 }, 1600);
-    /* Refresh polygons — spread creates new array reference */
-    globeInst
-      .polygonCapColor(capColor)
-      .polygonSideColor(sideColor)
-      .polygonAltitude(polyAlt)
-      .polygonsData([...geoData.features]);
-
-    /* Update pulsing ring */
-    globeInst.ringsData([{ lat: c.lat, lng: parseFloat(c.lng) }]);
-  }
-
-  renderCard(c, i);
-  updateDots(i);
-}
-
-/* ── Auto tour ── */
-function startTour() {
-  clearInterval(tourTimer);
-  tourTimer = setInterval(() => {
-    globeIdx = (globeIdx + 1) % TOUR.length;
-    jumpTo(globeIdx);
-  }, DWELL);
-}
-
-/* ── Globe init ── */
-function initGlobe(geo) {
-  geoData = geo;
-  const el = document.getElementById('globe-wrap');
-
-  globeInst = Globe()
-    /* Textures */
-    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
-    .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
-    .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
-    /* Atmosphere */
-    .atmosphereColor('#00e070')
-    .atmosphereAltitude(0.22)
-    /* Country polygons */
-    .polygonsData(geo.features)
-    .polygonCapColor(capColor)
-    .polygonSideColor(sideColor)
-    .polygonStrokeColor(() => '#0d2015')
-    .polygonAltitude(polyAlt)
-    /* Pulsing ring on active country */
-    .ringsData([{ lat: TOUR[0].lat, lng: TOUR[0].lng }])
-    .ringColor(() => t => `rgba(16,220,110,${Math.sqrt(Math.max(0, 1 - t)) * 0.8})`)
-    .ringMaxRadius(5)
-    .ringPropagationSpeed(2)
-    .ringRepeatPeriod(800)
-    /* Points on all 12 countries */
-    .pointsData(TOUR.map(c => ({ lat: c.lat, lng: parseFloat(c.lng), name: c.geoName })))
-    .pointColor(() => '#10B981')
-    .pointAltitude(0.01)
-    .pointRadius(0.38)
-    .pointsMerge(false)
-    /* Click handler */
-    .onPolygonClick(feat => {
-      const n = feat.properties.name || feat.properties.NAME || '';
-      const fi = TOUR.findIndex((_, i) => matchesIdx(n, i));
-      if (fi >= 0) {
-        clearInterval(tourTimer);
-        jumpTo(fi);
-        startTour();
-      }
-    })
-    (el);
-
-  /* Controls */
-  const ctrl = globeInst.controls();
-  ctrl.enableZoom  = false;
-  ctrl.enablePan   = false;
-  ctrl.autoRotate  = false;
-
-  /* Initial view */
-  globeInst.pointOfView({ lat: TOUR[0].lat, lng: TOUR[0].lng, altitude: 2.5 }, 0);
-
-  /* Build dot nav */
-  const dotsEl = document.getElementById('globe-dots');
-  dotsEl.innerHTML = TOUR.map((c, i) => `
-    <button class="g-dot" title="${c.geoName}" data-i="${i}"
-      onclick="dotClick(${i})"></button>`).join('');
-
-  /* Start */
-  jumpTo(0);
-  setTimeout(() => {
-    globeInst.pointOfView({ lat: TOUR[0].lat, lng: TOUR[0].lng, altitude: 2.1 }, 1200);
-  }, 400);
-  startTour();
-}
-
-/* ── Dot click (global so onclick attr works) ── */
-function dotClick(i) {
-  clearInterval(tourTimer);
-  jumpTo(i);
-  startTour();
-}
-
-/* ── Fetch GeoJSON & boot ── */
-fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
-  .then(r => r.json())
-  .then(initGlobe)
-  .catch(() => {
-    /* Fallback: try alternate source */
-    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-      .then(r => r.json())
-      .then(topo => {
-        /* convert topoJSON to GeoJSON if needed */
-        console.warn('Using fallback geo source');
-      });
-  });
 </script>
 </body>
 </html>

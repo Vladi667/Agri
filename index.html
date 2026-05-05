@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Green Wadi — Precision. Growth. Legacy.</title>
+<title>Eden Terranova — Precision. Growth. Legacy.</title>
+<link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -75,6 +76,816 @@
   }
   .g-sway  { animation: grassSway  6.8s cubic-bezier(.45,.05,.55,.95) infinite; transform-origin:50% 100%; }
   .g-swayb { animation: grassSwayB 5.4s cubic-bezier(.45,.05,.55,.95) infinite; transform-origin:50% 100%; }
+  #hero{
+    background:#0a0f14 !important;
+  }
+  .desert-hero{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero-bg-shell,
+  .hero-colorwash,
+  .hero-humidity,
+  .hero-breeze,
+  .hero-overlay,
+  .hero-bottom-shadow{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+  .hero-bg-shell{
+    z-index:1;
+    transform:scale(1.06);
+  }
+  .hero-bg-media{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 55%;
+    display:block;
+    filter:blur(1.8px) saturate(1.18) contrast(1.04) brightness(0.88);
+  }
+  .hero-colorwash{
+    z-index:2;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(255, 244, 220, 0.1), transparent 34%),
+      radial-gradient(circle at 74% 28%, rgba(255, 232, 196, 0.08), transparent 28%),
+      linear-gradient(180deg, rgba(8, 16, 24, 0.2), rgba(8, 16, 24, 0.1) 38%, rgba(8, 16, 24, 0.2) 100%);
+    mix-blend-mode:screen;
+    opacity:0.9;
+  }
+  .hero-humidity{
+    z-index:3;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(255,255,255,0.05), transparent 48%),
+      radial-gradient(circle at 62% 52%, rgba(255,255,255,0.03), transparent 36%),
+      radial-gradient(circle at 36% 58%, rgba(255,255,255,0.02), transparent 30%);
+    filter:blur(12px);
+    opacity:0.34;
+    animation:humidityFloat 14s ease-in-out infinite;
+  }
+  .hero-breeze{
+    z-index:4;
+    background:
+      linear-gradient(105deg, transparent 12%, rgba(219, 243, 255, 0.095) 35%, rgba(219, 243, 255, 0.03) 50%, transparent 65%),
+      radial-gradient(circle at 68% 34%, rgba(214, 239, 248, 0.075), transparent 22%);
+    mix-blend-mode:screen;
+    opacity:0.38;
+    animation:breezeSweep 18s ease-in-out infinite;
+  }
+  .hero-overlay{
+    z-index:5;
+    width:100%;
+    height:100%;
+  }
+  .hero-bottom-shadow{
+    z-index:6;
+    background:linear-gradient(180deg, rgba(7, 12, 17, 0) 0%, rgba(7, 12, 17, 0.08) 62%, rgba(7, 12, 17, 0.72) 100%);
+  }
+  #hero-copy{
+    padding:0 24px;
+  }
+  .hero-copy-stack{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    max-width:880px;
+    will-change:transform, opacity;
+  }
+  .hero-mark{
+    width:clamp(68px,9vw,120px);
+    filter:drop-shadow(0 16px 34px rgba(0,0,0,0.5));
+    margin-bottom:32px;
+    will-change:transform, opacity;
+  }
+  .hero-title-line{
+    display:inline;
+  }
+  .hero-word{
+    display:inline;
+  }
+  .hero-kicker{
+    margin-top:22px;
+    font-size:clamp(12px,1.6vw,18px);
+    letter-spacing:0.26em;
+    text-transform:uppercase;
+    color:rgba(248,249,245,0.72);
+    will-change:transform, opacity, letter-spacing;
+  }
+  .frond{
+    fill:#2a3919;
+    fill-opacity:0.16;
+  }
+  .frond-dark{
+    fill:#17210f;
+    fill-opacity:0.22;
+  }
+  .palm{
+    transform-origin:bottom center;
+    transform-box:fill-box;
+  }
+  .palm-left-1 { animation:swayLeft1 8.8s ease-in-out infinite; }
+  .palm-left-2 { animation:swayLeft2 7.9s ease-in-out infinite; }
+  .palm-left-3 { animation:swayLeft3 9.4s ease-in-out infinite; }
+  .palm-right-1 { animation:swayRight1 8.3s ease-in-out infinite; }
+  .palm-right-2 { animation:swayRight2 7.2s ease-in-out infinite; }
+  .palm-right-3 { animation:swayRight3 9.1s ease-in-out infinite; }
+  .wind{
+    fill:none;
+    stroke-linecap:round;
+  }
+  .wind-main{
+    stroke:url(#windStrokeA);
+    opacity:0.76;
+  }
+  .wind-soft{
+    stroke:url(#windStrokeB);
+    opacity:0.5;
+  }
+  .wind-1{ stroke-width:2.3; animation:wind1 10.5s linear infinite; }
+  .wind-2{ stroke-width:3; animation:wind2 9.3s linear infinite; }
+  .wind-3{ stroke-width:1.9; animation:wind3 12.2s linear infinite; }
+  .wind-4{ stroke-width:4; animation:wind4 16.5s linear infinite; }
+  .wind-5{ stroke-width:3.5; animation:wind5 18.5s linear infinite; }
+  @keyframes swayLeft1 {
+    0%, 100% { transform: rotate(-3.8deg) translateY(0); }
+    50% { transform: rotate(2.9deg) translateY(-2px); }
+  }
+  @keyframes swayLeft2 {
+    0%, 100% { transform: rotate(2.7deg) translateY(0); }
+    50% { transform: rotate(-3.2deg) translateY(-1px); }
+  }
+  @keyframes swayLeft3 {
+    0%, 100% { transform: rotate(-2.8deg); }
+    50% { transform: rotate(2deg) translateY(-1px); }
+  }
+  @keyframes swayRight1 {
+    0%, 100% { transform: rotate(3.8deg) translateY(0); }
+    50% { transform: rotate(-2.9deg) translateY(-2px); }
+  }
+  @keyframes swayRight2 {
+    0%, 100% { transform: rotate(-2.3deg); }
+    50% { transform: rotate(3deg) translateY(-1px); }
+  }
+  @keyframes swayRight3 {
+    0%, 100% { transform: rotate(2.7deg); }
+    50% { transform: rotate(-3.1deg) translateY(-1px); }
+  }
+  @keyframes wind1 {
+    0% { transform: translateX(-240px) translateY(0); opacity:0; }
+    18% { opacity:0.14; }
+    50% { transform: translateX(120px) translateY(-9px); opacity:0.44; }
+    82% { opacity:0.16; }
+    100% { transform: translateX(245px) translateY(-14px); opacity:0; }
+  }
+  @keyframes wind2 {
+    0% { transform: translateX(-300px) translateY(0); opacity:0; }
+    20% { opacity:0.16; }
+    50% { transform: translateX(138px) translateY(-11px); opacity:0.38; }
+    80% { opacity:0.14; }
+    100% { transform: translateX(270px) translateY(-15px); opacity:0; }
+  }
+  @keyframes wind3 {
+    0% { transform: translateX(-220px) translateY(0); opacity:0; }
+    24% { opacity:0.12; }
+    50% { transform: translateX(126px) translateY(-8px); opacity:0.28; }
+    76% { opacity:0.1; }
+    100% { transform: translateX(220px) translateY(-12px); opacity:0; }
+  }
+  @keyframes wind4 {
+    0% { transform: translateX(-180px) translateY(0); opacity:0; }
+    30% { opacity:0.09; }
+    50% { transform: translateX(108px) translateY(-6px); opacity:0.21; }
+    72% { opacity:0.07; }
+    100% { transform: translateX(195px) translateY(-9px); opacity:0; }
+  }
+  @keyframes wind5 {
+    0% { transform: translateX(-160px) translateY(0); opacity:0; }
+    26% { opacity:0.08; }
+    50% { transform: translateX(96px) translateY(-5px); opacity:0.18; }
+    74% { opacity:0.06; }
+    100% { transform: translateX(172px) translateY(-8px); opacity:0; }
+  }
+  @keyframes humidityFloat {
+    0%, 100% { opacity:0.28; }
+    50%       { opacity:0.42; }
+  }
+  /* backgroundDrift removed — video must be fully static */
+  @keyframes breezeSweep {
+    0%, 100% { opacity:0.18; }
+    50%       { opacity:0.38; }
+  }
+  .sector-scroll{
+    position:relative;
+    background:#F2F4EC;
+    min-height:420vh;
+    padding:0;
+    isolation:isolate;
+    --sector-progress:0;
+    --sector-rotation:0deg;
+    --sector-counter:0deg;
+  }
+  .sector-scroll::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at calc(34% + (var(--sector-progress) * 18%)) 42%, rgba(16,185,129,0.075), transparent 31%),
+      radial-gradient(circle at calc(78% - (var(--sector-progress) * 14%)) 62%, rgba(244,199,123,0.064), transparent 28%),
+      linear-gradient(180deg, #F2F4EC 0%, #F6F7F0 48%, #F2F4EC 100%);
+    opacity:.85;
+  }
+  .sector-scroll::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    opacity:.12;
+    background-image:
+      linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,23,42,0.035) 1px, transparent 1px);
+    background-size:72px 72px;
+    mask-image:radial-gradient(circle at 62% 48%, #000, transparent 64%);
+  }
+  .sector-sticky{
+    position:sticky;
+    top:0;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    padding:96px 0;
+    overflow:hidden;
+  }
+  .sector-layout{
+    display:grid;
+    grid-template-columns:minmax(320px,.78fr) minmax(620px,1.22fr);
+    gap:clamp(52px,7vw,118px);
+    align-items:center;
+  }
+  .sector-copy{
+    max-width:520px;
+  }
+  .sector-progress{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin:34px 0 26px;
+    color:#64748B;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+  }
+  .sector-progress-track{
+    position:relative;
+    flex:1;
+    max-width:204px;
+    height:1px;
+    background:rgba(15,23,42,0.12);
+    overflow:hidden;
+  }
+  .sector-progress-fill{
+    position:absolute;
+    inset:0 auto 0 0;
+    width:8.333%;
+    background:linear-gradient(90deg, rgba(15,123,82,0.34), rgba(15,123,82,0.95));
+    transform-origin:left center;
+    transition:width .72s cubic-bezier(.22,.8,.2,1);
+  }
+  .sector-chapter-title{
+    margin-top:18px;
+    color:var(--ink);
+  }
+  .sector-support{
+    min-height:82px;
+  }
+  .sector-layer-labels{
+    display:grid;
+    gap:10px;
+    margin-top:34px;
+    max-width:390px;
+  }
+  .sector-layer{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#64748B;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    transition:color .45s cubic-bezier(.22,.8,.2,1), opacity .45s;
+  }
+  .sector-layer::before{
+    content:"";
+    width:26px;
+    height:1px;
+    background:rgba(15,23,42,0.16);
+    transition:background .45s;
+  }
+  .sector-layer.active{
+    color:#0F7B52;
+    opacity:1;
+  }
+  .sector-layer.active::before{
+    background:#0F7B52;
+  }
+  .sector-constellation{
+    position:relative;
+    width:min(660px, 48vw);
+    aspect-ratio:1;
+    margin-inline:auto;
+    border-radius:50%;
+    transform:rotate(var(--sector-rotation));
+    transition:transform .18s linear;
+  }
+  .sector-network{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    width:100%;
+    height:100%;
+    overflow:visible;
+    pointer-events:none;
+  }
+  .sector-orbit{
+    position:absolute;
+    inset:11%;
+    border:1px solid rgba(15,23,42,0.075);
+    border-radius:50%;
+    opacity:.9;
+  }
+  .sector-orbit:nth-child(2){
+    inset:23%;
+    opacity:.55;
+  }
+  .sector-center{
+    position:absolute;
+    left:50%;
+    top:50%;
+    z-index:3;
+    width:clamp(190px,18vw,248px);
+    min-height:178px;
+    transform:translate(-50%,-50%) rotate(var(--sector-counter));
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:24px;
+    border-radius:24px;
+    border:1px solid rgba(15,123,82,0.18);
+    background:rgba(255,255,255,0.76);
+    box-shadow:
+      0 36px 82px -50px rgba(15,91,61,0.42),
+      0 0 0 8px rgba(255,255,255,0.28);
+    backdrop-filter:blur(18px) saturate(1.08);
+    transition:transform .18s linear, border-color .5s, box-shadow .5s;
+  }
+  .sector-center-kicker{
+    color:#0F7B52;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+  }
+  .sector-center-title{
+    margin-top:18px;
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    letter-spacing:-0.02em;
+    font-size:clamp(28px,3.1vw,42px);
+    line-height:1.02;
+    color:var(--ink);
+  }
+  .sector-center-line{
+    margin-top:18px;
+    width:100%;
+    height:1px;
+    background:linear-gradient(90deg, rgba(15,123,82,0.45), transparent);
+  }
+  .sector-connection,
+  .sector-arc{
+    fill:none;
+    vector-effect:non-scaling-stroke;
+  }
+  .sector-connection{
+    stroke:rgba(15,23,42,0.12);
+    stroke-width:.75;
+    opacity:.46;
+    transition:opacity .45s cubic-bezier(.22,.8,.2,1), stroke .45s, stroke-width .45s;
+  }
+  .sector-connection.related{
+    stroke:rgba(15,123,82,0.34);
+    stroke-width:1;
+    opacity:.9;
+  }
+  .sector-connection.dimmed{
+    opacity:.14;
+  }
+  .sector-arc{
+    stroke:rgba(244,199,123,0.45);
+    stroke-width:1.2;
+    stroke-linecap:round;
+    stroke-dasharray:18 320;
+    opacity:.42;
+    animation:sectorFlow 7.5s linear infinite;
+  }
+  .sector-node{
+    position:absolute;
+    left:50%;
+    top:50%;
+    z-index:2;
+    width:92px;
+    min-height:76px;
+    transform:
+      translate(-50%,-50%)
+      rotate(var(--angle))
+      translateY(calc(var(--radius) * -1))
+      rotate(var(--counter))
+      scale(.92)
+      rotate(var(--sector-counter));
+    display:grid;
+    align-content:center;
+    gap:5px;
+    padding:12px 10px;
+    border:1px solid rgba(15,23,42,0.08);
+    border-radius:18px;
+    background:rgba(255,255,255,0.7);
+    color:var(--ink);
+    box-shadow:0 18px 42px -34px rgba(15,23,42,0.38);
+    text-align:center;
+    cursor:pointer;
+    backdrop-filter:blur(12px);
+    transition:
+      transform .62s cubic-bezier(.22,.8,.2,1),
+      opacity .45s cubic-bezier(.22,.8,.2,1),
+      border-color .45s,
+      box-shadow .45s,
+      background .45s,
+      filter .45s;
+  }
+  .sector-node-index{
+    color:#0F7B52;
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .sector-node-title{
+    font-size:12.5px;
+    line-height:1.16;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+  .sector-node:not(.active):not(.related){
+    opacity:.58;
+    filter:saturate(.85);
+  }
+  .sector-node.related{
+    opacity:.86;
+    border-color:rgba(15,123,82,0.18);
+  }
+  .sector-node.active{
+    opacity:1;
+    transform:
+      translate(-50%,-50%)
+      rotate(var(--angle))
+      translateY(calc(var(--radius) * -1))
+      rotate(var(--counter))
+      scale(1.14)
+      rotate(var(--sector-counter));
+    background:rgba(255,255,255,0.95);
+    border-color:rgba(15,123,82,0.34);
+    box-shadow:
+      0 30px 58px -34px rgba(15,91,61,0.34),
+      0 0 0 6px rgba(16,185,129,0.05);
+  }
+  .sector-node:hover,
+  .sector-node:focus-visible{
+    opacity:1;
+    outline:none;
+    border-color:rgba(15,123,82,0.38);
+    box-shadow:
+      0 32px 62px -34px rgba(15,91,61,0.36),
+      0 0 0 5px rgba(16,185,129,0.055);
+  }
+  .sector-mobile{
+    display:none;
+  }
+  @keyframes sectorFlow{
+    from{ stroke-dashoffset:0; }
+    to{ stroke-dashoffset:-130; }
+  }
+  @media(max-width:900px){
+    #hero{
+      min-height:720px !important;
+    }
+    .hero-copy-stack h1{
+      font-size:clamp(48px, 13vw, 92px) !important;
+    }
+    .hero-kicker{
+      letter-spacing:0.18em;
+    }
+    .sector-scroll{
+      min-height:auto;
+      padding:88px 0;
+    }
+    .sector-sticky{
+      display:none;
+    }
+    .sector-mobile{
+      display:block;
+    }
+    .sector-mobile-intro{
+      margin-bottom:42px;
+    }
+    .sector-mobile-chapter + .sector-mobile-chapter{
+      margin-top:52px;
+    }
+    .sector-mobile-grid{
+      display:flex;
+      gap:14px;
+      margin-top:22px;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      padding-bottom:10px;
+    }
+    .sector-mobile-card{
+      min-width:min(82vw, 340px);
+      scroll-snap-align:start;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:34px;
+      min-height:196px;
+      border-radius:18px;
+      padding:22px;
+      text-decoration:none;
+      color:var(--ink);
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(15,23,42,0.08);
+      box-shadow:0 22px 48px -38px rgba(15,23,42,0.24);
+    }
+    .sector-mobile-card .eyebrow{
+      color:#0F7B52;
+    }
+    .sector-mobile-card .h3{
+      color:var(--ink);
+    }
+    .sector-scroll::after{
+      display:none;
+    }
+  }
+  @media(prefers-reduced-motion:reduce){
+    .hero-bg-shell,
+    .hero-humidity,
+    .hero-breeze,
+    .palm,
+    .wind{
+      animation:none !important;
+    }
+    .sector-progress-fill,
+    .sector-node,
+    .sector-center,
+    .sector-constellation,
+    .sector-connection,
+    .sector-arc{
+      transition:none !important;
+      animation:none !important;
+    }
+    .plant-fill,
+    .plant-entry,
+    .plant-entry-link,
+    .plant-bloom{
+      transition:none !important;
+      animation:none !important;
+    }
+  }
+
+  /* ─────────────────────────────────────────────
+     PLANT GROWTH SCROLL SECTION
+  ───────────────────────────────────────────── */
+  .plant-scroll{
+    background:#F5F6EF;
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    isolation:isolate;
+  }
+  .plant-sticky{
+    position:sticky;
+    top:0;
+    width:46%;
+    height:100vh;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:52px clamp(28px,3.5vw,64px) 52px clamp(36px,5vw,88px);
+    background:#07090A;
+  }
+  .plant-sticky::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse 60% 50% at 50% 28%, rgba(18,58,22,0.55) 0%, transparent 68%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .plant-header{
+    margin-bottom:24px;
+    flex-shrink:0;
+    position:relative;
+    z-index:1;
+  }
+  .plant-header .eyebrow{
+    color:rgba(100,200,140,0.65);
+  }
+  .plant-h2{
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    font-size:clamp(20px,2.2vw,30px);
+    letter-spacing:-0.02em;
+    line-height:1.12;
+    color:rgba(240,244,238,0.88);
+    max-width:24ch;
+    margin-top:8px;
+  }
+  .plant-stage{
+    flex:1;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    min-height:0;
+    position:relative;
+    z-index:1;
+    overflow:hidden;
+  }
+  #plant-tree-img{
+    height:min(500px,66vh);
+    width:auto;
+    object-fit:contain;
+    display:block;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+    transform-origin:bottom center;
+  }
+  .plant-status{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:20px;
+    min-height:36px;
+    position:relative;
+    z-index:1;
+  }
+  .plant-count{
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:rgba(100,210,150,0.82);
+    font-weight:500;
+    flex-shrink:0;
+  }
+  .plant-track{
+    position:relative;
+    width:68px;
+    height:1px;
+    background:rgba(255,255,255,0.10);
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .plant-fill{
+    position:absolute;
+    inset:0 auto 0 0;
+    width:8.33%;
+    background:linear-gradient(90deg,rgba(80,180,120,0.3),rgba(80,180,120,0.85));
+    transition:width .55s cubic-bezier(.22,.8,.2,1);
+  }
+  .plant-active-title{
+    font-size:13px;
+    color:rgba(240,244,238,0.58);
+    line-height:1.3;
+    max-width:20ch;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* Right services */
+  .plant-services{
+    flex:1;
+    position:relative;
+    padding:10vh clamp(28px,4.5vw,72px) 10vh clamp(24px,3vw,48px);
+  }
+  .plant-services::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:10vh;
+    bottom:10vh;
+    width:1px;
+    background:linear-gradient(180deg,transparent,rgba(15,23,42,0.08) 18%,rgba(15,23,42,0.08) 82%,transparent);
+  }
+  .plant-services-intro{
+    padding-bottom:7vh;
+    border-bottom:1px solid rgba(15,23,42,0.07);
+    margin-bottom:1vh;
+  }
+  .plant-entry{
+    padding:5.5vh 0;
+    border-bottom:1px solid rgba(15,23,42,0.055);
+    display:flex;
+    align-items:flex-start;
+    gap:26px;
+    opacity:0.22;
+    transform:translateY(10px);
+    transition:opacity .68s cubic-bezier(.22,.8,.2,1), transform .68s cubic-bezier(.22,.8,.2,1);
+    will-change:opacity,transform;
+  }
+  .plant-entry.lit{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .plant-entry-num{
+    font-size:10.5px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:#0F7B52;
+    padding-top:9px;
+    flex-shrink:0;
+    width:28px;
+  }
+  .plant-entry-layer{
+    font-size:10px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:#8C9AAE;
+    margin-bottom:9px;
+  }
+  .plant-entry-title{
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    font-size:clamp(24px,2.8vw,38px);
+    letter-spacing:-0.025em;
+    line-height:1.04;
+    color:#0F172A;
+    margin-bottom:13px;
+  }
+  .plant-entry-desc{
+    font-size:14px;
+    line-height:1.65;
+    color:#4A5568;
+    max-width:44ch;
+  }
+  .plant-entry-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:16px;
+    font-size:10.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#0F7B52;
+    text-decoration:none;
+    opacity:0;
+    transform:translateX(-6px);
+    transition:opacity .42s ease .3s, transform .42s ease .3s;
+  }
+  .plant-entry.lit .plant-entry-link{
+    opacity:1;
+    transform:translateX(0);
+  }
+  .plant-entry-link:hover{
+    opacity:.72 !important;
+  }
+
+  /* Mobile */
+  @media(max-width:900px){
+    .plant-scroll{
+      display:block;
+    }
+    .plant-sticky{
+      display:none;
+    }
+    .plant-services{
+      padding:60px 24px;
+    }
+    .plant-services::before{
+      display:none;
+    }
+    .plant-entry{
+      opacity:1;
+      transform:none;
+      padding:36px 0;
+    }
+    .plant-entry-link{
+      opacity:1;
+      transform:none;
+    }
+  }
 </style>
 </head>
 <body data-page="index" class="antialiased">
@@ -94,11 +905,12 @@
   <!-- Scene container — zoom target -->
   <div id="scene" style="position:absolute;left:-8%;top:-8%;width:116%;height:116%;overflow:hidden;">
 
-    <!-- ── BASE: Real landscape photo ── -->
-    <img id="landscape-img" src="/images/Landscape.png" alt=""
+    <!-- ── BASE: Landscape video ── -->
+    <video id="landscape-img" autoplay muted loop playsinline
       style="width:100%;height:100%;object-fit:cover;object-position:center 55%;display:block;
-             animation:breatheBlur 12s ease-in-out infinite;
-             filter:blur(2.5px) brightness(0.92) saturate(1.12);" />
+             filter:brightness(0.92) saturate(1.12);">
+      <source src="/images/Agricultural_landscape_with_crop…_202605041319.mp4" type="video/mp4">
+    </video>
 
     <!-- ── BLUR + ATMOSPHERE OVERLAY (top of photo) ── -->
     <div style="position:absolute;inset:0;pointer-events:none;z-index:2;
@@ -236,8 +1048,8 @@
 
   <!-- Hero copy -->
   <div id="hero-copy" style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;opacity:0;transform:translateY(16px);">
-    <img src="/images/logo.jpg" alt="Green Wadi" style="width:clamp(68px,9vw,120px);border-radius:12px;box-shadow:0 16px 50px rgba(0,0,0,0.55),0 0 0 1px rgba(255,255,255,0.12);margin-bottom:32px;"/>
-    <h1 style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(56px,9vw,148px);letter-spacing:-0.04em;line-height:0.88;color:#F8F9F5;text-shadow:0 3px 36px rgba(0,0,0,0.6);">Green Wadi</h1>
+    <img src="/images/eden-terranova-symbol.svg" alt="Eden Terranova" style="width:clamp(74px,10vw,132px);filter:drop-shadow(0 16px 34px rgba(0,0,0,0.5));margin-bottom:32px;"/>
+    <h1 style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(56px,9vw,148px);letter-spacing:-0.04em;line-height:0.88;color:#F8F9F5;text-shadow:0 3px 36px rgba(0,0,0,0.6);">Eden Terranova</h1>
     <p style="margin-top:22px;font-size:clamp(12px,1.6vw,18px);letter-spacing:0.26em;text-transform:uppercase;color:rgba(248,249,245,0.72);">Precision &nbsp;·&nbsp; Growth &nbsp;·&nbsp; Legacy</p>
   </div>
 
@@ -276,19 +1088,19 @@
         <div class="stat-num tabular"><span data-count="47" data-suffix="%">0</span></div>
         <div class="hairline my-4 opacity-70"></div>
         <div class="stat-label mb-2">Avg. yield uplift</div>
-        <div class="stat-desc">Across 184 high-value farms in 12 countries.</div>
+        <div class="stat-desc">High-value land. Food systems. Measured returns.</div>
       </div>
       <div class="stat">
         <div class="stat-num tabular"><span data-count="12" data-suffix="">0</span></div>
         <div class="hairline my-4 opacity-70"></div>
-        <div class="stat-label mb-2">Countries</div>
-        <div class="stat-desc">From the Arabian Wadi to Sub-Saharan Africa.</div>
+        <div class="stat-label mb-2">Reach</div>
+        <div class="stat-desc">A UAE platform with international execution.</div>
       </div>
       <div class="stat">
         <div class="stat-num tabular"><span data-count="184" data-suffix="+">0</span></div>
         <div class="hairline my-4 opacity-70"></div>
         <div class="stat-label mb-2">Farms transformed</div>
-        <div class="stat-desc">Multigenerational operations across every sector.</div>
+        <div class="stat-desc">Operating value across crops, water, and land.</div>
       </div>
       <div class="stat">
         <div class="stat-num serif">Net<span class="unit">·0</span></div>
@@ -300,40 +1112,168 @@
   </div>
 </section>
 
-<!-- Sectors grid -->
-<section class="section" style="background:#F2F4EC">
-  <div class="wrap">
-    <div class="eyebrow mb-4">— Our scope</div>
-    <h2 class="h2 mb-12 max-w-[20ch]">Twelve sectors, one connected practice.</h2>
-    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">01</div><div class="h3">Crops</div><p class="small mt-2">Cereals, oilseeds, pulses — precision rotations.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">02</div><div class="h3">Horticulture</div><p class="small mt-2">Fruit, vegetables, high-value specialty lines.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">03</div><div class="h3">Open field production</div><p class="small mt-2">Broad-acre optimisation and water stewardship.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">04</div><div class="h3">Protected production</div><p class="small mt-2">Greenhouse, net-house and vertical systems.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">05</div><div class="h3">Livestock</div><p class="small mt-2">Welfare-first intensification and traceability.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">06</div><div class="h3">Aquaculture</div><p class="small mt-2">Closed-loop, species-appropriate production.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">07</div><div class="h3">Post-harvest</div><p class="small mt-2">Cold chain, sorting, traceable logistics.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">08</div><div class="h3">Agro-industry</div><p class="small mt-2">Processing integration and value capture.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">09</div><div class="h3">Forestry</div><p class="small mt-2">Silviculture, agroforestry, native species.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">10</div><div class="h3">Land conservation</div><p class="small mt-2">Soil, watersheds, biodiversity corridors.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">11</div><div class="h3">Desertification prevention</div><p class="small mt-2">Drylands rehabilitation at scale.</p></a>
-      <a href="scope.html" class="card"><div class="eyebrow mb-3">12</div><div class="h3">Environmental protection</div><p class="small mt-2">Compliance, monitoring, restoration.</p></a>
+<!-- Plant growth section -->
+<section class="plant-scroll" id="sectors">
+
+  <!-- ── Sticky left: botanical plant SVG ── -->
+  <div class="plant-sticky">
+    <div class="plant-header">
+      <div class="eyebrow mb-2">— Services</div>
+      <h2 class="plant-h2">Twelve sectors,<br>one living practice.</h2>
     </div>
+
+    <div class="plant-stage">
+      <img id="plant-tree-img" src="/images/olive-tree.svg" alt="" draggable="false"/>
+    </div>
+
+    <div class="plant-status">
+      <span class="plant-count" id="plant-count">01 / 12</span>
+      <span class="plant-track"><span class="plant-fill" id="plant-fill"></span></span>
+      <span class="plant-active-title" id="plant-active-title">Crops</span>
+    </div>
+  </div>
+
+  <!-- ── Scrolling right: service entries ── -->
+  <div class="plant-services">
+    <div class="plant-services-intro">
+      <p class="body" style="max-width:40ch;color:#4A5568;font-size:14px;line-height:1.7;">An integrated agricultural services platform — production, value chain infrastructure, and land resilience, connected into one disciplined system.</p>
+    </div>
+
+    <div class="plant-entry" data-sector="0">
+      <span class="plant-entry-num">01</span>
+      <div>
+        <div class="plant-entry-layer">Production systems</div>
+        <h3 class="plant-entry-title">Crops</h3>
+        <p class="plant-entry-desc">Cereals, oilseeds, pulses — precision rotations built around soil biology and multi-season climate data.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="1">
+      <span class="plant-entry-num">02</span>
+      <div>
+        <div class="plant-entry-layer">Production systems</div>
+        <h3 class="plant-entry-title">Horticulture</h3>
+        <p class="plant-entry-desc">Fruit, vegetables, high-value specialty lines — from orchard design to post-harvest quality control.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="2">
+      <span class="plant-entry-num">03</span>
+      <div>
+        <div class="plant-entry-layer">Production systems</div>
+        <h3 class="plant-entry-title">Open field production</h3>
+        <p class="plant-entry-desc">Broad-acre optimisation and water stewardship across irrigated and dryland farming systems.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="3">
+      <span class="plant-entry-num">04</span>
+      <div>
+        <div class="plant-entry-layer">Production systems</div>
+        <h3 class="plant-entry-title">Protected production</h3>
+        <p class="plant-entry-desc">Greenhouse, net-house and vertical systems engineered for precision climate and yield control.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="4">
+      <span class="plant-entry-num">05</span>
+      <div>
+        <div class="plant-entry-layer">Value chain infrastructure</div>
+        <h3 class="plant-entry-title">Livestock</h3>
+        <p class="plant-entry-desc">Welfare-first intensification, regenerative grazing protocols, and end-to-end traceability systems.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="5">
+      <span class="plant-entry-num">06</span>
+      <div>
+        <div class="plant-entry-layer">Value chain infrastructure</div>
+        <h3 class="plant-entry-title">Aquaculture</h3>
+        <p class="plant-entry-desc">Closed-loop, species-appropriate production systems fully integrated with land-based operations.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="6">
+      <span class="plant-entry-num">07</span>
+      <div>
+        <div class="plant-entry-layer">Value chain infrastructure</div>
+        <h3 class="plant-entry-title">Post-harvest</h3>
+        <p class="plant-entry-desc">Cold chain, sorting, packaging, and traceable logistics from field gate to final market.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="7">
+      <span class="plant-entry-num">08</span>
+      <div>
+        <div class="plant-entry-layer">Value chain infrastructure</div>
+        <h3 class="plant-entry-title">Agro-industry</h3>
+        <p class="plant-entry-desc">Processing integration and value capture across the full agricultural supply chain.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="8">
+      <span class="plant-entry-num">09</span>
+      <div>
+        <div class="plant-entry-layer">Land resilience</div>
+        <h3 class="plant-entry-title">Forestry</h3>
+        <p class="plant-entry-desc">Silviculture, agroforestry, and native species programmes tracked over 25-year growth horizons.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="9">
+      <span class="plant-entry-num">10</span>
+      <div>
+        <div class="plant-entry-layer">Land resilience</div>
+        <h3 class="plant-entry-title">Land conservation</h3>
+        <p class="plant-entry-desc">Soil health, watershed management, and biodiversity corridor design at landscape scale.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="10">
+      <span class="plant-entry-num">11</span>
+      <div>
+        <div class="plant-entry-layer">Land resilience</div>
+        <h3 class="plant-entry-title">Desertification prevention</h3>
+        <p class="plant-entry-desc">Drylands rehabilitation, wadi recharge engineering, and sand-barrier programmes at scale.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-entry" data-sector="11">
+      <span class="plant-entry-num">12</span>
+      <div>
+        <div class="plant-entry-layer">Land resilience</div>
+        <h3 class="plant-entry-title">Environmental protection</h3>
+        <p class="plant-entry-desc">Compliance monitoring, ecological restoration, and long-term environmental stewardship programmes.</p>
+        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- Friedman photo section -->
+<!-- Partnership section -->
 <section id="friedman-section" style="background:#F8F9F5; padding: 100px 0; overflow:hidden;">
   <div class="wrap" style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
 
     <!-- Text side -->
     <div id="friedman-text" style="opacity:0; transform:translateY(40px);">
-      <div class="eyebrow mb-5">— Leadership</div>
-      <h2 class="h2" style="max-width:18ch;">Shmuel Friedman</h2>
-      <p class="body mt-6" style="color:#64748B; font-size:13px; letter-spacing:.12em; text-transform:uppercase;">M.A.Adm. &nbsp;·&nbsp; M.A.Sc.Agr. &nbsp;·&nbsp; B.A.Sc.Agr.</p>
-      <p class="body mt-6 max-w-[46ch]">CEO — Green Wadi – Advanced Agriculture and Know-How Ltd.</p>
-      <p class="body mt-4 max-w-[46ch]" style="color:#64748B;">The Former Chief of Staff for the Minister of Agriculture, Israel.</p>
-      <a href="contacts.html" class="btn btn-ghost mt-8" style="display:inline-flex; margin-top:32px;">Contact Shmuel
+      <div class="eyebrow mb-5">— Platform</div>
+      <h2 class="h2" style="max-width:18ch;">EDEN TERRANOVA FZCO</h2>
+      <p class="body mt-6" style="color:#64748B; font-size:13px; letter-spacing:.12em; text-transform:uppercase;">UAE · In partnership with the Messika family</p>
+      <p class="body mt-6 max-w-[46ch]">We turn land potential into resilient agricultural ventures: planned, built, operated, and measured.</p>
+      <p class="body mt-4 max-w-[46ch]" style="color:#64748B;">Precision from the field. Discipline from capital. Patience from legacy.</p>
+      <a href="contacts.html" class="btn btn-ghost mt-8" style="display:inline-flex; margin-top:32px;">Contact Eden Terranova
         <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
@@ -351,7 +1291,7 @@
           transition: transform 1.4s cubic-bezier(0.16,1,0.3,1), opacity 1.1s ease, box-shadow 0.6s;
           cursor: default;
         ">
-        <img src="/images/friedman.png" alt="Shmuel Friedman — CEO Green Wadi"
+        <img src="/images/friedman.jpg" alt="Eden Terranova agricultural leadership"
           style="width:100%; display:block; object-fit:cover;"/>
         <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(11,77,53,0.08),transparent 60%);pointer-events:none;"></div>
       </div>
@@ -363,39 +1303,132 @@
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
+const scene = document.getElementById('scene');
+if (scene) {
+  scene.innerHTML = `
+    <div class="desert-hero">
+      <div class="hero-bg-shell">
+        <video id="landscape-img" class="hero-bg-media" autoplay muted loop playsinline><source src="/images/Agricultural_landscape_with_crop…_202605041319.mp4" type="video/mp4"></video>
+      </div>
+      <div class="hero-colorwash"></div>
+      <div class="hero-humidity"></div>
+      <div class="hero-breeze"></div>
+      <svg class="hero-overlay" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="1.4" />
+          </filter>
+          <filter id="softerBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.4" />
+          </filter>
+          <linearGradient id="windStrokeA" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="white" stop-opacity="0" />
+            <stop offset="45%" stop-color="white" stop-opacity="0.22" />
+            <stop offset="55%" stop-color="white" stop-opacity="0.22" />
+            <stop offset="100%" stop-color="white" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="windStrokeB" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#f8fbff" stop-opacity="0" />
+            <stop offset="50%" stop-color="#f8fbff" stop-opacity="0.14" />
+            <stop offset="100%" stop-color="#f8fbff" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="shadeTop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#081018" stop-opacity="0.32" />
+            <stop offset="48%" stop-color="#081018" stop-opacity="0.08" />
+            <stop offset="100%" stop-color="#081018" stop-opacity="0.06" />
+          </linearGradient>
+          <radialGradient id="vignette" cx="52%" cy="42%" r="76%">
+            <stop offset="54%" stop-color="white" stop-opacity="0" />
+            <stop offset="100%" stop-color="#000000" stop-opacity="0.2" />
+          </radialGradient>
+        </defs>
+        <rect x="0" y="0" width="1920" height="1080" fill="url(#shadeTop)" />
+        <rect x="0" y="0" width="1920" height="1080" fill="url(#vignette)" />
+        <g class="palm palm-left palm-left-1">
+          <path class="frond frond-dark" d="M10 495 C104 458, 194 434, 302 414 C206 464, 140 536, 120 648 C162 566, 240 520, 344 474 C264 550, 232 636, 244 744" />
+        </g>
+        <g class="palm palm-left palm-left-2">
+          <path class="frond" d="M-12 592 C78 550, 164 530, 268 516 C176 562, 126 632, 108 730 C152 668, 220 624, 312 592 C242 650, 214 726, 222 818" />
+        </g>
+        <g class="palm palm-left palm-left-3">
+          <path class="frond" d="M172 462 C248 428, 320 406, 402 390 C326 438, 278 494, 264 578 C296 524, 350 488, 426 456 C364 512, 348 578, 354 656" />
+        </g>
+        <g class="palm palm-right palm-right-1">
+          <path class="frond frond-dark" d="M1666 534 C1760 492, 1850 464, 1956 436 C1860 490, 1798 554, 1778 650 C1822 586, 1894 538, 1992 498 C1914 570, 1882 652, 1892 750" />
+        </g>
+        <g class="palm palm-right palm-right-2">
+          <path class="frond" d="M1728 612 C1802 578, 1870 556, 1948 538 C1878 580, 1834 632, 1820 710 C1852 660, 1900 626, 1968 594 C1912 646, 1898 708, 1904 786" />
+        </g>
+        <g class="palm palm-right palm-right-3">
+          <path class="frond" d="M1562 570 C1642 534, 1718 510, 1806 490 C1728 538, 1676 598, 1660 688 C1696 628, 1754 588, 1832 552 C1768 612, 1748 682, 1756 772" />
+        </g>
+        <path class="wind wind-main wind-1" d="M-260 360 C120 324, 430 340, 770 374 S1450 422, 2240 366" />
+        <path class="wind wind-main wind-2" d="M-300 520 C120 486, 510 500, 930 542 S1580 592, 2280 526" />
+        <path class="wind wind-main wind-3" d="M-260 700 C160 672, 610 686, 1050 730 S1650 776, 2280 714" />
+        <path class="wind wind-soft wind-4" d="M-260 430 C140 398, 620 410, 1100 450 S1660 500, 2280 446" />
+        <path class="wind wind-soft wind-5" d="M-240 820 C180 794, 700 806, 1160 848 S1720 886, 2300 836" />
+      </svg>
+      <div class="hero-bottom-shadow"></div>
+    </div>`;
+}
+const heroCopy = document.getElementById('hero-copy');
+if (heroCopy && !heroCopy.querySelector('.hero-copy-stack')) {
+  heroCopy.innerHTML = `<div class="hero-copy-stack">${heroCopy.innerHTML}</div>`;
+  const heroMark = heroCopy.querySelector('img');
+  const heroKicker = heroCopy.querySelector('p');
+  if (heroMark) heroMark.classList.add('hero-mark');
+  if (heroKicker) heroKicker.classList.add('hero-kicker');
+}
 gsap.registerPlugin(ScrollTrigger);
 
 // ── Letterbox open ──
 gsap.to('#lb-top', { scaleY:0, duration:1.6, ease:'power3.inOut', delay:0.2, transformOrigin:'50% 0%' });
 gsap.to('#lb-bot', { scaleY:0, duration:1.6, ease:'power3.inOut', delay:0.2, transformOrigin:'50% 100%' });
 
-// ── Very slight, slow cinematic zoom (scale 1 → 1.14 over 22s) ──
-gsap.to('#scene', { scale:1.14, duration:22, ease:'power1.inOut', delay:0.4,
-  onComplete: () => {
-    // After zoom, idle breathe ±1%
-    gsap.to('#scene', { scale:1.16, duration:9, ease:'sine.inOut', repeat:-1, yoyo:true });
-  }
-});
+// ── Scene is completely static — no scale or drift on the video ──
+gsap.set('#scene', { scale: 1 });
 
 // ── Title fades in at t=2.5s ──
 gsap.to('#hero-copy', { opacity:1, y:0, duration:2.2, ease:'power2.out', delay:2.5 });
 
-// ── Subtle mouse parallax on landscape image ──
-const hero = document.getElementById('hero');
-const lImg = document.getElementById('landscape-img');
-let mx=0, my=0, tx=0, ty=0;
-hero.addEventListener('mousemove', e => {
-  const r = hero.getBoundingClientRect();
-  tx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
-  ty = ((e.clientY - r.top)  / r.height - 0.5) * 2;
-});
-hero.addEventListener('mouseleave', () => { tx=0; ty=0; });
-gsap.ticker.add(() => {
-  mx += (tx-mx)*0.04; my += (ty-my)*0.04;
-  if(lImg) gsap.set(lImg, { x:-mx*18, y:-my*10 });
-});
-
 // ── Friedman photo scroll reveal + mouse tilt ──
+if (heroCopy) {
+  gsap.killTweensOf('#hero-copy');
+  gsap.set('#hero-copy', { opacity: 1, y: 0 });
+
+  const windyMark = heroCopy.querySelector('.hero-mark');
+  const windyTitle = heroCopy.querySelector('h1');
+  const windyKicker = heroCopy.querySelector('.hero-kicker');
+  const windyTimeline = gsap.timeline({ delay: 1.05 });
+
+  if (windyMark) {
+    windyTimeline.fromTo(
+      windyMark,
+      { autoAlpha: 0, x: -42, y: 10, rotation: -4 },
+      { autoAlpha: 1, x: 0, y: 0, rotation: 0, duration: 0.9, ease: 'power3.out' },
+      0
+    );
+  }
+
+  if (windyTitle) {
+    windyTimeline.fromTo(
+      windyTitle,
+      { autoAlpha: 0, x: -88, y: 6, skewX: -10, rotation: -1.5 },
+      { autoAlpha: 1, x: 0, y: 0, skewX: 0, rotation: 0, duration: 1.1, ease: 'power3.out' },
+      0.16
+    );
+  }
+
+  if (windyKicker) {
+    windyTimeline.fromTo(
+      windyKicker,
+      { autoAlpha: 0, x: -72, y: 5, skewX: -12, letterSpacing: '0.34em' },
+      { autoAlpha: 1, x: 0, y: 0, skewX: 0, letterSpacing: '0.26em', duration: 1.05, ease: 'power3.out' },
+      0.38
+    );
+  }
+}
+
 const fStage = document.getElementById('friedman-stage');
 const fText  = document.getElementById('friedman-text');
 if(fStage){
@@ -440,9 +1473,170 @@ const sp = document.getElementById('statLinePath');
 if(sp){ const L=sp.getTotalLength(); sp.style.strokeDasharray=L; sp.style.strokeDashoffset=L; ScrollTrigger.create({ trigger:'#stat-line', start:"top 85%", once:true, onEnter:()=>gsap.to(sp,{ strokeDashoffset:0, duration:1.8, ease:"power2.out" }) }); }
 gsap.from('.stat', { y:24, opacity:0, duration:1, stagger:0.12, ease:"power3.out", scrollTrigger:{ trigger:'#impact', start:"top 75%" }});
 
+// ── Plant growth scroll ──
+const sectorSection = document.getElementById('sectors');
+if (sectorSection) {
+  const treeImg  = document.getElementById('plant-tree-img');
+  const countEl  = document.getElementById('plant-count');
+  const fillEl   = document.getElementById('plant-fill');
+  const titleEl  = document.getElementById('plant-active-title');
+  const entries  = [...sectorSection.querySelectorAll('.plant-entry')];
+  const titles   = ['Crops','Horticulture','Open field production','Protected production','Livestock','Aquaculture','Post-harvest','Agro-industry','Forestry','Land conservation','Desertification prevention','Environmental protection'];
+
+  let lastActive = -1, ticking = false;
+
+  function updatePlant() {
+    ticking = false;
+    if (window.matchMedia('(max-width:900px)').matches) {
+      entries.forEach(e => e.classList.add('lit'));
+      return;
+    }
+    const rect       = sectorSection.getBoundingClientRect();
+    const scrollable = Math.max(1, rect.height - window.innerHeight);
+    const progress   = Math.min(1, Math.max(0, -rect.top / scrollable));
+
+    // Counter + highlights
+    const active = Math.min(11, Math.floor(progress * 12));
+    if (active !== lastActive) {
+      lastActive = active;
+      if (countEl) countEl.textContent = `${String(active + 1).padStart(2,'0')} / 12`;
+      if (fillEl)  fillEl.style.width  = `${((active + 1) / 12) * 100}%`;
+      if (titleEl) titleEl.textContent = titles[active];
+      entries.forEach((e, i) => e.classList.toggle('lit', i <= active));
+    }
+  }
+
+  function requestUpdate() {
+    if (!ticking) { ticking = true; requestAnimationFrame(updatePlant); }
+  }
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', updatePlant);
+  updatePlant();
+
+  // dead-code gate — original sector vars never used
+  if (false) {
+  const sectorNodes = [...sectorSection.querySelectorAll('.sector-node')];
+  const sectorConnections = [...sectorSection.querySelectorAll('.sector-connection')];
+  const sectorLayers = [...sectorSection.querySelectorAll('.sector-layer')];
+  const sectorCount = document.getElementById('sector-count');
+  const sectorTitle = document.getElementById('sector-title');
+  const sectorSupport = document.getElementById('sector-support');
+  const sectorProgressFill = document.getElementById('sector-progress-fill');
+  const sectorCenterTitle = document.getElementById('sector-center-title');
+  const sectorCenterLayer = document.getElementById('sector-center-layer');
+  const sectorMeta = [
+    { title:'Crops', support:'Cereals, oilseeds, pulses — precision rotations.', layer:'production', layerLabel:'Production systems', related:[1,2,3,4,11] },
+    { title:'Horticulture', support:'Fruit, vegetables, high-value specialty lines.', layer:'production', layerLabel:'Production systems', related:[0,2,3,7] },
+    { title:'Open field production', support:'Broad-acre optimisation and water stewardship.', layer:'production', layerLabel:'Production systems', related:[0,1,3,8,9] },
+    { title:'Protected production', support:'Greenhouse, net-house and vertical systems.', layer:'production', layerLabel:'Production systems', related:[0,1,2,6,7] },
+    { title:'Livestock', support:'Welfare-first intensification and traceability.', layer:'value', layerLabel:'Value chain infrastructure', related:[5,6,7,0] },
+    { title:'Aquaculture', support:'Closed-loop, species-appropriate production.', layer:'value', layerLabel:'Value chain infrastructure', related:[4,6,7] },
+    { title:'Post-harvest', support:'Cold chain, sorting, traceable logistics.', layer:'value', layerLabel:'Value chain infrastructure', related:[3,4,5,7] },
+    { title:'Agro-industry', support:'Processing integration and value capture.', layer:'value', layerLabel:'Value chain infrastructure', related:[1,3,4,5,6,8] },
+    { title:'Forestry', support:'Silviculture, agroforestry, native species.', layer:'land', layerLabel:'Land resilience', related:[2,7,9,10,11] },
+    { title:'Land conservation', support:'Soil, watersheds, biodiversity corridors.', layer:'land', layerLabel:'Land resilience', related:[2,8,10,11] },
+    { title:'Desertification prevention', support:'Drylands rehabilitation at scale.', layer:'land', layerLabel:'Land resilience', related:[8,9,11] },
+    { title:'Environmental protection', support:'Compliance, monitoring, restoration.', layer:'land', layerLabel:'Land resilience', related:[0,8,9,10] }
+  ];
+  let activeSector = -1;
+  let manualSector = null;
+  let ticking = false;
+
+  function setSector(index) {
+    if (index === activeSector || !sectorMeta[index]) return;
+    activeSector = index;
+    const meta = sectorMeta[index];
+    const related = new Set([index, ...meta.related]);
+
+    sectorNodes.forEach(node => {
+      const nodeIndex = Number(node.dataset.sector);
+      node.classList.toggle('active', nodeIndex === index);
+      node.classList.toggle('related', nodeIndex !== index && related.has(nodeIndex));
+      node.setAttribute('aria-pressed', nodeIndex === index ? 'true' : 'false');
+    });
+
+    sectorConnections.forEach(path => {
+      const points = (path.dataset.connect || '').split(' ').map(Number);
+      const connected = points.includes(index);
+      const bothRelated = points.every(point => related.has(point));
+      path.classList.toggle('related', connected || bothRelated);
+      path.classList.toggle('dimmed', !connected && !bothRelated);
+    });
+
+    sectorLayers.forEach(layer => {
+      layer.classList.toggle('active', layer.dataset.layer === meta.layer);
+    });
+
+    if (sectorCount) sectorCount.textContent = `${String(index + 1).padStart(2, '0')} / 12`;
+    if (sectorTitle) sectorTitle.textContent = meta.title;
+    if (sectorSupport) sectorSupport.textContent = meta.support;
+    if (sectorCenterTitle) sectorCenterTitle.textContent = meta.title;
+    if (sectorCenterLayer) sectorCenterLayer.textContent = meta.layerLabel;
+    if (sectorProgressFill) sectorProgressFill.style.width = `${((index + 1) / 12) * 100}%`;
+  }
+
+  function updateSectorChapter() {
+    ticking = false;
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      setSector(0);
+      return;
+    }
+
+    const rect = sectorSection.getBoundingClientRect();
+    const scrollable = Math.max(1, rect.height - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
+    sectorSection.style.setProperty('--sector-progress', progress.toFixed(3));
+    sectorSection.style.setProperty('--sector-rotation', `${(progress * 9).toFixed(3)}deg`);
+    sectorSection.style.setProperty('--sector-counter', `${(progress * -9).toFixed(3)}deg`);
+    if (manualSector === null) {
+      setSector(Math.min(11, Math.floor(progress * 12)));
+    }
+  }
+
+  function requestSectorUpdate() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateSectorChapter);
+    }
+  }
+
+  setSector(0);
+  window.addEventListener('scroll', requestSectorUpdate, { passive:true });
+  window.addEventListener('resize', requestSectorUpdate);
+  sectorNodes.forEach(node => {
+    node.addEventListener('pointerenter', () => {
+      manualSector = Number(node.dataset.sector);
+      setSector(manualSector);
+    });
+    node.addEventListener('focus', () => {
+      manualSector = Number(node.dataset.sector);
+      setSector(manualSector);
+    });
+    node.addEventListener('pointerleave', () => {
+      manualSector = null;
+      requestSectorUpdate();
+    });
+    node.addEventListener('blur', () => {
+      manualSector = null;
+      requestSectorUpdate();
+    });
+    node.addEventListener('click', () => {
+      manualSector = Number(node.dataset.sector);
+      setSector(manualSector);
+      window.setTimeout(() => {
+        manualSector = null;
+        requestSectorUpdate();
+      }, 900);
+    });
+  });
+  requestSectorUpdate();
+  } // end if(false) dead-code gate
+} // end if(sectorSection)
+
 // ── Drawer system ──
 const topics = {
-  agronomy:{ title:'Agronomy Services', kicker:'Services · Crops & Horticulture', body:'Green Wadi provides the best methodology and agricultural products, supports agronomic growth through R&D, and implements sustainable operations for every client engagement.', bullets:['Provide best methodology and agricultural products','Support agronomic growth through R&D','Implement sustainable operations and best practices'], stat:['47%','average yield uplift across client farms'] },
+  agronomy:{ title:'Agronomy Services', kicker:'Services · Crops & Horticulture', body:'Eden Terranova applies proven methodology, agronomic products, R&D discipline, and sustainable operating systems to every mandate.', bullets:['Provide best methodology and agricultural products','Support agronomic growth through R&D','Implement sustainable operations and best practices'], stat:['47%','average yield uplift across client farms'] },
   soil:{ title:'Soil &amp; Technology', kicker:'Precision Platform', body:'AI-driven soil telemetry with variable-rate inputs and precision farming protocols. We turn soil intelligence into daily agronomic decisions.', bullets:['AI-driven soil telemetry and analysis','Variable-rate nutrient and water inputs','Precision farming planning and execution'], stat:['-38%','water use vs. regional baseline'] },
   water:{ title:'Water &amp; Land Conservation', kicker:'Sectors 10 · 11', body:'Prevention of desertification, environmental protection, and watershed management form the backbone of our land stewardship practice.', bullets:['Prevention of desertification at scale','Environmental protection planning','Watershed management and recharge systems'], stat:['12','countries across three climate zones'] },
   livestock:{ title:'Livestock &amp; Aquaculture', kicker:'Sectors 05 · 06', body:'Integrated regenerative systems combining livestock management with closed-loop aquaculture. Welfare-first protocols, traceability end-to-end.', bullets:['Integrated livestock and aquaculture systems','Regenerative grazing and pasture protocols','Closed-loop aquaculture nutrient cycling'], stat:['100-yr','stewardship horizon'] },

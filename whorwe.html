@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Who We Are — Green Wadi</title>
+<title>Who We Are — Eden Terranova</title>
+<link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,19 +24,264 @@
     box-shadow: 0 32px 80px -24px rgba(15,23,42,0.22);
   }
   .visual-panel img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .timeline{ position:relative; padding-left: 28px; }
-  .timeline::before{ content:""; position:absolute; left:8px; top:10px; bottom:10px; width:1px; background: linear-gradient(180deg, var(--green), var(--green-deep), transparent);}
-  .tl-item{ position:relative; padding: 14px 0 28px; }
-  .tl-item::before{ content:""; position:absolute; left:-25px; top:22px; width:11px; height:11px; border-radius:999px; background:#fff; border:2px solid var(--green-deep); }
-  .pill{ display:inline-block; padding:4px 10px; border-radius:999px; background:#fff; border:1px solid rgba(15,23,42,0.08); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:#64748B;}
-  .philosophy-card{
-    background:#fff; border:1px solid rgba(15,23,42,0.08); border-radius:18px; padding:24px;
-    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s;
+  .story-visual{
+    aspect-ratio:1/1 !important;
+    max-width:430px;
+    margin-left:auto;
+    border-radius:999px;
+    box-shadow:0 28px 72px -28px rgba(15,23,42,0.28);
+    background:#fff;
   }
-  .philosophy-card:hover{ transform:translateY(-3px); box-shadow:0 20px 48px -24px rgba(15,23,42,0.18); border-color:rgba(16,185,129,0.3); }
-  .philosophy-card .icon{ width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#E9FBF3,#B9E6D0); display:flex; align-items:center; justify-content:center; color:#0F7B52; margin-bottom:14px;}
+  .story-visual img{
+    object-position:center;
+    transform:none;
+    transform-origin:center;
+  }
+  .pill{ display:inline-block; padding:4px 10px; border-radius:999px; background:#fff; border:1px solid rgba(15,23,42,0.08); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:#64748B;}
+
+  /* ── Timeline v2 ── */
+  .tl-hd{
+    display:flex; align-items:flex-start; gap:48px; margin-bottom:64px;
+  }
+  .tl-hd > div:first-child{ flex:0 0 auto; }
+  .tl-hd-sub{ padding-top:10px; max-width:40ch; color:#64748B; }
+
+  /* Outer container */
+  .tl-v2{
+    position:relative;
+    padding-left:52px;
+    border-bottom:1px solid rgba(15,23,42,0.09);
+  }
+
+  /* The green vertical line — draws downward on .active */
+  .tl-v2-line{
+    position:absolute;
+    left:0; top:18px; bottom:18px; width:1px;
+    background:linear-gradient(180deg, var(--green) 0%, var(--green-deep) 55%, rgba(15,123,82,0.10) 100%);
+    transform-origin:top center;
+    transform:scaleY(0);
+    transition:transform 1.9s cubic-bezier(.22,1,.36,1);
+  }
+  .tl-v2.active .tl-v2-line{ transform:scaleY(1); }
+
+  /* Each step */
+  .tl-v2-item{
+    position:relative;
+    padding:38px 0;
+    opacity:0;
+    transform:translateY(30px);
+    transition:
+      opacity .68s cubic-bezier(.22,1,.36,1),
+      transform .68s cubic-bezier(.22,1,.36,1);
+    transition-delay:calc(var(--tl-i) * 155ms + 80ms);
+  }
+  .tl-v2.active .tl-v2-item{ opacity:1; transform:none; }
+
+  /* Horizontal divider that draws from left to right */
+  .tl-v2-item::after{
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0; height:1px;
+    background:rgba(15,23,42,0.09);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .72s cubic-bezier(.22,1,.36,1);
+    transition-delay:calc(var(--tl-i) * 155ms);
+  }
+  .tl-v2.active .tl-v2-item::after{ transform:scaleX(1); }
+
+  /* Dot on the vertical line — springs in */
+  .tl-v2-item::before{
+    content:'';
+    position:absolute;
+    left:-56px; top:42px;
+    width:8px; height:8px; border-radius:50%;
+    background:#F2F4EC;
+    border:1.5px solid var(--green);
+    box-shadow:0 0 0 4px rgba(16,185,129,0.12);
+    transform:scale(0);
+    transition:transform .52s cubic-bezier(.34,1.56,.64,1);
+    transition-delay:calc(var(--tl-i) * 155ms + 270ms);
+    z-index:1;
+  }
+  .tl-v2.active .tl-v2-item::before{ transform:scale(1); }
+
+  /* Large ghost ordinal number */
+  .tl-v2-num{
+    position:absolute;
+    right:0; top:24px;
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    font-size:clamp(72px, 8vw, 108px);
+    line-height:1;
+    color:rgba(15,23,42,0.055);
+    letter-spacing:-0.02em;
+    pointer-events:none;
+    user-select:none;
+    transition:color .5s;
+  }
+  .tl-v2-item:hover .tl-v2-num{ color:rgba(15,123,82,0.09); }
+
+  @media(max-width:768px){
+    .tl-hd{ flex-direction:column; gap:12px; margin-bottom:40px; }
+    .tl-v2{ padding-left:36px; }
+    .tl-v2-item::before{ left:-40px; }
+    .tl-v2-num{ font-size:56px; }
+  }
+  /* ── Philosophy cards ── */
+  .philosophy-card{
+    background:#fff;
+    border:1px solid rgba(15,23,42,0.07);
+    border-radius:20px;
+    padding:28px 24px 26px;
+    position:relative;
+    overflow:hidden;
+    cursor:default;
+    transition:
+      transform .5s cubic-bezier(.2,.8,.2,1),
+      box-shadow .5s,
+      border-color .5s;
+  }
+  /* top accent line reveals on hover */
+  .philosophy-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:2px;
+    background:linear-gradient(90deg,#0F7B52,#34D399 60%,#B9E6D0);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .55s cubic-bezier(.2,.8,.2,1);
+    border-radius:0 0 2px 2px;
+  }
+  .philosophy-card:hover{ transform:translateY(-5px); box-shadow:0 28px 60px -24px rgba(12,38,24,0.16); border-color:rgba(16,185,129,0.22); }
+  .philosophy-card:hover::before{ transform:scaleX(1); }
+  /* ghost ordinal number */
+  .philosophy-card .card-num{
+    position:absolute;
+    top:18px; right:18px;
+    font-family:"Fraunces",serif;
+    font-size:52px;
+    font-weight:300;
+    line-height:1;
+    color:rgba(15,23,42,0.05);
+    pointer-events:none;
+    user-select:none;
+    transition:color .5s;
+  }
+  .philosophy-card:hover .card-num{ color:rgba(16,185,129,0.10); }
+  .philosophy-card .icon{
+    width:46px; height:46px;
+    border-radius:13px;
+    background:linear-gradient(135deg,#E9FBF3,#B9E6D0);
+    display:flex; align-items:center; justify-content:center;
+    color:#0F7B52;
+    margin-bottom:16px;
+    transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s;
+  }
+  .philosophy-card:hover .icon{
+    transform:scale(1.12) rotate(-4deg);
+    box-shadow:0 10px 24px -8px rgba(15,123,82,0.28);
+  }
+  /* ── Scroll-fade entrance ── */
+  [data-fade]{
+    opacity:0;
+    transform:translateY(52px) scale(0.96);
+    transition:
+      opacity .7s cubic-bezier(.22,1,.36,1),
+      transform .7s cubic-bezier(.22,1,.36,1);
+    transition-delay:var(--delay,0ms);
+  }
+  [data-fade].visible{
+    opacity:1;
+    transform:none;
+  }
+  .messika-band{
+    background:#0B1220;
+    color:#F8F9F5;
+    overflow:hidden;
+    position:relative;
+  }
+  .messika-band::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 18% 20%, rgba(244,199,123,0.14), transparent 32%),
+      radial-gradient(circle at 84% 34%, rgba(16,185,129,0.11), transparent 30%);
+    pointer-events:none;
+  }
+  .messika-panel{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);
+    gap:64px;
+    align-items:center;
+  }
+  .messika-logo-stage{
+    min-height:360px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid rgba(255,255,255,0.1);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+      radial-gradient(circle at 50% 45%, rgba(255,255,255,0.1), transparent 42%);
+  }
+  .messika-logo-stage img{
+    width:min(78%, 340px);
+    filter:invert(1);
+  }
+  .messika-proof{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:1px;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.14);
+    margin-top:34px;
+  }
+  .messika-proof div{
+    padding:18px;
+    background:rgba(255,255,255,0.045);
+  }
+  .messika-proof strong{
+    display:block;
+    font-family:"Fraunces",serif;
+    font-size:22px;
+    font-weight:400;
+    color:#F8F9F5;
+  }
+  .messika-proof span{
+    display:block;
+    margin-top:5px;
+    color:rgba(248,249,245,0.62);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
   blockquote{ font-family:"Fraunces",serif; font-weight:300; font-size:clamp(24px,2.8vw,40px); letter-spacing:-0.015em; line-height:1.22; color:#1E2A3A; }
   blockquote em{ font-style:normal; color:var(--green-deep); }
+  @media (max-width: 900px){
+    .story-visual{
+      margin-inline:auto;
+      max-width:340px;
+    }
+    .story-visual img{
+      object-position:center;
+      transform:none;
+      transform-origin:center;
+    }
+    .messika-panel{
+      grid-template-columns:1fr;
+      gap:36px;
+    }
+    .messika-logo-stage{
+      min-height:220px;
+    }
+    .messika-proof{
+      grid-template-columns:1fr;
+    }
+  }
 </style>
 </head>
 <body data-page="whorwe">
@@ -43,8 +289,8 @@
 <section class="hero-about">
   <div class="wrap">
     <div class="eyebrow mb-5">— Who we are</div>
-    <h1 class="h1 max-w-[26ch]">Agricultural Development Excellence — by people who live it.</h1>
-    <p class="body max-w-[64ch] mt-8">Green Wadi started as a one-man operation when Mr. Shmuel Friedman left the Ministry of Agriculture of Israel to become an independent consultant. A decade of field work across 12 countries later, we remain committed to delivering measurable, long-term value.</p>
+    <h1 class="h1 max-w-[26ch]">Agriculture shaped for the next generation.</h1>
+    <p class="body max-w-[64ch] mt-8">Eden Terranova turns land, water, expertise, and capital into resilient agricultural ventures. Based in the UAE and working internationally, we build for value that lasts.</p>
   </div>
 </section>
 
@@ -53,101 +299,166 @@
   <div class="wrap grid md:grid-cols-2 gap-16 items-start">
     <div>
       <div class="eyebrow mb-4">— Our story</div>
-      <h2 class="h2 max-w-[18ch]">From one agronomist to a global practice.</h2>
+      <h2 class="h2 max-w-[18ch]">Built for serious land.</h2>
       <div class="body mt-6 space-y-5 max-w-[56ch]">
-        <p>Green Wadi Ltd. started as a one-man operation when Mr. Friedman left the Ministry of Agriculture of Israel to become an independent consultant 10 years ago.</p>
-        <p>In 2018, due to the expansion of projects, Green Wadi became a limited company employing experts as needed to be efficient and successful. We are committed to providing our clients with quick answers and solutions.</p>
-        <p>Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.</p>
-        <p>We offer diverse services, technology, know-how, and training required for the upgrading and construction of existing and new agricultural and agro-industrial enterprises.</p>
-        <p>Our successful projects have earned Green Wadi a reputation for delivering measurable value for the long term.</p>
-      </div>
-      <div class="flex flex-wrap gap-2 mt-8">
-        <span class="pill">Est. 2014 · Israel</span>
-        <span class="pill">Independent</span>
-        <span class="pill">Field-first</span>
-        <span class="pill">12 Countries</span>
-        <span class="pill">Multi-generational</span>
+        <p>We bring agronomy, project execution, operating discipline, and investment logic into one clear mandate.</p>
+        <p>Our clients think in decades: families, family offices, governments, and funds building productive land and resilient food systems.</p>
+        <p>Together with the Messika family, Eden Terranova carries a standard shaped by precision, discretion, and generational excellence.</p>
+        <p>Our work is practical and measurable: improve the land, train the people, raise performance, protect the asset.</p>
       </div>
     </div>
-    <div class="visual-panel" style="aspect-ratio:3/4; max-height:600px;">
-      <img src="/images/image.png" alt="Green Wadi — agricultural operations" loading="lazy"/>
+    <div class="visual-panel story-visual">
+      <img src="/images/image (30).jpg" alt="Eden Terranova — agricultural operations" loading="lazy"/>
+    </div>
+  </div>
+</section>
+
+<!-- Messika family partnership -->
+<section class="section messika-band">
+  <div class="wrap messika-panel">
+    <div class="messika-logo-stage" aria-label="Messika family partnership">
+      <img src="/images/messika-logo.svg" alt="Messika">
+    </div>
+    <div>
+      <div class="eyebrow mb-5" style="color:rgba(248,249,245,0.58)">— In partnership</div>
+      <h2 class="h2 max-w-[20ch]" style="color:#F8F9F5;">A partnership built on precision.</h2>
+      <p class="body mt-6 max-w-[62ch]" style="color:rgba(248,249,245,0.76); font-size:17px; line-height:1.75;">With the Messika family, Eden Terranova brings a family-enterprise lens to agriculture: exacting standards, discretion, and a belief that real value is built over generations.</p>
+      <div class="messika-proof">
+        <div><strong>2005</strong><span>Maison founded</span></div>
+        <div><strong>Family</strong><span>Generational standard</span></div>
+        <div><strong>Land</strong><span>Long-view value</span></div>
+      </div>
+      <a href="https://www.messika.com/fr" class="btn btn-ghost mt-8" style="display:inline-flex; margin-top:32px; color:#F8F9F5; border-color:rgba(255,255,255,0.22);" target="_blank" rel="noopener">Visit Messika
+        <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- Timeline -->
 <section class="section" style="background:#F2F4EC">
-  <div class="wrap grid md:grid-cols-[320px_1fr] gap-16">
-    <div>
-      <div class="eyebrow mb-4">— Our journey</div>
-      <h2 class="h2">A decade of patient fieldwork.</h2>
-      <p class="body mt-5 max-w-[42ch]">From a single consultant to a trusted partner of sovereign funds and private investors across three continents.</p>
+  <div class="wrap">
+
+    <div class="tl-hd" data-fade style="--delay:0ms">
+      <div>
+        <div class="eyebrow mb-4">— Our journey</div>
+        <h2 class="h2">How we create value.</h2>
+      </div>
+      <p class="body tl-hd-sub">Clear diagnosis. Practical execution. Operators trained. Results measured.</p>
     </div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="pill mb-3">2014</div>
-        <div class="h3">Founded in Israel</div>
-        <p class="body mt-2 max-w-[52ch]">Shmuel Friedman leaves the Ministry of Agriculture of Israel to establish an independent agricultural consultancy — Green Wadi.</p>
+
+    <div class="tl-v2" id="tl-v2-root">
+      <div class="tl-v2-line" aria-hidden="true"></div>
+
+      <div class="tl-v2-item" style="--tl-i:0">
+        <span class="tl-v2-num" aria-hidden="true">01</span>
+        <div class="pill mb-3">Platform</div>
+        <div class="h3 mb-2">Eden Terranova</div>
+        <p class="body max-w-[52ch]">A focused platform for productive land, water resilience, and agricultural value creation.</p>
       </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2016</div>
-        <div class="h3">First international projects</div>
-        <p class="body mt-2 max-w-[52ch]">Green Wadi expands beyond Israel, bringing Israeli agro-technology and expertise to clients across the region.</p>
+
+      <div class="tl-v2-item" style="--tl-i:1">
+        <span class="tl-v2-num" aria-hidden="true">02</span>
+        <div class="pill mb-3">Partnership</div>
+        <div class="h3 mb-2">The Messika family</div>
+        <p class="body max-w-[52ch]">A family-enterprise standard: precision, discretion, and excellence over time.</p>
       </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2018</div>
-        <div class="h3">Incorporated as Green Wadi Ltd.</div>
-        <p class="body mt-2 max-w-[52ch]">Due to expansion of projects, Green Wadi became a limited company employing domain experts as needed to be efficient and successful.</p>
+
+      <div class="tl-v2-item" style="--tl-i:2">
+        <span class="tl-v2-num" aria-hidden="true">03</span>
+        <div class="pill mb-3">Execution</div>
+        <div class="h3 mb-2">Agronomy and operating know-how</div>
+        <p class="body max-w-[52ch]">Agronomy, agro-technology, post-harvest planning, and operator training in one operating model.</p>
       </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2020</div>
-        <div class="h3">Rural development &amp; food security</div>
-        <p class="body mt-2 max-w-[52ch]">Governments and development funds begin partnering with Green Wadi for national-scale food security and rural development programs.</p>
+
+      <div class="tl-v2-item" style="--tl-i:3">
+        <span class="tl-v2-num" aria-hidden="true">04</span>
+        <div class="pill mb-3">Mandates</div>
+        <div class="h3 mb-2">Rural development &amp; food security</div>
+        <p class="body max-w-[52ch]">For investors, governments, family offices, and funds seeking real agricultural transformation.</p>
       </div>
-      <div class="tl-item">
-        <div class="pill mb-3">2024</div>
-        <div class="h3">184 farms · 12 countries</div>
-        <p class="body mt-2 max-w-[52ch]">Green Wadi now operates across 12 countries, having transformed over 184 agricultural enterprises with measurable, lasting results.</p>
+
+      <div class="tl-v2-item" style="--tl-i:4">
+        <span class="tl-v2-num" aria-hidden="true">05</span>
+        <div class="pill mb-3">Legacy</div>
+        <div class="h3 mb-2">Generational stewardship</div>
+        <p class="body max-w-[52ch]">Every engagement is designed to leave behind stronger land, stronger operators, and a clearer path for the next generation.</p>
       </div>
     </div>
+
   </div>
 </section>
 
 <!-- Philosophy cards -->
-<section class="section">
+<section class="section" id="philosophy">
   <div class="wrap">
-    <div class="eyebrow mb-4">— Our philosophy</div>
-    <h2 class="h2 mb-4 max-w-[22ch]">Results-oriented. Customer-focused. Long-term committed.</h2>
-    <p class="body mb-12 max-w-[60ch]">Every engagement is built on these four principles. If a recommendation does not serve the client's long-term interest, it does not happen.</p>
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="philosophy-card">
+    <div class="eyebrow mb-4" data-fade style="--delay:0ms">— Our values</div>
+    <h2 class="h2 mb-4 max-w-[22ch]" data-fade style="--delay:80ms">Precision. Stewardship. Integrity. Legacy.</h2>
+    <p class="body mb-14 max-w-[58ch]" data-fade style="--delay:160ms">Four words that govern every mandate. Not aspirations — operating standards we are held to on every project, in every country.</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <!-- 01 Precision -->
+      <div class="philosophy-card" data-fade style="--delay:220ms">
+        <span class="card-num">01</span>
         <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 22V12M12 12l-4 4M12 12l4 4M5 3h14a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+          <!-- crosshair / scope -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="3"/>
+            <line x1="12" y1="2" x2="12" y2="6"/>
+            <line x1="12" y1="18" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="6" y2="12"/>
+            <line x1="18" y1="12" x2="22" y2="12"/>
+          </svg>
         </div>
-        <div class="h3" style="font-size:18px">Results-oriented</div>
-        <p class="small mt-3">Adopting a results and success-oriented approach in every mandate. Outcomes are measured, verified, and shared.</p>
+        <div class="h3" style="font-size:17px;line-height:1.3">Precision</div>
+        <p class="small mt-3" style="color:#4B5563">Every diagnosis, every plan, every recommendation is exacting. We do not guess on land — guesses compound over seasons.</p>
       </div>
-      <div class="philosophy-card">
+
+      <!-- 02 Stewardship -->
+      <div class="philosophy-card" data-fade style="--delay:330ms">
+        <span class="card-num">02</span>
         <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <!-- leaf / growth -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22V12"/>
+            <path d="M12 12C12 7 17 3 22 2c0 5-3 9.5-10 10z"/>
+            <path d="M12 12C12 8 8 4 2 3c1 5 4 9 10 9z"/>
+          </svg>
         </div>
-        <div class="h3" style="font-size:18px">Customer-focused</div>
-        <p class="small mt-3">Focusing on customer satisfaction above all else. We provide quick answers and tailor-made solutions for every condition.</p>
+        <div class="h3" style="font-size:17px;line-height:1.3">Stewardship</div>
+        <p class="small mt-3" style="color:#4B5563">Land and people must be left stronger than we found them. We design every engagement so what we build outlives our presence.</p>
       </div>
-      <div class="philosophy-card">
+
+      <!-- 03 Integrity -->
+      <div class="philosophy-card" data-fade style="--delay:440ms">
+        <span class="card-num">03</span>
         <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          <!-- shield -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
         </div>
-        <div class="h3" style="font-size:18px">Long-term commitment</div>
-        <p class="small mt-3">Making a long-term commitment to our customers and their projects. We are in it for the season — and the generation.</p>
+        <div class="h3" style="font-size:17px;line-height:1.3">Integrity</div>
+        <p class="small mt-3" style="color:#4B5563">If a recommendation does not serve the client's long-term interest, it does not happen. Our only mandate is the right outcome.</p>
       </div>
-      <div class="philosophy-card">
+
+      <!-- 04 Legacy -->
+      <div class="philosophy-card" data-fade style="--delay:550ms">
+        <span class="card-num">04</span>
         <div class="icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <!-- hourglass / time -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3h14M5 21h14"/>
+            <path d="M5 3c0 7 4 9 7 9s7-2 7-9"/>
+            <path d="M5 21c0-7 4-9 7-9s7 2 7 9"/>
+          </svg>
         </div>
-        <div class="h3" style="font-size:18px">Tailor-made solutions</div>
-        <p class="small mt-3">Providing optimal tailor-made solutions for any given condition. No two farms are alike; no two plans should be either.</p>
+        <div class="h3" style="font-size:17px;line-height:1.3">Legacy</div>
+        <p class="small mt-3" style="color:#4B5563">We think in decades, not quarters. Generational value — for land, for families, for food systems — is the only value worth building.</p>
       </div>
+
     </div>
   </div>
 </section>
@@ -157,7 +468,7 @@
   <div class="wrap">
     <div class="eyebrow mb-6" style="color:#64748B">— Our mission</div>
     <blockquote class="max-w-[32ch]" style="color:#F8F9F5">
-      Green Wadi will increase global agricultural production to <em>mitigate hunger and malnutrition</em>, pave the way for <em>food self-sufficiency and security</em> — while protecting the environment and natural resources.
+      Eden Terranova exists to <em>increase agricultural production</em>, strengthen <em>food security</em>, and protect the natural resources behind every harvest.
     </blockquote>
     <div class="mt-10 flex flex-col sm:flex-row gap-3">
       <a href="services.html" class="btn btn-primary lg">Our services
@@ -170,5 +481,36 @@
 
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
+<script>
+// ── Scroll-fade entrance for [data-fade] elements ──
+(function(){
+  var items = document.querySelectorAll('[data-fade]');
+  if(!items.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function(el){ io.observe(el); });
+})();
+
+// ── Timeline v2: activate on scroll ──
+(function(){
+  var root = document.getElementById('tl-v2-root');
+  if(!root) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('active');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  io.observe(root);
+})();
+</script>
 </body>
 </html>

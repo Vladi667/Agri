@@ -13,15 +13,37 @@
         </div>
       </div>`);
 
-    function revealPage(){
+    const MIN_MS = 1600;
+    const t0 = Date.now();
+    let pageLoaded = false;
+    let timerDone = false;
+
+    function dismiss(){
+      if (!pageLoaded || !timerDone) return;
       window.requestAnimationFrame(() => {
         document.body.classList.remove('gw-transitioning');
         document.body.classList.add('gw-ready');
       });
     }
 
-    window.addEventListener('pageshow', revealPage, { once:true });
-    window.setTimeout(revealPage, 260);
+    // Wait for full page load
+    if (document.readyState === 'complete'){
+      pageLoaded = true;
+    } else {
+      window.addEventListener('load', function(){ pageLoaded = true; dismiss(); }, { once:true });
+    }
+
+    // Enforce minimum visible time
+    window.setTimeout(function(){
+      timerDone = true;
+      dismiss();
+    }, MIN_MS);
+
+    // Hard fallback — always dismiss after 4 s
+    window.setTimeout(function(){
+      document.body.classList.remove('gw-transitioning');
+      document.body.classList.add('gw-ready');
+    }, 4000);
 
     document.addEventListener('click', event => {
       const link = event.target.closest('a[href]');

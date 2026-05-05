@@ -130,6 +130,166 @@
   .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
   .stat-row .v{ font-family:"Fraunces",serif; font-size:28px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52; }
   .stat-row .l{ font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:#64748B; margin-top:2px; }
+
+  /* ── Seasonal Roadmap ── */
+  .srm-root{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    position:relative;
+    padding-bottom:68px; /* space for stem + node */
+  }
+
+  /* horizontal connecting track */
+  .srm-track{
+    position:absolute;
+    /* left/right anchored to center of first/last column */
+    left:12.5%; right:12.5%;
+    bottom:33px; /* half of 34px node, aligns with node centers */
+    height:1px;
+    pointer-events:none;
+    z-index:0;
+  }
+  .srm-line{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,
+      var(--green-deep) 0%,
+      rgba(15,123,82,0.45) 60%,
+      rgba(15,123,82,0.18) 100%
+    );
+    transform-origin:left;
+    transform:scaleX(0);
+    transition:transform 2s cubic-bezier(.22,1,.36,1);
+  }
+  /* dashed ghost track behind the animated line */
+  .srm-track::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-top:1px dashed rgba(15,123,82,0.14);
+  }
+  .srm-root.active .srm-line{ transform:scaleX(1); }
+
+  /* each quarter column */
+  .srm-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:0 10px;
+    position:relative;
+  }
+
+  /* white card */
+  .srm-card{
+    flex:1;
+    width:100%;
+    background:#fff;
+    border:1px solid rgba(15,23,42,0.08);
+    border-radius:20px;
+    padding:24px 20px;
+    position:relative;
+    z-index:1;
+    opacity:0;
+    transform:translateY(28px);
+    transition:
+      opacity .68s cubic-bezier(.22,1,.36,1),
+      transform .68s cubic-bezier(.22,1,.36,1),
+      box-shadow .35s;
+    transition-delay:calc(var(--qi) * 360ms + 180ms);
+  }
+  .srm-card:hover{
+    box-shadow:0 22px 52px -18px rgba(15,23,42,0.2);
+    transform:translateY(-3px) !important;
+  }
+  .srm-root.active .srm-card{
+    opacity:1;
+    transform:none;
+  }
+
+  /* thin vertical stem connecting card to node */
+  .srm-stem{
+    width:1px;
+    height:20px;
+    flex-shrink:0;
+    background:linear-gradient(180deg, rgba(15,123,82,0.18), rgba(15,123,82,0.55));
+    transform-origin:top;
+    transform:scaleY(0);
+    transition:transform .38s cubic-bezier(.22,1,.36,1);
+    transition-delay:calc(var(--qi) * 360ms + 340ms);
+    z-index:1;
+  }
+  .srm-root.active .srm-stem{ transform:scaleY(1); }
+
+  /* node circle */
+  .srm-node{
+    width:34px; height:34px;
+    border-radius:50%;
+    background:#F2F4EC;
+    border:1.5px solid var(--green);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--green-deep); font-weight:600;
+    box-shadow:0 0 0 5px rgba(16,185,129,0.12);
+    position:relative; z-index:1;
+    transform:scale(0);
+    transition:transform .52s cubic-bezier(.34,1.56,.64,1);
+    transition-delay:calc(var(--qi) * 360ms + 60ms);
+  }
+  .srm-root.active .srm-node{ transform:scale(1); }
+
+  /* ghost ordinal behind the card */
+  .srm-ghost{
+    position:absolute;
+    top:10px; right:14px;
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    font-size:52px;
+    line-height:1;
+    color:rgba(15,23,42,0.045);
+    letter-spacing:-0.02em;
+    pointer-events:none;
+    user-select:none;
+    transition:color .4s;
+  }
+  .srm-card:hover .srm-ghost{ color:rgba(15,123,82,0.08); }
+
+  /* season tag */
+  .srm-tag{
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 9px;
+    border-radius:999px;
+    background:rgba(16,185,129,0.1);
+    border:1px solid rgba(16,185,129,0.2);
+    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--green-deep);
+    margin-bottom:10px;
+  }
+
+  @media(max-width:900px){
+    .srm-root{
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      padding-bottom:0;
+    }
+    .srm-track{ display:none; }
+    .srm-item{ padding:0; }
+    .srm-stem{
+      height:12px;
+      transition-delay:calc(var(--qi) * 220ms + 240ms);
+    }
+    .srm-card{
+      margin-bottom:0;
+      transition-delay:calc(var(--qi) * 220ms + 120ms);
+    }
+    .srm-node{
+      transition-delay:calc(var(--qi) * 220ms + 40ms);
+    }
+    .srm-ghost{ font-size:36px; }
+  }
+  @media(max-width:560px){
+    .srm-root{ grid-template-columns:1fr; }
+  }
 </style>
 </head>
 <body data-page="activities">
@@ -197,28 +357,79 @@
       </div>
       <p class="body max-w-[40ch]">Every client sees the same rhythm: instrument, plant, scout, harvest, review. The rhythm is the product.</p>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="card">
-        <div class="eyebrow mb-2">Q1</div>
-        <div class="h3">Instrument</div>
-        <p class="small mt-2">Soil samples, sensor calibration, seasonal planning and baseline measurements.</p>
+    <!-- Seasonal Roadmap -->
+    <div class="srm-root" id="srm-root">
+
+      <!-- connecting track -->
+      <div class="srm-track" aria-hidden="true">
+        <div class="srm-line"></div>
       </div>
-      <div class="card">
-        <div class="eyebrow mb-2">Q2</div>
-        <div class="h3">Plant</div>
-        <p class="small mt-2">Variable-rate seeding, canopy training, early-season pest monitoring.</p>
+
+      <!-- Q1 -->
+      <div class="srm-item" style="--qi:0">
+        <div class="srm-card">
+          <span class="srm-ghost" aria-hidden="true">01</span>
+          <div class="srm-tag">
+            <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v3l2 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Jan – Mar
+          </div>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Phase 01</div>
+          <div class="h3 mb-2">Instrument</div>
+          <p class="small">Soil samples, sensor calibration, seasonal planning and baseline measurements.</p>
+        </div>
+        <div class="srm-stem" aria-hidden="true"></div>
+        <div class="srm-node" aria-label="Quarter 1">Q1</div>
       </div>
-      <div class="card">
-        <div class="eyebrow mb-2">Q3</div>
-        <div class="h3">Scout</div>
-        <p class="small mt-2">Weekly drone passes, multispectral analysis, disease response protocols.</p>
+
+      <!-- Q2 -->
+      <div class="srm-item" style="--qi:1">
+        <div class="srm-card">
+          <span class="srm-ghost" aria-hidden="true">02</span>
+          <div class="srm-tag">
+            <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v3l2 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Apr – Jun
+          </div>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Phase 02</div>
+          <div class="h3 mb-2">Plant</div>
+          <p class="small">Variable-rate seeding, canopy training, early-season pest monitoring.</p>
+        </div>
+        <div class="srm-stem" aria-hidden="true"></div>
+        <div class="srm-node" aria-label="Quarter 2">Q2</div>
       </div>
-      <div class="card">
-        <div class="eyebrow mb-2">Q4</div>
-        <div class="h3">Harvest &amp; review</div>
-        <p class="small mt-2">Grade, store, independent audit, plan next season with verified data.</p>
+
+      <!-- Q3 -->
+      <div class="srm-item" style="--qi:2">
+        <div class="srm-card">
+          <span class="srm-ghost" aria-hidden="true">03</span>
+          <div class="srm-tag">
+            <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v3l2 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Jul – Sep
+          </div>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Phase 03</div>
+          <div class="h3 mb-2">Scout</div>
+          <p class="small">Weekly drone passes, multispectral analysis, disease response protocols.</p>
+        </div>
+        <div class="srm-stem" aria-hidden="true"></div>
+        <div class="srm-node" aria-label="Quarter 3">Q3</div>
       </div>
-    </div>
+
+      <!-- Q4 -->
+      <div class="srm-item" style="--qi:3">
+        <div class="srm-card">
+          <span class="srm-ghost" aria-hidden="true">04</span>
+          <div class="srm-tag">
+            <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v3l2 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            Oct – Dec
+          </div>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Phase 04</div>
+          <div class="h3 mb-2">Harvest &amp; review</div>
+          <p class="small">Grade, store, independent audit, plan next season with verified data.</p>
+        </div>
+        <div class="srm-stem" aria-hidden="true"></div>
+        <div class="srm-node" aria-label="Quarter 4">Q4</div>
+      </div>
+
+    </div><!-- end .srm-root -->
   </div>
 </section>
 
@@ -275,6 +486,18 @@ const acts = [
     stats:[{v:'25yr', l:'Monitoring'},{v:'Native', l:'Species first'},{v:'Tagged', l:'Every planting'}]
   },
 ];
+// ── Seasonal roadmap: activate on scroll ──
+(function(){
+  var root = document.getElementById('srm-root');
+  if (!root) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('active'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.18 });
+  io.observe(root);
+})();
+
 document.getElementById('actList').innerHTML = acts.map(a => `
   <div class="activity">
     <div class="visual ${a.c}">

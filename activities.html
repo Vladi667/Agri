@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Activities — Green Wadi</title>
+<title>Activities — Eden Terranova</title>
+<link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,28 +20,112 @@
   }
   .map-hero{
     margin: 0 0 64px;
-    border-radius: 22px; overflow:hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    border-radius: 0;
+    overflow:hidden;
+    box-shadow:none;
   }
   .map-hero img{ width:100%; display:block; }
+  .map-hero-world{
+    background:#fff;
+    position:relative;
+  }
+  .mapSection{
+    width:100%;
+    background:#fff;
+  }
+  .mapStage{
+    width:100%;
+    background:#fff;
+  }
+  .mapImage{
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    object-position:center;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
   .activity{ display:grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 56px 0; border-top:1px solid rgba(15,23,42,0.08); align-items:center;}
   .activity:nth-child(even) .visual{ order: -1; }
   @media (max-width: 900px){
     .activity{ grid-template-columns: 1fr; gap: 24px; }
     .activity:nth-child(even) .visual{ order:0; }
+    .visual{
+      width:100%;
+      justify-self:stretch;
+    }
   }
-  .visual{ aspect-ratio: 4/3; border-radius: 20px; overflow:hidden; position:relative; }
+  .visual{
+    aspect-ratio:4/3;
+    width:min(88%, 560px);
+    border-radius:24px;
+    overflow:hidden;
+    position:relative;
+    isolation:isolate;
+    justify-self:end;
+    border:1px solid rgba(15,23,42,0.08);
+    box-shadow:0 28px 70px -34px rgba(15,23,42,0.28);
+    background:#dfe7d5;
+    transition:transform .55s cubic-bezier(.2,.8,.2,1), box-shadow .55s cubic-bezier(.2,.8,.2,1);
+  }
+  .activity:nth-child(even) .visual{
+    justify-self:start;
+  }
+  .activity:hover .visual{
+    transform:translateY(-4px);
+    box-shadow:0 34px 82px -34px rgba(15,23,42,0.34);
+  }
+  .visual-media{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transform:scale(1.08);
+    transition:transform .85s cubic-bezier(.2,.8,.2,1);
+  }
+  .activity:hover .visual-media{
+    transform:scale(1.12);
+  }
+  .visual-edge-blur{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      linear-gradient(90deg, rgba(248,249,245,0.3), transparent 12%, transparent 88%, rgba(248,249,245,0.3)),
+      linear-gradient(180deg, rgba(248,249,245,0.18), transparent 16%, transparent 84%, rgba(248,249,245,0.18));
+    filter:blur(14px);
+  }
   .v-field{ background: linear-gradient(180deg,#F2D9B2 0%, #6F9C5A 50%, #1F5F3A 100%);}
   .v-lab{ background: linear-gradient(135deg,#E9FBF3, #B9E6D0 60%, #0F7B52);}
   .v-drone{ background: linear-gradient(180deg,#F6EBD4,#E8BF84);}
   .v-classroom{ background: linear-gradient(135deg,#1F5F3A,#0B1220);}
   .v-pond{ background: linear-gradient(180deg,#A9D1C2,#14B8A6 70%,#0F7B52);}
   .v-forest{ background: linear-gradient(180deg,#3E6A34,#1E3A1E);}
-  .visual::after{ content:""; position:absolute; inset:0; background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.35), transparent 60%);}
+  .visual::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(7,12,17,0.02) 0%, rgba(7,12,17,0.03) 42%, rgba(7,12,17,0.3) 100%);
+    z-index:2;
+    pointer-events:none;
+  }
+  .visual::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 72% 18%, rgba(255,255,255,0.28), transparent 34%);
+    z-index:3;
+    pointer-events:none;
+  }
   .badge{
     position:absolute; top:16px; left:16px; padding:5px 12px; border-radius:999px;
     background: rgba(255,255,255,0.85); font-size:11px; letter-spacing:.14em;
     text-transform:uppercase; color:#1E2A3A; backdrop-filter: blur(8px);
+    z-index:4;
   }
   .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
   .stat-row .v{ font-family:"Fraunces",serif; font-size:28px; font-weight:300; letter-spacing:-0.02em; color:#0F7B52; }
@@ -53,15 +138,24 @@
   <div class="wrap">
     <div class="eyebrow mb-5">— Activities</div>
     <h1 class="h1 max-w-[22ch]">The work itself — on the ground, in the lab, above the canopy.</h1>
-    <p class="body max-w-[62ch] mt-8">Green Wadi operates across 12 countries, providing on-the-ground expertise in agriculture, rural development and land conservation. A selection of our practical field activities below.</p>
+    <p class="body max-w-[62ch] mt-8">Fieldwork turns strategy into operating farms. These are the practical activities behind stronger land, better yields, and lasting value.</p>
   </div>
 </section>
 
 <!-- World map hero visual -->
 <section style="padding:0 0 0">
   <div class="wrap">
-    <div class="map-hero">
-      <img src="/images/worldmap.png" alt="Green Wadi Global Activities — 12 Countries" loading="lazy"/>
+    <div class="map-hero map-hero-world">
+      <section class="mapSection">
+        <div class="mapStage">
+          <img
+            src="/images/worldmap.png"
+            alt="Global projects map"
+            class="mapImage"
+            draggable="false"
+          />
+        </div>
+      </section>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
       <div>
@@ -99,7 +193,7 @@
     <div class="flex items-end justify-between flex-wrap gap-6 mb-12">
       <div>
         <div class="eyebrow mb-3">— Seasonal rhythm</div>
-        <h2 class="h2 max-w-[20ch]">A year on a Green Wadi farm.</h2>
+        <h2 class="h2 max-w-[20ch]">A year on an Eden Terranova farm.</h2>
       </div>
       <p class="body max-w-[40ch]">Every client sees the same rhythm: instrument, plant, scout, harvest, review. The rhythm is the product.</p>
     </div>
@@ -135,43 +229,59 @@ const acts = [
   {
     b:'Field', c:'v-field',
     t:'On-farm trials',
+    img:'/images/On-farm%20trials.jpg',
+    pos:'center 63%',
     d:'Every recommendation is tested against a control block on the client farm before it ships to the rest of the estate. Three seasons minimum, independent verification on every result.',
     stats:[{v:'3', l:'Seasons min.'},{v:'100%', l:'Control tested'},{v:'ISO', l:'Verified'}]
   },
   {
     b:'Lab', c:'v-lab',
     t:'Soil &amp; tissue analysis',
+    img:'/images/Soil%20and%20Tissue%20Analysis.jpg',
+    pos:'center 46%',
     d:'ISO-accredited soil, tissue and microbiome work. Results within 72 hours, paired with a clear recommendation — not just numbers. We translate data into action.',
     stats:[{v:'72h', l:'Turnaround'},{v:'ISO', l:'Accredited'},{v:'Full', l:'Recommendation'}]
   },
   {
     b:'Air', c:'v-drone',
     t:'Multispectral scouting',
+    img:'/images/Multispectral%20scouting.png',
+    pos:'center 42%',
     d:'NDVI, NDRE, thermal and LWIR stacks flown on a weekly cadence. Plant-level disease detection cross-checked against ground truth. Field-to-cloud in under seven minutes.',
     stats:[{v:'7min', l:'Field to cloud'},{v:'NDVI', l:'+ NDRE + thermal'},{v:'Weekly', l:'Cadence'}]
   },
   {
     b:'Teach', c:'v-classroom',
     t:'Operator academy',
+    img:'/images/Operator%20academy.png',
+    pos:'center 46%',
     d:'We train the people on the farm to run the instruments after we leave. Two-week residency, local language, free to clients. Capacity building at every level of the value chain.',
     stats:[{v:'2wk', l:'Residency'},{v:'Local', l:'Language'},{v:'Free', l:'For clients'}]
   },
   {
     b:'Water', c:'v-pond',
-    t:'Aquaculture-horticulture pairing',
+    t:'Aquaculture',
+    img:'/images/Aquaculture-horticulture%20pairing.png',
+    pos:'center 52%',
     d:'IMTA ponds engineered to feed a matched horticultural block. Nutrient cycling monitored in real time, closing the loop between production systems for maximum efficiency.',
     stats:[{v:'IMTA', l:'System design'},{v:'Real-time', l:'Monitoring'},{v:'Closed', l:'Nutrient loop'}]
   },
   {
     b:'Forest', c:'v-forest',
     t:'Native-species silviculture',
+    img:'/images/Native-species%20silviculture.png',
+    pos:'62% center',
     d:'Agroforestry designs that interleave productive tree cover with agricultural ground. Each planting is tagged and monitored for 25 years — land conservation as a long-term investment.',
     stats:[{v:'25yr', l:'Monitoring'},{v:'Native', l:'Species first'},{v:'Tagged', l:'Every planting'}]
   },
 ];
 document.getElementById('actList').innerHTML = acts.map(a => `
   <div class="activity">
-    <div class="visual ${a.c}"><div class="badge">${a.b}</div></div>
+    <div class="visual ${a.c}">
+      ${a.img ? `<img class="visual-media" src="${a.img}" alt="${a.t.replace(/&amp;/g, '&')}" loading="lazy" style="object-position:${a.pos || 'center center'};">` : ''}
+      <div class="visual-edge-blur"></div>
+      <div class="badge">${a.b}</div>
+    </div>
     <div>
       <div class="eyebrow mb-3">— Activity</div>
       <h3 class="h2" style="font-size:clamp(28px,3.5vw,44px)">${a.t}</h3>

@@ -8,7 +8,7 @@
         <h2 class="sub-heading">Is What We Are</h2>
         
         <p class="mission-statement">
-            Green Wadi will increase global agricultural production to mitigate hunger and malnutrition, 
+            Eden Terranova will increase agricultural production to mitigate hunger and malnutrition, 
             pave the way for food self-sufficiency and security; strengthen the rural community and 
             improve its livelihood, while protecting the environment and natural resources.
         </p>

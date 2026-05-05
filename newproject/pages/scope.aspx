@@ -29,7 +29,7 @@
         </div>
         
         <div class="excellence-statement">
-            Green Wadi excels in leveraging technological innovation to drive growth and maximize efficiency.
+            Eden Terranova uses technological innovation to drive growth, efficiency, and resilience.
         </div>
     </div>
 </asp:Content>

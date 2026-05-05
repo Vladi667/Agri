@@ -10,20 +10,20 @@
         <div class="floating-content">
             <div class="history-item">
                 <div class="history-year"></div>
-                <p><span class="highlight-phrase">"Green Wadi Ltd."</span> started as a one-man operation when Mr. Friedman left the Ministry of Agriculture of Israel to become an independent consultant 10 years ago.</p>
+                <p><span class="highlight-phrase">"Eden Terranova"</span> turns land, water, expertise, and capital into resilient agricultural ventures.</p>
             </div>
             
             <div class="nature-divider"></div>
             
             <div class="history-item">
                 <div class="history-year"></div>
-                <p>In 2018, due to the expansion of projects, Green Wadi became a limited company employing experts as needed to be efficient and successful. We are committed to providing our clients with quick answers and solutions.</p>
+                <p>In partnership with the Messika family, Eden Terranova brings precision, discretion, and generational excellence to agricultural assets.</p>
             </div>
             
             <div class="nature-divider"></div>
             
             <div class="history-item">
-                <p>Private investors, governments, and development funds around the world have trusted Green Wadi to realize their agricultural and rural development vision.</p>
+                <p>Private investors, family offices, governments, and development funds work with Eden Terranova to realize their agricultural and rural development vision.</p>
             </div>
             
             <div class="nature-divider"></div>
@@ -35,7 +35,7 @@
             <div class="nature-divider"></div>
             
             <div class="history-item">
-                <p>Our successful projects have earned Green Wadi a reputation for delivering measurable value for the long term.</p>
+                <p>Our successful projects have earned Eden Terranova a reputation for delivering measurable value for the long term.</p>
             </div>
         </div>
     </div>

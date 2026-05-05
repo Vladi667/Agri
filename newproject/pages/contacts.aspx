@@ -11,16 +11,16 @@
             <div class="credentials">M.A.Adm., M.A.Sc.Agr., B.A.Sc.Agr.</div>
             
             <div class="position-section">
-                <div class="former-position">The Former Chief of Staff for the Minister of Agriculture, Israel</div>
+                <div class="former-position">Agronomy, food systems, and international project execution</div>
             </div>
 
-            <div class="current-role">CEO</div>
-            <div class="company-name">Green Wadi – Advanced Agriculture and Know-How Ltd.</div>
+            <div class="current-role">Agricultural leadership</div>
+            <div class="company-name">EDEN TERRANOVA FZCO</div>
 
             <ul class="contact-list">
                 <li>
-                    <strong>Address</strong>
-                    Sde Yaakov, 3658600 Israel
+                    <strong>Base</strong>
+                    Dubai, United Arab Emirates
                 </li>
                 <li>
                     <strong>Tel.</strong>

@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="services-container">
-        <h1 class="main-title">Green Wadi Services</h1>
+        <h1 class="main-title">Eden Terranova Services</h1>
         
         <div class="services-grid">
          

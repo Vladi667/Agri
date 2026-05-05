@@ -1,10 +1,11 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="newproject.Site1" ClientIDMode="Static" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="newproject.Site1" ClientIDMode="Static" %>
 
 <!DOCTYPE html>
 
 <html>
 <head runat="server">
     <title></title>
+    <link rel="icon" href="../Images/eden-terranova-symbol.svg" type="image/svg+xml" />
     <asp:ContentPlaceHolder ID="head" runat="server" >
     </asp:ContentPlaceHolder>
 </head>
@@ -13,7 +14,7 @@
         <div>
         <header>
             <a id="name" href="homepage.aspx">
-                <img id="logo" src="../Images/logo.jpg" alt="Logo" />
+                <img id="logo" src="../Images/eden-terranova-logo.png" alt="Eden Terranova" />
             </a>
 
             <div class="welcome-message">
@@ -21,7 +22,7 @@
             </div>
 
             <ul id="lists">
-                <li id="homepage"><a href="homepage.aspx">Green Wadi</a></li>
+                <li id="homepage"><a href="homepage.aspx">Eden Terranova</a></li>
                 <li id="whorwe" runat="server"><a href="whorwe.aspx">Who Are We</a></li>
                 <li id="scope" runat="server"><a href="scope.aspx">Our Scope</a></li>
                 <li id="services" runat="server"><a href="services.aspx">Services</a></li>

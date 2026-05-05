@@ -3,10 +3,10 @@
   function installPageTransition(){
     if (document.getElementById('gwPageTransition')) return;
 
-    // Fresh load vs. internal navigation (shorter overlay for navigation)
+    // Fresh load vs. internal navigation
     var isNav = sessionStorage.getItem('gw_nav') === '1';
     sessionStorage.removeItem('gw_nav');
-    var MIN_MS = isNav ? 380 : 1100;
+    var MIN_MS = isNav ? 900 : 1400;
 
     document.body.classList.add('gw-transitioning');
     document.body.insertAdjacentHTML('afterbegin',
@@ -49,7 +49,7 @@
       sessionStorage.setItem('gw_nav', '1'); // tell next page: use short overlay
       document.body.classList.remove('gw-ready');
       document.body.classList.add('gw-transitioning');
-      window.setTimeout(function(){ window.location.href = url.href; }, 460);
+      window.setTimeout(function(){ window.location.href = url.href; }, 580);
     }, true);
   }
 

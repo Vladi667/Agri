@@ -3,65 +3,53 @@
   function installPageTransition(){
     if (document.getElementById('gwPageTransition')) return;
 
+    // Fresh load vs. internal navigation (shorter overlay for navigation)
+    var isNav = sessionStorage.getItem('gw_nav') === '1';
+    sessionStorage.removeItem('gw_nav');
+    var MIN_MS = isNav ? 380 : 1100;
+
     document.body.classList.add('gw-transitioning');
-    document.body.insertAdjacentHTML('afterbegin', `
-      <div class="gw-page-transition" id="gwPageTransition" aria-hidden="true">
-        <div class="gw-transition-stage">
-          <img class="gw-transition-mark" src="/images/eden-terranova-symbol.svg" alt="">
-          <div class="gw-transition-line"><span></span></div>
-          <div class="gw-transition-word">Eden Terranova</div>
-        </div>
-      </div>`);
+    document.body.insertAdjacentHTML('afterbegin',
+      '<div class="gw-page-transition" id="gwPageTransition" aria-hidden="true">' +
+        '<div class="gw-transition-stage">' +
+          '<img class="gw-transition-mark" src="/images/eden-terranova-symbol.svg" alt="">' +
+          '<div class="gw-transition-line"><span></span></div>' +
+          '<div class="gw-transition-word">Eden Terranova</div>' +
+        '</div>' +
+      '</div>');
 
-    const MIN_MS = 1600;
-    const t0 = Date.now();
-    let pageLoaded = false;
-    let timerDone = false;
-
+    // Single dismiss — idempotent, safe to call multiple times
+    var gone = false;
     function dismiss(){
-      if (!pageLoaded || !timerDone) return;
-      window.requestAnimationFrame(() => {
+      if (gone) return;
+      gone = true;
+      window.requestAnimationFrame(function(){
         document.body.classList.remove('gw-transitioning');
         document.body.classList.add('gw-ready');
       });
     }
 
-    // Wait for full page load
-    if (document.readyState === 'complete'){
-      pageLoaded = true;
-    } else {
-      window.addEventListener('load', function(){ pageLoaded = true; dismiss(); }, { once:true });
-    }
+    // Timer only — no load-event gating (avoids lag from slow images)
+    window.setTimeout(dismiss, MIN_MS);
+    // Hard safety net (no-op if already dismissed)
+    window.setTimeout(dismiss, 3500);
 
-    // Enforce minimum visible time
-    window.setTimeout(function(){
-      timerDone = true;
-      dismiss();
-    }, MIN_MS);
-
-    // Hard fallback — always dismiss after 4 s
-    window.setTimeout(function(){
-      document.body.classList.remove('gw-transitioning');
-      document.body.classList.add('gw-ready');
-    }, 4000);
-
-    document.addEventListener('click', event => {
-      const link = event.target.closest('a[href]');
+    document.addEventListener('click', function(event){
+      var link = event.target.closest('a[href]');
       if (!link || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       if (link.target && link.target !== '_self') return;
       if (link.hasAttribute('download')) return;
 
-      const url = new URL(link.getAttribute('href'), window.location.href);
-      const isSamePageHash = url.pathname === window.location.pathname && url.hash;
-      const isLocalPage = url.origin === window.location.origin && /\.(html|aspx)$/i.test(url.pathname);
+      var url = new URL(link.getAttribute('href'), window.location.href);
+      var isSamePageHash = url.pathname === window.location.pathname && url.hash;
+      var isLocalPage = url.origin === window.location.origin && /\.(html|aspx)$/i.test(url.pathname);
       if (!isLocalPage || isSamePageHash) return;
 
       event.preventDefault();
+      sessionStorage.setItem('gw_nav', '1'); // tell next page: use short overlay
       document.body.classList.remove('gw-ready');
       document.body.classList.add('gw-transitioning');
-      window.setTimeout(() => {
-        window.location.href = url.href;
-      }, 540);
+      window.setTimeout(function(){ window.location.href = url.href; }, 460);
     }, true);
   }
 

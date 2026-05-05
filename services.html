@@ -33,9 +33,136 @@
   .bullet-list{ display:flex; flex-direction:column; gap:10px; margin-top:16px; }
   .bullet-item{ display:flex; align-items:flex-start; gap:12px; font-size:14.5px; color:#1E2A3A; line-height:1.5; }
   .bullet-dot{ width:6px; height:6px; border-radius:999px; background:var(--green); flex-shrink:0; margin-top:8px; }
-  .step-num{ font-family:"Fraunces",serif; font-weight:300; font-size:42px; color:var(--green-deep); width:56px; letter-spacing:-0.02em; line-height:1; }
-  .step-card{ padding:24px 0; border-top:1px solid rgba(15,23,42,0.08); }
-  .step-card:last-child{ border-bottom:1px solid rgba(15,23,42,0.08); }
+  /* ── Engagement Roadmap ── */
+  .eng-root{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    position:relative;
+    padding-bottom:68px;
+  }
+
+  /* horizontal connecting track */
+  .eng-track{
+    position:absolute;
+    left:10%; right:10%; /* centers of col 1 and col 5 in a 5-col grid */
+    bottom:33px;
+    height:1px;
+    pointer-events:none;
+    z-index:0;
+  }
+  .eng-track::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-top:1px dashed rgba(15,123,82,0.14);
+  }
+  .eng-line{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,
+      var(--green-deep) 0%,
+      rgba(15,123,82,0.45) 65%,
+      rgba(15,123,82,0.18) 100%
+    );
+    transform-origin:left;
+    transform:scaleX(0);
+    transition:transform 2.2s cubic-bezier(.22,1,.36,1);
+  }
+  .eng-root.active .eng-line{ transform:scaleX(1); }
+
+  /* each step column */
+  .eng-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:0 8px;
+    position:relative;
+  }
+
+  /* card */
+  .eng-card{
+    flex:1;
+    width:100%;
+    background:#fff;
+    border:1px solid rgba(15,23,42,0.08);
+    border-radius:18px;
+    padding:20px 16px;
+    position:relative;
+    z-index:1;
+    opacity:0;
+    transform:translateY(26px);
+    transition:
+      opacity .65s cubic-bezier(.22,1,.36,1),
+      transform .65s cubic-bezier(.22,1,.36,1),
+      box-shadow .35s;
+    transition-delay:calc(var(--ei) * 300ms + 160ms);
+  }
+  .eng-card:hover{
+    box-shadow:0 20px 48px -16px rgba(15,23,42,0.18);
+    transform:translateY(-3px) !important;
+  }
+  .eng-root.active .eng-card{ opacity:1; transform:none; }
+
+  /* ghost ordinal */
+  .eng-ghost{
+    position:absolute;
+    top:8px; right:10px;
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    font-size:44px;
+    line-height:1;
+    color:rgba(15,23,42,0.045);
+    letter-spacing:-0.02em;
+    pointer-events:none;
+    user-select:none;
+    transition:color .4s;
+  }
+  .eng-card:hover .eng-ghost{ color:rgba(15,123,82,0.08); }
+
+  /* vertical stem */
+  .eng-stem{
+    width:1px;
+    height:18px;
+    flex-shrink:0;
+    background:linear-gradient(180deg,rgba(15,123,82,0.18),rgba(15,123,82,0.55));
+    transform-origin:top;
+    transform:scaleY(0);
+    transition:transform .35s cubic-bezier(.22,1,.36,1);
+    transition-delay:calc(var(--ei) * 300ms + 320ms);
+    z-index:1;
+  }
+  .eng-root.active .eng-stem{ transform:scaleY(1); }
+
+  /* node dot */
+  .eng-node{
+    width:34px; height:34px;
+    border-radius:50%;
+    background:#F2F4EC;
+    border:1.5px solid var(--green);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--green-deep); font-weight:600;
+    box-shadow:0 0 0 5px rgba(16,185,129,0.12);
+    position:relative; z-index:1;
+    transform:scale(0);
+    transition:transform .52s cubic-bezier(.34,1.56,.64,1);
+    transition-delay:calc(var(--ei) * 300ms + 55ms);
+  }
+  .eng-root.active .eng-node{ transform:scale(1); }
+
+  @media(max-width:1024px){
+    .eng-root{ grid-template-columns:1fr 1fr; gap:12px; padding-bottom:0; }
+    .eng-track{ display:none; }
+    .eng-item{ padding:0; }
+    .eng-stem{ height:12px; transition-delay:calc(var(--ei)*200ms + 220ms); }
+    .eng-card{ transition-delay:calc(var(--ei)*200ms + 100ms); }
+    .eng-node{ transition-delay:calc(var(--ei)*200ms + 35ms); }
+    .eng-ghost{ font-size:36px; }
+  }
+  @media(max-width:560px){
+    .eng-root{ grid-template-columns:1fr; }
+  }
 </style>
 </head>
 <body data-page="services">
@@ -61,33 +188,75 @@
   <div class="wrap">
     <div class="eyebrow mb-4">— How we engage</div>
     <h2 class="h2 mb-12 max-w-[20ch]">A phased engagement, always.</h2>
-    <div class="grid md:grid-cols-5 gap-0">
-      <div class="step-card">
-        <div class="step-num">01</div>
-        <div class="h3 mt-3">Listen</div>
-        <p class="small mt-2">Land, family, goals. No tools, no slides. We start with the people.</p>
+    <!-- Engagement roadmap -->
+    <div class="eng-root" id="eng-root">
+
+      <!-- connecting track -->
+      <div class="eng-track" aria-hidden="true">
+        <div class="eng-line"></div>
       </div>
-      <div class="step-card">
-        <div class="step-num">02</div>
-        <div class="h3 mt-3">Baseline</div>
-        <p class="small mt-2">Independent audit: soil, water, yield, labour. We measure before we prescribe.</p>
+
+      <!-- Step 01 -->
+      <div class="eng-item" style="--ei:0">
+        <div class="eng-card">
+          <span class="eng-ghost" aria-hidden="true">01</span>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Step 01</div>
+          <div class="h3 mb-2" style="font-size:17px">Listen</div>
+          <p class="small">Land, family, goals. No tools, no slides. We start with the people.</p>
+        </div>
+        <div class="eng-stem" aria-hidden="true"></div>
+        <div class="eng-node" aria-label="Step 1">01</div>
       </div>
-      <div class="step-card">
-        <div class="step-num">03</div>
-        <div class="h3 mt-3">Plan</div>
-        <p class="small mt-2">5- and 25-year horizons, not single seasons. Strategic planning and master plans.</p>
+
+      <!-- Step 02 -->
+      <div class="eng-item" style="--ei:1">
+        <div class="eng-card">
+          <span class="eng-ghost" aria-hidden="true">02</span>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Step 02</div>
+          <div class="h3 mb-2" style="font-size:17px">Baseline</div>
+          <p class="small">Independent audit: soil, water, yield, labour. We measure before we prescribe.</p>
+        </div>
+        <div class="eng-stem" aria-hidden="true"></div>
+        <div class="eng-node" aria-label="Step 2">02</div>
       </div>
-      <div class="step-card">
-        <div class="step-num">04</div>
-        <div class="h3 mt-3">Implement</div>
-        <p class="small mt-2">Technology adoption, operator training, supplier selection. We embed until the team runs solo.</p>
+
+      <!-- Step 03 -->
+      <div class="eng-item" style="--ei:2">
+        <div class="eng-card">
+          <span class="eng-ghost" aria-hidden="true">03</span>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Step 03</div>
+          <div class="h3 mb-2" style="font-size:17px">Plan</div>
+          <p class="small">5- and 25-year horizons, not single seasons. Strategic planning and master plans.</p>
+        </div>
+        <div class="eng-stem" aria-hidden="true"></div>
+        <div class="eng-node" aria-label="Step 3">03</div>
       </div>
-      <div class="step-card">
-        <div class="step-num">05</div>
-        <div class="h3 mt-3">Review</div>
-        <p class="small mt-2">Year-5 audit is on us. Always. Results compared to the original plan, independently verified.</p>
+
+      <!-- Step 04 -->
+      <div class="eng-item" style="--ei:3">
+        <div class="eng-card">
+          <span class="eng-ghost" aria-hidden="true">04</span>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Step 04</div>
+          <div class="h3 mb-2" style="font-size:17px">Implement</div>
+          <p class="small">Technology adoption, operator training, supplier selection. We embed until the team runs solo.</p>
+        </div>
+        <div class="eng-stem" aria-hidden="true"></div>
+        <div class="eng-node" aria-label="Step 4">04</div>
       </div>
-    </div>
+
+      <!-- Step 05 -->
+      <div class="eng-item" style="--ei:4">
+        <div class="eng-card">
+          <span class="eng-ghost" aria-hidden="true">05</span>
+          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Step 05</div>
+          <div class="h3 mb-2" style="font-size:17px">Review</div>
+          <p class="small">Year-5 audit is on us. Always. Results compared to the original plan, independently verified.</p>
+        </div>
+        <div class="eng-stem" aria-hidden="true"></div>
+        <div class="eng-node" aria-label="Step 5">05</div>
+      </div>
+
+    </div><!-- end .eng-root -->
   </div>
 </section>
 
@@ -215,6 +384,18 @@ document.getElementById('faq').innerHTML = faqs.map((f,i) => `
     </summary>
     <p class="body mt-4">${f.a}</p>
   </details>`).join('');
+
+// ── Engagement roadmap: activate on scroll ──
+(function(){
+  var root = document.getElementById('eng-root');
+  if (!root) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('active'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  io.observe(root);
+})();
 </script>
 </body>
 </html>

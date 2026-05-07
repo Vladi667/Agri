@@ -682,47 +682,40 @@
     flex-direction:column;
     justify-content:center;
     padding:52px clamp(28px,3.5vw,64px) 52px clamp(36px,5vw,88px);
-    background:#07090A;
+    background:#F5F6EF;
   }
   .plant-sticky::before{
     content:"";
     position:absolute;
     inset:0;
-    background:radial-gradient(ellipse 60% 50% at 50% 28%, rgba(18,58,22,0.55) 0%, transparent 68%);
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 32%, rgba(16,185,129,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 50% 80%, rgba(244,199,123,0.06) 0%, transparent 70%);
     pointer-events:none;
     z-index:0;
-  }
-  .plant-header{
-    margin-bottom:24px;
-    flex-shrink:0;
-    position:relative;
-    z-index:1;
-  }
-  .plant-header .eyebrow{
-    color:rgba(100,200,140,0.65);
-  }
-  .plant-h2{
-    font-family:"Fraunces",serif;
-    font-weight:300;
-    font-size:clamp(20px,2.2vw,30px);
-    letter-spacing:-0.02em;
-    line-height:1.12;
-    color:rgba(240,244,238,0.88);
-    max-width:24ch;
-    margin-top:8px;
   }
   .plant-stage{
     flex:1;
     display:flex;
-    align-items:flex-end;
+    align-items:center;
     justify-content:center;
     min-height:0;
     position:relative;
     z-index:1;
-    overflow:hidden;
+    overflow:visible;
+  }
+  /* Subtle filter wash over the video — barely-there tint that makes the helix sit in the page */
+  .plant-stage::after{
+    content:"";
+    position:absolute; inset:0;
+    pointer-events:none; z-index:2;
+    background:
+      radial-gradient(ellipse 70% 80% at 50% 50%, transparent 55%, rgba(245,246,239,0.55) 100%),
+      linear-gradient(180deg, rgba(245,246,239,0.22) 0%, transparent 14%, transparent 86%, rgba(245,246,239,0.32) 100%);
+    mix-blend-mode:lighten;
   }
   #plant-tree-img{
-    height:min(500px,66vh);
+    height:min(560px,68vh);
     width:auto;
     max-width:100%;
     object-fit:contain;
@@ -730,17 +723,16 @@
     pointer-events:none;
     user-select:none;
     -webkit-user-drag:none;
-    transform-origin:bottom center;
-    border-radius:18px;
-    overflow:hidden;
+    transform-origin:center;
     background:transparent;
   }
-  /* When the stage holds a video instead of an SVG */
+  /* DNA video — blends with the cream background so the white frame disappears, only the helix remains */
   video#plant-tree-img{
     aspect-ratio: 4 / 5;
-    height:min(560px,68vh);
+    height:min(620px,72vh);
     object-fit:cover;
-    box-shadow: 0 36px 80px -32px rgba(0,0,0,0.55), 0 0 0 1px rgba(100,210,150,0.10);
+    mix-blend-mode: multiply;
+    filter: contrast(1.06) saturate(1.10);
   }
   .plant-status{
     flex-shrink:0;
@@ -756,7 +748,7 @@
     font-size:11px;
     letter-spacing:0.2em;
     text-transform:uppercase;
-    color:rgba(100,210,150,0.82);
+    color:#0F7B52;
     font-weight:500;
     flex-shrink:0;
   }
@@ -764,7 +756,7 @@
     position:relative;
     width:68px;
     height:1px;
-    background:rgba(255,255,255,0.10);
+    background:rgba(15,23,42,0.10);
     overflow:hidden;
     flex-shrink:0;
   }
@@ -772,17 +764,42 @@
     position:absolute;
     inset:0 auto 0 0;
     width:8.33%;
-    background:linear-gradient(90deg,rgba(80,180,120,0.3),rgba(80,180,120,0.85));
+    background:linear-gradient(90deg,rgba(15,123,82,0.35),rgba(15,123,82,0.95));
     transition:width .55s cubic-bezier(.22,.8,.2,1);
   }
   .plant-active-title{
     font-size:13px;
-    color:rgba(240,244,238,0.58);
+    color:#475569;
     line-height:1.3;
     max-width:20ch;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+  }
+  /* Header that now lives on the right (services) column */
+  .plant-services-header{
+    margin-bottom:6vh;
+  }
+  .plant-services-header .eyebrow{ color:#0F7B52; }
+  .plant-services-h2{
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    font-size:clamp(34px,4.4vw,58px);
+    letter-spacing:-0.022em;
+    line-height:1.0;
+    color:#0F172A;
+    max-width:18ch;
+    margin-top:10px;
+  }
+  .plant-services-h2 .sub{
+    display:block;
+    font-size:.42em;
+    font-style:italic;
+    font-weight:300;
+    color:#475569;
+    letter-spacing:-0.01em;
+    margin-top:18px;
+    line-height:1.25;
   }
 
   /* Right services */
@@ -1121,13 +1138,8 @@
 <!-- Plant growth section -->
 <section class="plant-scroll" id="sectors">
 
-  <!-- ── Sticky left: DNA video stage ── -->
+  <!-- ── Sticky left: DNA video stage (visual only) ── -->
   <div class="plant-sticky">
-    <div class="plant-header">
-      <div class="eyebrow mb-2">— The foundation</div>
-      <h2 class="plant-h2">The code of the harvest.<br><span style="display:block; font-size:.62em; color:rgba(180,220,200,0.78); margin-top:14px; letter-spacing:-0.012em;">Twelve sectors, one living practice.</span></h2>
-    </div>
-
     <div class="plant-stage">
       <video id="plant-tree-img" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
         <source src="/images/plant%20dna.mp4" type="video/mp4">
@@ -1141,8 +1153,12 @@
     </div>
   </div>
 
-  <!-- ── Scrolling right: service entries ── -->
+  <!-- ── Scrolling right: header + service entries ── -->
   <div class="plant-services">
+    <div class="plant-services-header">
+      <div class="eyebrow mb-3">— The foundation</div>
+      <h2 class="plant-services-h2">The code of the harvest.<span class="sub">Twelve sectors, one living practice.</span></h2>
+    </div>
     <div class="plant-services-intro">
       <p class="body" style="max-width:40ch;color:#4A5568;font-size:14px;line-height:1.7;">An integrated agricultural services platform — production, value chain infrastructure, and land resilience, connected into one disciplined system.</p>
     </div>

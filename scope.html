@@ -594,13 +594,26 @@ function requestScopeUpdate(){
   }
 }
 
+function scrollToScope(index){
+  if (window.matchMedia('(max-width: 900px)').matches) return;
+  const rect = scopeSection.getBoundingClientRect();
+  const sectionTop = window.scrollY + rect.top;
+  const scrollable = Math.max(1, scopeSection.offsetHeight - window.innerHeight);
+  const targetProgress = index === sectors.length - 1 ? 0.995 : (index + 0.12) / sectors.length;
+  window.scrollTo({
+    top: sectionTop + (scrollable * targetProgress),
+    behavior:'smooth'
+  });
+}
+
 function nudgeScope(delta){
   manualScope = (activeScope + delta + sectors.length) % sectors.length;
   setScope(manualScope);
+  scrollToScope(manualScope);
   window.setTimeout(() => {
     manualScope = null;
     requestScopeUpdate();
-  }, 1400);
+  }, 1600);
 }
 
 scopePrev.addEventListener('click', () => nudgeScope(-1));
@@ -610,10 +623,11 @@ scopeThumbs.forEach(thumb => {
     const firstMatch = sectorMedia.findIndex(mediaKey => mediaKey === thumb.dataset.media);
     manualScope = Math.max(0, firstMatch);
     setScope(manualScope);
+    scrollToScope(manualScope);
     window.setTimeout(() => {
       manualScope = null;
       requestScopeUpdate();
-    }, 1400);
+    }, 1600);
   });
 });
 

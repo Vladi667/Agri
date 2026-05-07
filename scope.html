@@ -314,6 +314,11 @@
     transform:translateY(-1px);
     outline:none;
   }
+  .scope-carousel-button:disabled{
+    opacity:.38;
+    cursor:default;
+    transform:none;
+  }
   .scope-mobile{ display:none; }
   .scope-mobile-grid{
     display:flex;
@@ -401,7 +406,7 @@
       </div>
 
       <div class="scope-carousel" id="scopeCarousel" aria-label="Scope sector carousel">
-        <img id="scopeCarouselImage" class="scope-carousel-img" src="/images/nice%20field.png" alt="Eden Terranova cultivated field"/>
+        <img id="scopeCarouselImage" class="scope-carousel-img" src="/images/china.png" alt="Eden Terranova international greenhouse project" data-media="china"/>
         <div class="scope-carousel-content" aria-live="polite">
           <div class="scope-carousel-kicker" id="scopeCarouselLayer">Production systems</div>
           <div class="scope-carousel-title" id="scopeCarouselTitle">Crops</div>
@@ -461,10 +466,6 @@ const sectors = [
   {n:'12', t:'Environmental protection', short:'Environmental', d:'Compliance, monitoring, restoration. We write the MRV plan; we then hold ourselves to it.', layer:'land', label:'Land resilience', related:[0,8,9,10]},
 ];
 const scopeMedia = {
-  field: {
-    src:'/images/nice%20field.png',
-    alt:'Eden Terranova cultivated field'
-  },
   meeting: {
     src:'/images/meeting.jpg',
     alt:'Eden Terranova working meeting'
@@ -478,7 +479,7 @@ const scopeMedia = {
     alt:'Eden Terranova international greenhouse project'
   }
 };
-const sectorMedia = ['field','field','field','china','meeting','meeting','meeting','conference','china','field','china','conference'];
+const sectorMedia = ['china','china','china','china','meeting','meeting','meeting','meeting','conference','conference','conference','conference'];
 
 const scopeSection = document.getElementById('scopeSectors');
 const scopeCount = document.getElementById('scopeCount');
@@ -495,6 +496,8 @@ const scopeNext = document.getElementById('scopeNext');
 let activeScope = -1;
 let manualScope = null;
 let scopeTicking = false;
+let imageSwapTimer = null;
+let manualScopeTimer = null;
 
 document.getElementById('scopeMobile').innerHTML = [
   ['Production systems', sectors.slice(0,4)],
@@ -512,7 +515,7 @@ function setScope(index){
   if (index === activeScope || !sectors[index]) return;
   activeScope = index;
   const item = sectors[index];
-  const mediaKey = sectorMedia[index] || 'field';
+  const mediaKey = sectorMedia[index] || 'china';
   const media = scopeMedia[mediaKey];
 
   scopeLayers.forEach(layer => layer.classList.toggle('active', layer.dataset.layer === item.layer));
@@ -523,9 +526,13 @@ function setScope(index){
   scopeCarouselText.textContent = item.d;
   scopeCarouselLayer.textContent = item.label;
   scopeProgressFill.style.width = `${((index + 1) / 12) * 100}%`;
+  scopePrev.disabled = index === 0;
+  scopeNext.disabled = index === sectors.length - 1;
   if (scopeCarouselImage.dataset.media !== mediaKey) {
+    if (imageSwapTimer) window.clearTimeout(imageSwapTimer);
     scopeCarouselImage.style.opacity = '0';
-    window.setTimeout(() => {
+    imageSwapTimer = window.setTimeout(() => {
+      if (activeScope !== index) return;
       scopeCarouselImage.src = media.src;
       scopeCarouselImage.alt = media.alt;
       scopeCarouselImage.dataset.media = mediaKey;
@@ -538,7 +545,7 @@ function setScope(index){
 function updateScope(){
   scopeTicking = false;
   if (window.matchMedia('(max-width: 900px)').matches) {
-    setScope(0);
+    if (activeScope < 0) setScope(0);
     return;
   }
   const rect = scopeSection.getBoundingClientRect();
@@ -560,7 +567,7 @@ function scrollToScope(index){
   const rect = scopeSection.getBoundingClientRect();
   const sectionTop = window.scrollY + rect.top;
   const scrollable = Math.max(1, scopeSection.offsetHeight - window.innerHeight);
-  const targetProgress = index === sectors.length - 1 ? 0.995 : (index + 0.12) / sectors.length;
+  const targetProgress = index === sectors.length - 1 ? 0.985 : (index + 0.5) / sectors.length;
   window.scrollTo({
     top: sectionTop + (scrollable * targetProgress),
     behavior:'smooth'
@@ -568,10 +575,13 @@ function scrollToScope(index){
 }
 
 function nudgeScope(delta){
-  manualScope = (activeScope + delta + sectors.length) % sectors.length;
+  const nextScope = Math.min(sectors.length - 1, Math.max(0, activeScope + delta));
+  if (nextScope === activeScope) return;
+  manualScope = nextScope;
   setScope(manualScope);
   scrollToScope(manualScope);
-  window.setTimeout(() => {
+  if (manualScopeTimer) window.clearTimeout(manualScopeTimer);
+  manualScopeTimer = window.setTimeout(() => {
     manualScope = null;
     requestScopeUpdate();
   }, 1600);

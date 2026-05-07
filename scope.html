@@ -314,36 +314,6 @@
     transform:translateY(-1px);
     outline:none;
   }
-  .scope-thumb-row{
-    position:absolute;
-    left:34px;
-    right:126px;
-    top:28px;
-    z-index:3;
-    display:grid;
-    grid-template-columns:repeat(4, minmax(0,1fr));
-    gap:8px;
-  }
-  .scope-thumb{
-    height:50px;
-    border:1px solid rgba(248,249,245,0.18);
-    border-radius:10px;
-    overflow:hidden;
-    opacity:.56;
-    background:rgba(248,249,245,0.08);
-    transition:opacity .3s, border-color .3s, transform .3s;
-  }
-  .scope-thumb.active{
-    opacity:1;
-    border-color:rgba(248,249,245,0.68);
-    transform:translateY(2px);
-  }
-  .scope-thumb img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
   .scope-mobile{ display:none; }
   .scope-mobile-grid{
     display:flex;
@@ -379,7 +349,6 @@
     .scope-carousel{ min-height:520px; }
     .scope-carousel-content{ inset:auto 22px 24px 22px; max-width:none; }
     .scope-carousel-controls{ right:22px; top:22px; bottom:auto; }
-    .scope-thumb-row{ display:none; }
   }
   @media(prefers-reduced-motion:reduce){
     .scope-progress-fill,
@@ -433,12 +402,6 @@
 
       <div class="scope-carousel" id="scopeCarousel" aria-label="Scope sector carousel">
         <img id="scopeCarouselImage" class="scope-carousel-img" src="/images/nice%20field.png" alt="Eden Terranova cultivated field"/>
-        <div class="scope-thumb-row" aria-hidden="true">
-          <button class="scope-thumb active" type="button" data-media="field"><img src="/images/nice%20field.png" alt=""/></button>
-          <button class="scope-thumb" type="button" data-media="meeting"><img src="/images/meeting.jpg" alt=""/></button>
-          <button class="scope-thumb" type="button" data-media="conference"><img src="/images/conference.jpg" alt=""/></button>
-          <button class="scope-thumb" type="button" data-media="china"><img src="/images/china.png" alt=""/></button>
-        </div>
         <div class="scope-carousel-content" aria-live="polite">
           <div class="scope-carousel-kicker" id="scopeCarouselLayer">Production systems</div>
           <div class="scope-carousel-title" id="scopeCarouselTitle">Crops</div>
@@ -526,7 +489,6 @@ const scopeCarouselImage = document.getElementById('scopeCarouselImage');
 const scopeCarouselTitle = document.getElementById('scopeCarouselTitle');
 const scopeCarouselText = document.getElementById('scopeCarouselText');
 const scopeCarouselLayer = document.getElementById('scopeCarouselLayer');
-const scopeThumbs = [...document.querySelectorAll('.scope-thumb')];
 const scopeLayers = [...document.querySelectorAll('.scope-layer')];
 const scopePrev = document.getElementById('scopePrev');
 const scopeNext = document.getElementById('scopeNext');
@@ -571,7 +533,6 @@ function setScope(index){
       scopeCarouselImage.style.transform = `scale(${index % 2 ? '1.04' : '1.02'})`;
     }, 180);
   }
-  scopeThumbs.forEach(thumb => thumb.classList.toggle('active', thumb.dataset.media === mediaKey));
 }
 
 function updateScope(){
@@ -618,18 +579,6 @@ function nudgeScope(delta){
 
 scopePrev.addEventListener('click', () => nudgeScope(-1));
 scopeNext.addEventListener('click', () => nudgeScope(1));
-scopeThumbs.forEach(thumb => {
-  thumb.addEventListener('click', () => {
-    const firstMatch = sectorMedia.findIndex(mediaKey => mediaKey === thumb.dataset.media);
-    manualScope = Math.max(0, firstMatch);
-    setScope(manualScope);
-    scrollToScope(manualScope);
-    window.setTimeout(() => {
-      manualScope = null;
-      requestScopeUpdate();
-    }, 1600);
-  });
-});
 
 setScope(0);
 window.addEventListener('scroll', requestScopeUpdate, { passive:true });

@@ -724,12 +724,23 @@
   #plant-tree-img{
     height:min(500px,66vh);
     width:auto;
+    max-width:100%;
     object-fit:contain;
     display:block;
     pointer-events:none;
     user-select:none;
     -webkit-user-drag:none;
     transform-origin:bottom center;
+    border-radius:18px;
+    overflow:hidden;
+    background:transparent;
+  }
+  /* When the stage holds a video instead of an SVG */
+  video#plant-tree-img{
+    aspect-ratio: 4 / 5;
+    height:min(560px,68vh);
+    object-fit:cover;
+    box-shadow: 0 36px 80px -32px rgba(0,0,0,0.55), 0 0 0 1px rgba(100,210,150,0.10);
   }
   .plant-status{
     flex-shrink:0;
@@ -1110,15 +1121,17 @@
 <!-- Plant growth section -->
 <section class="plant-scroll" id="sectors">
 
-  <!-- ── Sticky left: botanical plant SVG ── -->
+  <!-- ── Sticky left: DNA video stage ── -->
   <div class="plant-sticky">
     <div class="plant-header">
-      <div class="eyebrow mb-2">— Services</div>
-      <h2 class="plant-h2">Twelve sectors,<br>one living practice.</h2>
+      <div class="eyebrow mb-2">— The foundation</div>
+      <h2 class="plant-h2">The code of the harvest.<br><span style="display:block; font-size:.62em; color:rgba(180,220,200,0.78); margin-top:14px; letter-spacing:-0.012em;">Twelve sectors, one living practice.</span></h2>
     </div>
 
     <div class="plant-stage">
-      <img id="plant-tree-img" src="/images/olive-tree.svg" alt="" draggable="false"/>
+      <video id="plant-tree-img" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="/images/plant%20dna.mp4" type="video/mp4">
+      </video>
     </div>
 
     <div class="plant-status">
@@ -1254,20 +1267,6 @@
       </div>
     </div>
 
-  </div>
-</section>
-
-<!-- Cinematic band — plant DNA -->
-<section class="cinema" aria-label="Plant DNA — the code of the harvest">
-  <video autoplay muted loop playsinline preload="metadata">
-    <source src="/images/plant%20dna.mp4" type="video/mp4">
-  </video>
-  <div class="cinema-wash"></div>
-  <div class="cinema-grain"></div>
-  <div class="cinema-copy">
-    <div class="eyebrow">— The foundation</div>
-    <h2>The code of the harvest.</h2>
-    <p>Genetics, soil microbiome, water chemistry — we work the variables that decide what the field becomes, decades before it's planted.</p>
   </div>
 </section>
 

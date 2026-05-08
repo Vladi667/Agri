@@ -21,30 +21,53 @@
     border:1px solid rgba(15,23,42,0.06); border-radius:20px;
     padding:40px 48px; margin:20px 0 48px;
   }
-  /* ── Client logo strip ── */
+  /* ── Client logo wall ── */
   .client-strip-outer{
     background:#fff;
     border:1px solid rgba(15,23,42,0.07);
     border-radius:20px;
     box-shadow:0 8px 32px -12px rgba(15,23,42,0.10);
-    padding:32px 48px;
+    padding:24px;
   }
-  .client-strip-wrap{
-    position:relative;
+  .client-logo-wall{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:1px;
+    background:rgba(15,23,42,0.075);
+    border:1px solid rgba(15,23,42,0.075);
+    border-radius:14px;
+    overflow:hidden;
   }
-  .client-strip-wrap img{
-    width:100%; height:auto; display:block;
+  .client-logo-card{
+    min-height:126px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:#F8F9F5;
+    transition:background .25s, transform .25s;
   }
-  .client-hotspot{
+  .client-logo-card:hover{
+    background:#fff;
+    transform:translateY(-1px);
+  }
+  .client-logo-card:focus-visible{
+    outline:2px solid rgba(15,123,82,0.5);
+    outline-offset:-4px;
+  }
+  .client-logo-card img{
     display:block;
-    position:absolute;
-    border-radius:8px;
-    transition: background .25s, box-shadow .25s;
-    cursor:pointer;
+    max-width:100%;
+    max-height:64px;
+    object-fit:contain;
   }
-  .client-hotspot:hover{
-    background:rgba(16,185,129,0.10);
-    box-shadow:inset 0 0 0 1.5px rgba(16,185,129,0.28);
+  .client-logo-card img.logo-wide{
+    max-height:76px;
+  }
+  @media(max-width:900px){
+    .client-logo-wall{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .client-strip-outer{ padding:16px; }
+    .client-logo-card{ min-height:112px; padding:20px; }
   }
   .case{
     border:1px solid rgba(15,23,42,0.08); border-radius:22px; background:#fff;
@@ -114,85 +137,40 @@
 
     <div class="eyebrow mb-6">— Selected clients</div>
 
-    <!-- Client logo strip — each logo links to the company's website -->
+    <!-- Client logo wall — each logo links to the company's website -->
     <div class="client-strip-outer">
-    <div class="client-strip-wrap">
-      <img src="/images/clients.png" alt="Eden Terranova — selected clients" loading="lazy"/>
-
-      <!-- ── ROW 1 (top half of image) ── -->
-
-      <!-- Strauss Group -->
-      <a href="https://www.strauss-group.com/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Strauss Group"
-         style="top:2%;left:0.5%;width:8.5%;height:46%;"></a>
-
-      <!-- Israel Discount Bank -->
-      <a href="https://english.discountbank.co.il/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Israel Discount Bank"
-         style="top:2%;left:9.5%;width:12%;height:46%;"></a>
-
-      <!-- Kenzy -->
-      <a href="https://www.kenzy.co.il/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Kenzy"
-         style="top:2%;left:22%;width:11%;height:46%;"></a>
-
-      <!-- Grow-tec -->
-      <a href="https://www.growtec.ag/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Grow-tec — Powering CEA Yields"
-         style="top:2%;left:40%;width:13%;height:46%;"></a>
-
-      <!-- Kingenta -->
-      <a href="https://www.kingenta.com/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Kingenta 金正大国际"
-         style="top:2%;left:53.5%;width:14%;height:46%;"></a>
-
-      <!-- ── ROW 2 (bottom half of image) ── -->
-
-      <!-- Optimum Agriculture -->
-      <a href="https://www.optimumagriculture.com/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Optimum Agriculture"
-         style="top:52%;left:0%;width:14%;height:46%;"></a>
-
-      <!-- Zabar Solar -->
-      <a href="https://zabar-solar.com/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Zabar Solar"
-         style="top:52%;left:14.5%;width:12.5%;height:46%;"></a>
-
-      <!-- Netafim -->
-      <a href="https://www.netafim.com/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Netafim — An Orbia Business"
-         style="top:52%;left:40%;width:15%;height:46%;"></a>
-
-      <!-- KIC -->
-      <a href="https://www.kic.co.il/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="KIC"
-         style="top:52%;left:55.5%;width:9%;height:46%;"></a>
-
-      <!-- Tnuva -->
-      <a href="https://www.tnuva.co.il/"
-         target="_blank" rel="noopener noreferrer"
-         class="client-hotspot"
-         title="Tnuva"
-         style="top:52%;left:65%;width:13%;height:46%;"></a>
-    </div><!-- end .client-strip-wrap -->
+    <div class="client-logo-wall" aria-label="Selected client websites">
+      <a href="https://www.strauss-group.com/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Strauss Group website">
+        <img src="/images/clients/strauss-group.png" alt="Strauss Group" loading="lazy">
+      </a>
+      <a href="https://english.discountbank.co.il/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Israel Discount Bank website">
+        <img src="/images/clients/israel-discount-bank.png" alt="Israel Discount Bank" loading="lazy">
+      </a>
+      <a href="https://www.kenzy.co.il/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Kenzy website">
+        <img src="/images/clients/kenzy.png" alt="Kenzy" loading="lazy">
+      </a>
+      <a href="https://www.growtec.ag/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Grow-tec website">
+        <img src="/images/clients/growtec.png" alt="Grow-tec" loading="lazy">
+      </a>
+      <a href="https://www.kingenta.com/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Kingenta website">
+        <img src="/images/clients/kingenta.png" alt="Kingenta" loading="lazy">
+      </a>
+      <a href="https://www.optimumagriculture.com/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Optimum Agriculture website">
+        <img src="/images/clients/optimum-agriculture.png" alt="Optimum Agriculture" class="logo-wide" loading="lazy">
+      </a>
+      <a href="https://zabar-solar.com/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Zabar Solar website">
+        <img src="/images/clients/zabar-solar.png" alt="Zabar Solar" loading="lazy">
+      </a>
+      <a href="https://www.netafim.com/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Netafim website">
+        <img src="/images/clients/netafim.png" alt="Netafim" loading="lazy">
+      </a>
+      <a href="https://www.kic.co.il/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="KIC website">
+        <img src="/images/clients/kic.png" alt="KIC" loading="lazy">
+      </a>
+      <a href="https://www.tnuva.co.il/" target="_blank" rel="noopener noreferrer" class="client-logo-card" aria-label="Tnuva website">
+        <img src="/images/clients/tnuva.png" alt="Tnuva" loading="lazy">
+      </a>
+    </div><!-- end .client-logo-wall -->
     </div><!-- end .client-strip-outer -->
   </div>
 </section>

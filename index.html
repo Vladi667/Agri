@@ -896,25 +896,94 @@
   /* Mobile */
   @media(max-width:900px){
     .plant-scroll{
-      display:block;
+      display:flex;
+      align-items:flex-start;
+      overflow-x:hidden;
     }
     .plant-sticky{
-      display:none;
+      display:block;
+      width:38vw;
+      min-width:136px;
+      height:100svh;
+      top:0;
     }
     .plant-services{
-      padding:60px 24px;
+      width:62vw;
+      flex:1;
+      min-width:0;
+      padding:42px 18px 58px 18px;
+    }
+    .plant-stage{
+      inset:0;
+    }
+    video#plant-tree-img{
+      transform:scale(1.01);
     }
     .plant-services::before{
-      display:none;
+      display:block;
+      top:42px;
+      bottom:58px;
+      background:linear-gradient(180deg,transparent,rgba(15,23,42,0.07) 12%,rgba(15,23,42,0.07) 86%,transparent);
+    }
+    .plant-services-intro{
+      padding-bottom:40px;
+    }
+    .plant-services-intro .eyebrow{
+      margin-bottom:12px;
+    }
+    .plant-services-title{
+      font-size:clamp(30px,10vw,42px);
+      max-width:9.6ch;
+    }
+    .plant-services-intro > p.body{
+      margin-top:18px;
+      font-size:13px !important;
+      line-height:1.58 !important;
+      max-width:28ch !important;
+    }
+    .plant-status{
+      margin-top:20px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      gap:8px 10px;
+    }
+    .plant-track{
+      width:72px;
+      margin-top:6px;
+    }
+    .plant-active-title{
+      flex-basis:100%;
+      font-size:12px;
     }
     .plant-entry{
       opacity:1;
       transform:none;
-      padding:36px 0;
+      padding:34px 0;
+      gap:14px;
+    }
+    .plant-entry-num{
+      width:22px;
+      font-size:10px;
+      letter-spacing:0.16em;
+    }
+    .plant-entry-layer{
+      font-size:9px;
+      letter-spacing:0.14em;
+    }
+    .plant-entry-title{
+      font-size:clamp(22px,8vw,31px);
+      line-height:1;
+      margin-bottom:10px;
+    }
+    .plant-entry-desc{
+      font-size:13px;
+      line-height:1.52;
+      max-width:24ch;
     }
     .plant-entry-link{
       opacity:1;
       transform:none;
+      margin-top:14px;
     }
   }
 </style>

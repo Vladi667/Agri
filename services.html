@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Services — Eden Terranova</title>
 <link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
-<script src="https://cdn.tailwindcss.com"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,300&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
   body{ padding-top:72px; background:#F8F9F5; }
@@ -24,7 +24,7 @@
   .svc-card:hover{ border-color:rgba(16,185,129,0.3); box-shadow:0 20px 48px -24px rgba(15,23,42,0.18); }
   .svc-card.active{ border-color:rgba(16,185,129,0.5); box-shadow:0 24px 56px -24px rgba(16,185,129,0.25); }
   .svc-head{ display:grid; grid-template-columns: 72px 1fr auto; gap:20px; align-items:center; padding:28px; }
-  .svc-num{ font-family:"Fraunces",serif; font-weight:300; font-size:64px; color:var(--green-deep); line-height:1; letter-spacing:-0.02em; }
+  .svc-num{ font-family:"Bodoni Moda",serif; font-weight:300; font-size:64px; color:var(--green-deep); line-height:1; letter-spacing:-0.02em; }
   .svc-body{ padding:0 28px 28px; border-top:1px solid rgba(15,23,42,0.06); display:none; }
   .svc-card.active .svc-body{ display:block; }
   .svc-toggle{ width:36px; height:36px; border-radius:999px; background:rgba(15,23,42,0.04); border:1px solid rgba(15,23,42,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink-2); transition:background .3s, transform .4s; }
@@ -107,7 +107,7 @@
   .eng-ghost{
     position:absolute;
     top:8px; right:10px;
-    font-family:"Fraunces",serif;
+    font-family:"Bodoni Moda",serif;
     font-weight:300;
     font-size:44px;
     line-height:1;
@@ -169,7 +169,7 @@
 
 <section class="intro">
   <div class="wrap">
-    <div class="eyebrow mb-5">— Services</div>
+    <div class="eyebrow mb-5">Services</div>
     <h1 class="h1 max-w-[22ch]">Five service areas. One continuous relationship.</h1>
     <p class="body max-w-[62ch] mt-8">We deliver these as a stack — from agronomy and planning through consulting, rural development and agribusiness — or independently, on a mandate-by-mandate basis. Every engagement includes a five-year review at no extra cost.</p>
   </div>
@@ -178,7 +178,7 @@
 <!-- Service cards with accordion -->
 <section class="section" style="padding-top:40px">
   <div class="wrap">
-    <div class="eyebrow mb-6">— Our five service areas</div>
+    <div class="eyebrow mb-6">Our five service areas</div>
     <div class="flex flex-col gap-4" id="svcList"></div>
   </div>
 </section>
@@ -186,7 +186,7 @@
 <!-- Phased engagement -->
 <section class="section" style="background:#F2F4EC">
   <div class="wrap">
-    <div class="eyebrow mb-4">— How we engage</div>
+    <div class="eyebrow mb-4">How we engage</div>
     <h2 class="h2 mb-12 max-w-[20ch]">A phased engagement, always.</h2>
     <!-- Engagement roadmap -->
     <div class="eng-root" id="eng-root">
@@ -264,7 +264,7 @@
 <section class="section">
   <div class="wrap grid md:grid-cols-3 gap-6">
     <div class="md:col-span-1">
-      <div class="eyebrow mb-4">— FAQ</div>
+      <div class="eyebrow mb-4">FAQ</div>
       <h2 class="h2">Common questions.</h2>
       <p class="body mt-4 max-w-[36ch]">Straightforward answers about how we work and what to expect.</p>
     </div>
@@ -380,7 +380,7 @@ document.getElementById('faq').innerHTML = faqs.map((f,i) => `
   <details class="card" ${i===0?'open':''}>
     <summary style="list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:20px;">
       <span class="h3" style="font-size:18px">${f.q}</span>
-      <span style="font-family:Fraunces,serif; font-size:28px; color:#0F7B52; line-height:1; flex-shrink:0;">+</span>
+      <span style="font-family:"Bodoni Moda",serif; font-size:28px; color:#0F7B52; line-height:1; flex-shrink:0;">+</span>
     </summary>
     <p class="body mt-4">${f.a}</p>
   </details>`).join('');

@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Eden Terranova — Precision. Growth. Legacy.</title>
 <link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
-<script src="https://cdn.tailwindcss.com"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,300&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
   body{ overflow-x:hidden; background:#0B1220;}
   .drawer{
     position:fixed; right: 20px; top: 88px; bottom: 20px;
-    width: min(420px, 92vw); background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(22px) saturate(1.2); border:1px solid rgba(15,23,42,0.08);
-    border-radius: 22px; box-shadow: 0 40px 80px -20px rgba(15,23,42,0.25);
+    width: min(420px, 92vw); background: #fff;
+    border:1px solid rgba(15,23,42,0.08);
+    border-radius: 22px; box-shadow: 0 40px 80px -20px rgba(15,23,42,0.28), 0 2px 8px rgba(15,23,42,0.06);
     padding: 26px; z-index: 70; overflow: auto;
     transform: translateX(120%); transition: transform .6s cubic-bezier(.2,.8,.2,1);
   }
@@ -30,10 +30,10 @@
     #friedman-section .wrap > div:first-child{ order:2; }
     #friedman-section .wrap > div:last-child{ order:1; }
   }
-  .stat-num{ font-family:"Fraunces", serif; font-weight:300; letter-spacing:-0.03em; font-size: clamp(56px, 7vw, 108px); line-height:1; color:var(--ink);}
+  .stat-num{ font-family:"Bodoni Moda", serif; font-weight:300; letter-spacing:-0.03em; font-size: clamp(56px, 7vw, 108px); line-height:1; color:var(--ink);}
   .stat-num .unit{ color:var(--green-deep); font-size:.55em; vertical-align: super; margin-left:2px;}
-  .stat-label{ color:#8C9AAE; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;}
-  .stat-desc{ color:#1E2A3A; font-size:14px; max-width:26ch; line-height:1.45;}
+  .stat-label{ color:var(--muted); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;}
+  .stat-desc{ color:var(--ink-2); font-size:14px; max-width:26ch; line-height:1.45;}
   @keyframes scrollDown { 0%{transform:translateY(0)} 100%{transform:translateY(300%)} }
 
   /* ── Wind & atmosphere animations ── */
@@ -71,8 +71,8 @@
     50%     { opacity:0.09; }
   }
   @keyframes breatheBlur {
-    0%,100% { filter: blur(2px) brightness(1.00); }
-    50%     { filter: blur(3px) brightness(1.03); }
+    0%,100% { opacity:0.28; }
+    50%     { opacity:0.42; }
   }
   .g-sway  { animation: grassSway  6.8s cubic-bezier(.45,.05,.55,.95) infinite; transform-origin:50% 100%; }
   .g-swayb { animation: grassSwayB 5.4s cubic-bezier(.45,.05,.55,.95) infinite; transform-origin:50% 100%; }
@@ -279,7 +279,7 @@
   }
   .sector-scroll{
     position:relative;
-    background:#F2F4EC;
+    background:var(--bg-2);
     min-height:420vh;
     padding:0;
     isolation:isolate;
@@ -335,7 +335,7 @@
     align-items:center;
     gap:16px;
     margin:34px 0 26px;
-    color:#64748B;
+    color:var(--muted-2);
     font-size:12px;
     letter-spacing:.18em;
     text-transform:uppercase;
@@ -373,7 +373,7 @@
     display:flex;
     align-items:center;
     gap:10px;
-    color:#64748B;
+    color:var(--muted-2);
     font-size:12px;
     letter-spacing:.1em;
     text-transform:uppercase;
@@ -387,7 +387,7 @@
     transition:background .45s;
   }
   .sector-layer.active{
-    color:#0F7B52;
+    color:var(--green-deep);
     opacity:1;
   }
   .sector-layer.active::before{
@@ -436,27 +436,27 @@
     padding:24px;
     border-radius:24px;
     border:1px solid rgba(15,123,82,0.18);
-    background:rgba(255,255,255,0.76);
+    background:#fff;
     box-shadow:
       0 36px 82px -50px rgba(15,91,61,0.42),
-      0 0 0 8px rgba(255,255,255,0.28);
-    backdrop-filter:blur(18px) saturate(1.08);
+      0 4px 16px rgba(15,23,42,0.08);
     transition:transform .18s linear, border-color .5s, box-shadow .5s;
   }
   .sector-center-kicker{
-    color:#0F7B52;
+    color:var(--green-deep);
     font-size:11px;
     letter-spacing:.18em;
     text-transform:uppercase;
   }
   .sector-center-title{
     margin-top:18px;
-    font-family:"Fraunces",serif;
+    font-family:"Bodoni Moda",serif;
     font-weight:300;
     letter-spacing:-0.02em;
     font-size:clamp(28px,3.1vw,42px);
     line-height:1.02;
     color:var(--ink);
+    font-variation-settings:"opsz" 48;
   }
   .sector-center-line{
     margin-top:18px;
@@ -511,12 +511,11 @@
     padding:12px 10px;
     border:1px solid rgba(15,23,42,0.08);
     border-radius:18px;
-    background:rgba(255,255,255,0.7);
+    background:#fff;
     color:var(--ink);
-    box-shadow:0 18px 42px -34px rgba(15,23,42,0.38);
+    box-shadow:0 4px 16px rgba(15,23,42,0.1);
     text-align:center;
     cursor:pointer;
-    backdrop-filter:blur(12px);
     transition:
       transform .62s cubic-bezier(.22,.8,.2,1),
       opacity .45s cubic-bezier(.22,.8,.2,1),
@@ -526,7 +525,7 @@
       filter .45s;
   }
   .sector-node-index{
-    color:#0F7B52;
+    color:var(--green-deep);
     font-size:10px;
     letter-spacing:.16em;
     text-transform:uppercase;
@@ -622,12 +621,12 @@
       padding:22px;
       text-decoration:none;
       color:var(--ink);
-      background:rgba(255,255,255,0.82);
+      background:#fff;
       border:1px solid rgba(15,23,42,0.08);
-      box-shadow:0 22px 48px -38px rgba(15,23,42,0.24);
+      box-shadow:0 4px 16px rgba(15,23,42,0.1);
     }
     .sector-mobile-card .eyebrow{
-      color:#0F7B52;
+      color:var(--green-deep);
     }
     .sector-mobile-card .h3{
       color:var(--ink);
@@ -666,7 +665,7 @@
      PLANT GROWTH SCROLL SECTION
   ───────────────────────────────────────────── */
   .plant-scroll{
-    background:#F5F6EF;
+    background:var(--bg-3);
     position:relative;
     display:flex;
     align-items:flex-start;
@@ -680,7 +679,7 @@
     flex-shrink:0;
     overflow:hidden;
     padding:0;
-    background:#F5F6EF;
+    background:var(--bg-3);
   }
   .plant-sticky::before{
     content:"";
@@ -731,7 +730,7 @@
     height:100%;
     object-fit:cover;
     border-radius:0;
-    background:#F5F6EF;
+    background:var(--bg-3);
     filter:saturate(1.08) contrast(1.1) brightness(1.02);
     mix-blend-mode:multiply;
     opacity:.98;
@@ -750,7 +749,7 @@
     font-size:11px;
     letter-spacing:0.2em;
     text-transform:uppercase;
-    color:#0F7B52;
+    color:var(--green-deep);
     font-weight:500;
     flex-shrink:0;
   }
@@ -771,7 +770,7 @@
   }
   .plant-active-title{
     font-size:13px;
-    color:#64748B;
+    color:var(--muted-2);
     line-height:1.3;
     max-width:20ch;
     white-space:nowrap;
@@ -800,24 +799,25 @@
     margin-bottom:1vh;
   }
   .plant-services-intro .eyebrow{
-    color:#0F7B52;
+    color:var(--green-deep);
     margin-bottom:18px;
   }
   .plant-services-intro > .eyebrow{
-    color:#0F7B52;
+    color:var(--green-deep);
   }
   .plant-services-title{
-    font-family:"Fraunces",serif;
+    font-family:"Bodoni Moda",serif;
     font-weight:300;
     font-size:clamp(42px,5.2vw,82px);
     letter-spacing:-0.03em;
     line-height:.95;
-    color:#0F172A;
+    color:var(--ink);
     max-width:10.8ch;
+    font-variation-settings:"opsz" 96;
   }
   .plant-services-copy{
     max-width:43ch;
-    color:#4A5568;
+    color:var(--ink-3);
     font-size:15px;
     line-height:1.72;
     margin-top:28px;
@@ -844,7 +844,7 @@
     font-size:10.5px;
     letter-spacing:0.2em;
     text-transform:uppercase;
-    color:#0F7B52;
+    color:var(--green-deep);
     padding-top:9px;
     flex-shrink:0;
     width:28px;
@@ -853,22 +853,22 @@
     font-size:10px;
     letter-spacing:0.18em;
     text-transform:uppercase;
-    color:#8C9AAE;
+    color:var(--muted);
     margin-bottom:9px;
   }
   .plant-entry-title{
-    font-family:"Fraunces",serif;
+    font-family:"Bodoni Moda",serif;
     font-weight:300;
     font-size:clamp(24px,2.8vw,38px);
     letter-spacing:-0.025em;
     line-height:1.04;
-    color:#0F172A;
+    color:var(--ink);
     margin-bottom:13px;
   }
   .plant-entry-desc{
     font-size:14px;
     line-height:1.65;
-    color:#4A5568;
+    color:var(--ink-3);
     max-width:44ch;
   }
   .plant-entry-link{
@@ -879,7 +879,7 @@
     font-size:10.5px;
     letter-spacing:0.14em;
     text-transform:uppercase;
-    color:#0F7B52;
+    color:var(--green-deep);
     text-decoration:none;
     opacity:0;
     transform:translateX(-6px);
@@ -989,6 +989,10 @@
 </style>
 </head>
 <body data-page="index" class="antialiased">
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<main id="main-content">
 
 <section id="hero" style="position:relative;width:100%;height:100svh;min-height:800px;overflow:hidden;background:#0d1a0d;">
 
@@ -1144,7 +1148,7 @@
   <!-- Hero copy -->
   <div id="hero-copy" style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;opacity:0;transform:translateY(16px);">
     <img src="/images/eden-terranova-symbol.svg" alt="Eden Terranova" style="width:clamp(74px,10vw,132px);filter:drop-shadow(0 16px 34px rgba(0,0,0,0.5));margin-bottom:32px;"/>
-    <h1 style="font-family:'Fraunces',serif;font-weight:300;font-size:clamp(56px,9vw,148px);letter-spacing:-0.04em;line-height:0.88;color:#F8F9F5;text-shadow:0 3px 36px rgba(0,0,0,0.6);">Eden Terranova</h1>
+    <h1 style="font-family:'Bodoni Moda',serif;font-weight:300;font-size:clamp(56px,9vw,148px);letter-spacing:-0.04em;line-height:0.88;color:var(--bg);text-shadow:0 3px 36px rgba(0,0,0,0.6);font-variation-settings:'opsz' 96;">Eden Terranova</h1>
     <p style="margin-top:22px;font-size:clamp(12px,1.6vw,18px);letter-spacing:0.26em;text-transform:uppercase;color:rgba(248,249,245,0.72);">Precision &nbsp;·&nbsp; Growth &nbsp;·&nbsp; Legacy</p>
   </div>
 
@@ -1166,11 +1170,11 @@
 </aside>
 
 <!-- Stats strip -->
-<section id="impact" class="section" style="background:#F8F9F5">
+<section id="impact" class="section" style="background:var(--bg)">
   <div class="wrap">
     <div class="flex items-end justify-between flex-wrap gap-6 mb-16">
       <div class="max-w-[48ch]">
-        <div class="eyebrow mb-4">— The field record</div>
+        <div class="eyebrow mb-4">The field record</div>
         <h2 class="h2">Technological innovation, compounded across seasons.</h2>
       </div>
       <p class="body max-w-[42ch]">From baseline soil sampling to five-year stewardship reviews, every engagement is instrumented end-to-end — efficiency and growth verified by independent audits.</p>
@@ -1213,7 +1217,7 @@
   <!-- ── Sticky left: botanical plant SVG ── -->
   <div class="plant-sticky">
     <div class="plant-header">
-      <div class="eyebrow mb-2">— Services</div>
+      <div class="eyebrow mb-2">Services</div>
       <h2 class="plant-h2">Twelve sectors,<br>one living practice.</h2>
     </div>
 
@@ -1223,10 +1227,10 @@
       </video>
     </div>
 
-    <div class="plant-status">
-      <span class="plant-count" id="plant-count">01 / 12</span>
-      <span class="plant-track"><span class="plant-fill" id="plant-fill"></span></span>
-      <span class="plant-active-title" id="plant-active-title">Crops</span>
+    <div class="plant-status" aria-hidden="true">
+      <span class="plant-count">01 / 12</span>
+      <span class="plant-track"><span class="plant-fill"></span></span>
+      <span class="plant-active-title">Crops</span>
     </div>
   </div>
 
@@ -1240,7 +1244,7 @@
         <span class="plant-track"><span class="plant-fill" id="plant-fill-right"></span></span>
         <span class="plant-active-title" id="plant-active-title-right">Crops</span>
       </div>
-      <p class="body" style="max-width:40ch;color:#4A5568;font-size:14px;line-height:1.7;">An integrated agricultural services platform — production, value chain infrastructure, and land resilience, connected into one disciplined system.</p>
+      <p class="body" style="max-width:40ch;color:var(--ink-3);font-size:14px;line-height:1.7;">An integrated agricultural services platform — production, value chain infrastructure, and land resilience, connected into one disciplined system.</p>
     </div>
 
     <div class="plant-entry" data-sector="0">
@@ -1367,16 +1371,16 @@
 </section>
 
 <!-- Partnership section -->
-<section id="friedman-section" style="background:#F8F9F5; padding: 100px 0; overflow:hidden;">
+<section id="friedman-section" style="background:var(--bg); padding: 100px 0; overflow:hidden;">
   <div class="wrap" style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
 
     <!-- Text side -->
     <div id="friedman-text" style="opacity:0; transform:translateY(40px);">
-      <div class="eyebrow mb-5">— Platform</div>
+      <div class="eyebrow mb-5">Platform</div>
       <h2 class="h2" style="max-width:18ch;">EDEN TERRANOVA FZCO</h2>
-      <p class="body mt-6" style="color:#64748B; font-size:13px; letter-spacing:.12em; text-transform:uppercase;">UAE · In partnership with André Messika</p>
+      <p class="body mt-6" style="color:var(--muted-2); font-size:13px; letter-spacing:.12em; text-transform:uppercase;">UAE · In partnership with André Messika</p>
       <p class="body mt-6 max-w-[46ch]">We turn land potential into resilient agricultural ventures: planned, built, operated, and measured.</p>
-      <p class="body mt-4 max-w-[46ch]" style="color:#64748B;">Precision from the field. Discipline from capital. Patience from legacy.</p>
+      <p class="body mt-4 max-w-[46ch]" style="color:var(--muted-2);">Precision from the field. Discipline from capital. Patience from legacy.</p>
       <a href="contacts.html" class="btn btn-ghost mt-8" style="display:inline-flex; margin-top:32px;">Contact Eden Terranova
         <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
@@ -1395,7 +1399,8 @@
           transition: transform 1.4s cubic-bezier(0.16,1,0.3,1), opacity 1.1s ease, box-shadow 0.6s;
           cursor: default;
         ">
-        <img src="/images/friedman.jpg" alt="Eden Terranova agricultural leadership"
+        <img src="/images/friedman.jpg" alt="Eden Terranova field operations — precision land management"
+          loading="lazy" width="800" height="600"
           style="width:100%; display:block; object-fit:cover;"/>
         <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(11,77,53,0.08),transparent 60%);pointer-events:none;"></div>
       </div>
@@ -1403,6 +1408,8 @@
 
   </div>
 </section>
+
+</main>
 
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
@@ -1492,8 +1499,8 @@ gsap.to('#lb-bot', { scaleY:0, duration:1.6, ease:'power3.inOut', delay:0.2, tra
 // ── Scene is completely static — no scale or drift on the video ──
 gsap.set('#scene', { scale: 1 });
 
-// ── Title fades in at t=2.5s ──
-gsap.to('#hero-copy', { opacity:1, y:0, duration:2.2, ease:'power2.out', delay:2.5 });
+// ── Title fades in — overlap with letterbox close for cinematic feel ──
+gsap.to('#hero-copy', { opacity:1, y:0, duration:1.6, ease:'power2.out', delay:1.0 });
 
 // ── Friedman photo scroll reveal + mouse tilt ──
 if (heroCopy) {
@@ -1755,13 +1762,13 @@ const dContent = document.getElementById('drawerContent');
 function renderDrawer(t){
   const d = topics[t]; if(!d) return;
   dContent.innerHTML = `
-    <div class="eyebrow" style="color:#64748B; margin-bottom:8px">${d.kicker}</div>
+    <div class="eyebrow" style="color:var(--muted-2); margin-bottom:8px">${d.kicker}</div>
     <h3 class="h2" style="font-size:clamp(26px,3vw,36px); line-height:1.05; margin-top:8px">${d.title}</h3>
     <p class="body" style="margin-top:14px">${d.body}</p>
     <ul style="margin-top:16px; display:flex; flex-direction:column; gap:10px;">
-      ${d.bullets.map(b=>`<li style="display:flex; gap:10px; align-items:flex-start; font-size:14px; color:#1E2A3A;"><span style="margin-top:7px; width:5px; height:5px; border-radius:999px; background:#10B981; flex-shrink:0;"></span>${b}</li>`).join('')}
+      ${d.bullets.map(b=>`<li style="display:flex; gap:10px; align-items:flex-start; font-size:14px; color:var(--ink-2);"><span style="margin-top:7px; width:5px; height:5px; border-radius:999px; background:#10B981; flex-shrink:0;"></span>${b}</li>`).join('')}
     </ul>
-    <div style="margin-top:20px; padding:16px; border-radius:16px; background:#F2F4EC; border:1px solid rgba(15,23,42,.07);">
+    <div style="margin-top:20px; padding:16px; border-radius:16px; background:var(--bg-2); border:1px solid rgba(15,23,42,.07);">
       <div class="stat-num" style="font-size:48px; line-height:1">${d.stat[0]}</div>
       <div class="small" style="margin-top:4px">${d.stat[1]}</div>
     </div>

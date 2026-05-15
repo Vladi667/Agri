@@ -704,9 +704,21 @@
     pointer-events:none;
     z-index:3;
   }
-  .plant-sticky .plant-header,
-  .plant-sticky > .plant-status{
+  .plant-sticky .plant-header{
     display:none;
+  }
+  .plant-sticky > .plant-status{
+    position:absolute;
+    bottom:clamp(24px,3.5vh,44px);
+    left:clamp(24px,4vw,56px);
+    right:clamp(24px,4vw,56px);
+    z-index:4;
+    margin-top:0;
+    background:rgba(245,246,239,0.82);
+    padding:10px 14px;
+    border-radius:10px;
+    border:1px solid rgba(15,23,42,0.07);
+    backdrop-filter:none;
   }
   .plant-stage{
     position:absolute;
@@ -735,6 +747,13 @@
     mix-blend-mode:multiply;
     opacity:.98;
     transform:scale(1.02);
+    transition:filter 1.4s cubic-bezier(.22,.8,.2,1);
+  }
+  video#plant-tree-img.layer-value{
+    filter:saturate(0.88) contrast(1.06) brightness(0.96) sepia(0.08);
+  }
+  video#plant-tree-img.layer-land{
+    filter:saturate(1.26) contrast(1.12) brightness(0.98) hue-rotate(4deg);
   }
   .plant-status{
     display:flex;
@@ -832,13 +851,47 @@
     align-items:flex-start;
     gap:26px;
     opacity:0.22;
-    transform:translateY(10px);
-    transition:opacity .68s cubic-bezier(.22,.8,.2,1), transform .68s cubic-bezier(.22,.8,.2,1);
+    transform:translateX(-14px);
+    transition:opacity .68s cubic-bezier(.22,.8,.2,1), transform .76s cubic-bezier(.22,.8,.2,1);
     will-change:opacity,transform;
   }
   .plant-entry.lit{
     opacity:1;
-    transform:translateY(0);
+    transform:translateX(0);
+  }
+  /* Chapter separators */
+  .plant-chapter{
+    padding:5vh 0 2.5vh;
+    border-bottom:none;
+  }
+  .plant-chapter + .plant-entry{
+    padding-top:2.5vh;
+  }
+  .plant-chapter-rule{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .plant-chapter-rule::before{
+    content:'';
+    width:20px;
+    height:1px;
+    background:var(--green-deep);
+    flex-shrink:0;
+  }
+  .plant-chapter-name{
+    font-size:9px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--green-deep);
+    font-weight:500;
+  }
+  .plant-chapter-count{
+    margin-left:auto;
+    font-size:9px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--muted);
   }
   .plant-entry-num{
     font-size:10.5px;
@@ -889,8 +942,14 @@
     opacity:1;
     transform:translateX(0);
   }
+  .plant-entry-link svg{
+    transition:transform .3s cubic-bezier(.22,.8,.2,1);
+  }
   .plant-entry-link:hover{
-    opacity:.72 !important;
+    opacity:1 !important;
+  }
+  .plant-entry-link:hover svg{
+    transform:translateX(3px);
   }
 
   /* Mobile */
@@ -1246,6 +1305,13 @@
       <p class="body" style="max-width:40ch;color:var(--ink-3);font-size:14px;line-height:1.7;">An integrated agricultural services platform — production, value chain infrastructure, and land resilience, connected into one disciplined system.</p>
     </div>
 
+    <div class="plant-chapter">
+      <div class="plant-chapter-rule">
+        <span class="plant-chapter-name">Production systems</span>
+        <span class="plant-chapter-count">01 – 04</span>
+      </div>
+    </div>
+
     <div class="plant-entry" data-sector="0">
       <span class="plant-entry-num">01</span>
       <div>
@@ -1286,6 +1352,13 @@
       </div>
     </div>
 
+    <div class="plant-chapter">
+      <div class="plant-chapter-rule">
+        <span class="plant-chapter-name">Value chain infrastructure</span>
+        <span class="plant-chapter-count">05 – 08</span>
+      </div>
+    </div>
+
     <div class="plant-entry" data-sector="4">
       <span class="plant-entry-num">05</span>
       <div>
@@ -1323,6 +1396,13 @@
         <h3 class="plant-entry-title">Agro-industry</h3>
         <p class="plant-entry-desc">Processing integration and value capture across the full agricultural supply chain.</p>
         <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <div class="plant-chapter">
+      <div class="plant-chapter-rule">
+        <span class="plant-chapter-name">Land resilience</span>
+        <span class="plant-chapter-count">09 – 12</span>
       </div>
     </div>
 
@@ -1586,14 +1666,15 @@ gsap.from('.stat', { y:24, opacity:0, duration:1, stagger:0.12, ease:"power3.out
 // ── Plant growth scroll ──
 const sectorSection = document.getElementById('sectors');
 if (sectorSection) {
-  const treeImg  = document.getElementById('plant-tree-img');
-  const countEl  = document.getElementById('plant-count-right') || document.getElementById('plant-count');
-  const fillEl   = document.getElementById('plant-fill-right') || document.getElementById('plant-fill');
-  const titleEl  = document.getElementById('plant-active-title-right') || document.getElementById('plant-active-title');
-  const entries  = [...sectorSection.querySelectorAll('.plant-entry')];
-  const titles   = ['Crops','Horticulture','Open field production','Protected production','Livestock','Aquaculture','Post-harvest','Agro-industry','Forestry','Land conservation','Desertification prevention','Environmental protection'];
+  const treeImg   = document.getElementById('plant-tree-img');
+  const countEls  = [...sectorSection.querySelectorAll('.plant-count')];
+  const fillEls   = [...sectorSection.querySelectorAll('.plant-fill')];
+  const titleEls  = [...sectorSection.querySelectorAll('.plant-active-title')];
+  const entries   = [...sectorSection.querySelectorAll('.plant-entry')];
+  const titles    = ['Crops','Horticulture','Open field production','Protected production','Livestock','Aquaculture','Post-harvest','Agro-industry','Forestry','Land conservation','Desertification prevention','Environmental protection'];
+  const layers    = ['production','production','production','production','value','value','value','value','land','land','land','land'];
 
-  let lastActive = -1, ticking = false;
+  let lastActive = -1, lastLayer = '', ticking = false;
 
   function updatePlant() {
     ticking = false;
@@ -1609,10 +1690,19 @@ if (sectorSection) {
     const active = Math.min(11, Math.floor(progress * 12));
     if (active !== lastActive) {
       lastActive = active;
-      if (countEl) countEl.textContent = `${String(active + 1).padStart(2,'0')} / 12`;
-      if (fillEl)  fillEl.style.width  = `${((active + 1) / 12) * 100}%`;
-      if (titleEl) titleEl.textContent = titles[active];
+      const label = `${String(active + 1).padStart(2,'0')} / 12`;
+      countEls.forEach(el => el.textContent = label);
+      fillEls.forEach(el => el.style.width = `${((active + 1) / 12) * 100}%`);
+      titleEls.forEach(el => el.textContent = titles[active]);
       entries.forEach((e, i) => e.classList.toggle('lit', i <= active));
+
+      // Video layer reactivity
+      const layer = layers[active];
+      if (layer !== lastLayer && treeImg) {
+        lastLayer = layer;
+        treeImg.classList.toggle('layer-value', layer === 'value');
+        treeImg.classList.toggle('layer-land',  layer === 'land');
+      }
     }
   }
 

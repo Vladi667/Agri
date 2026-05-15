@@ -19,23 +19,17 @@
       radial-gradient(40% 40% at 10% 80%, rgba(16,185,129,0.1), transparent 60%),
       linear-gradient(180deg, #F8F9F5 0%, #F2F4EC 100%);
   }
-  .visual-panel{
-    border-radius: 22px; overflow: hidden; position: relative;
-    box-shadow: 0 32px 80px -24px rgba(15,23,42,0.22);
-  }
-  .visual-panel img{ width:100%; height:auto; display:block; }
   .story-visual{
-    max-width:480px;
     width:100%;
-    margin-left:auto;
-    border-radius:16px;
-    box-shadow:0 32px 80px -28px rgba(15,23,42,0.28);
+    border-radius:14px;
     overflow:hidden;
+    box-shadow:0 28px 72px -24px rgba(15,23,42,0.26);
   }
   .story-visual img{
     width:100%;
     height:auto;
     display:block;
+    border-radius:0;
   }
   .pill{ display:inline-block; padding:4px 10px; border-radius:999px; background:#fff; border:1px solid rgba(15,23,42,0.08); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:#64748B;}
 
@@ -261,11 +255,13 @@
   }
   blockquote{ font-family:"Exo 2",sans-serif; font-weight:200; font-size:clamp(24px,2.8vw,40px); letter-spacing:-0.02em; line-height:1.18; color:#1E2A3A; }
   blockquote em{ font-style:normal; color:var(--green-deep); }
-  @media (max-width: 900px){
+  @media (max-width: 768px){
+    .story-section-grid{
+      grid-template-columns:1fr !important;
+      gap:40px !important;
+    }
     .story-visual{
-      margin-inline:auto;
-      margin-left:auto;
-      max-width:320px;
+      max-width:100%;
     }
     .messika-panel{
       grid-template-columns:1fr;
@@ -292,18 +288,18 @@
 
 <!-- Story + Image -->
 <section class="section" style="padding-top:48px">
-  <div class="wrap grid md:grid-cols-2 gap-16 items-start">
+  <div class="wrap story-section-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
     <div>
       <div class="eyebrow mb-4">Our story</div>
-      <h2 class="h2 max-w-[18ch]">Built for serious land.</h2>
-      <div class="body mt-6 space-y-5 max-w-[56ch]">
+      <h2 class="h2" style="max-width:18ch;">Built for serious land.</h2>
+      <div class="body mt-6" style="display:flex; flex-direction:column; gap:20px; max-width:52ch;">
         <p>We bring agronomy, project execution, operating discipline, and investment logic into one clear mandate.</p>
         <p>Our clients think in decades: families, family offices, governments, and funds building productive land and resilient food systems.</p>
         <p>Together with André Messika, Eden Terranova carries a standard shaped by precision, ethical craft, and a belief that lasting value is built through traceable, disciplined work.</p>
         <p>Our work is practical and measurable: improve the land, train the people, raise performance, protect the asset.</p>
       </div>
     </div>
-    <div class="visual-panel story-visual">
+    <div class="story-visual">
       <img src="/images/image (30).jpg" alt="Eden Terranova — agricultural operations" loading="lazy"/>
     </div>
   </div>

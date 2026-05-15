@@ -18,7 +18,6 @@
       radial-gradient(50% 40% at 80% 80%, rgba(244,199,123,0.25), transparent 60%),
       #F8F9F5;
   }
-  .scope-img{ width:100%; border-radius:18px; margin:32px 0; box-shadow:0 20px 60px rgba(0,0,0,0.12); display:block; }
   .scope-system{
     position:relative;
     min-height:420vh;
@@ -233,6 +232,93 @@
     outline:none;
     border-color:rgba(15,123,82,0.38);
   }
+  .scope-carousel{
+    position:relative;
+    min-height:min(660px,72vh);
+    border-radius:30px;
+    overflow:hidden;
+    background:#101710;
+    box-shadow:0 42px 110px -58px rgba(15,23,42,0.58);
+    isolation:isolate;
+  }
+  .scope-carousel-img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    transform:scale(1.02);
+    transition:opacity .58s cubic-bezier(.22,.8,.2,1), transform .9s cubic-bezier(.22,.8,.2,1);
+  }
+  .scope-carousel::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    background:
+      linear-gradient(90deg, rgba(6,12,8,0.76) 0%, rgba(6,12,8,0.4) 44%, rgba(6,12,8,0.14) 100%),
+      linear-gradient(0deg, rgba(6,12,8,0.56) 0%, transparent 48%);
+  }
+  .scope-carousel-content{
+    position:absolute;
+    inset:auto auto 34px 34px;
+    z-index:2;
+    max-width:min(440px,70%);
+    color:#F8F9F5;
+  }
+  .scope-carousel-kicker{
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:rgba(248,249,245,0.68);
+  }
+  .scope-carousel-title{
+    margin-top:14px;
+    font-family:"Fraunces",serif;
+    font-weight:300;
+    letter-spacing:-0.025em;
+    font-size:clamp(34px,4.7vw,68px);
+    line-height:.96;
+  }
+  .scope-carousel-text{
+    margin-top:18px;
+    color:rgba(248,249,245,0.82);
+    font-size:15px;
+    line-height:1.62;
+  }
+  .scope-carousel-controls{
+    position:absolute;
+    right:24px;
+    bottom:24px;
+    z-index:3;
+    display:flex;
+    gap:10px;
+  }
+  .scope-carousel-button{
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(248,249,245,0.28);
+    border-radius:999px;
+    color:#F8F9F5;
+    background:rgba(7,13,9,0.28);
+    backdrop-filter:blur(14px);
+    transition:background .25s, transform .25s, border-color .25s;
+  }
+  .scope-carousel-button:hover,
+  .scope-carousel-button:focus-visible{
+    background:rgba(248,249,245,0.16);
+    border-color:rgba(248,249,245,0.48);
+    transform:translateY(-1px);
+    outline:none;
+  }
+  .scope-carousel-button:disabled{
+    opacity:.38;
+    cursor:default;
+    transform:none;
+  }
   .scope-mobile{ display:none; }
   .scope-mobile-grid{
     display:flex;
@@ -265,6 +351,9 @@
     .scope-sticky{ display:none; }
     .scope-mobile{ display:block; }
     .scope-mobile-chapter + .scope-mobile-chapter{ margin-top:52px; }
+    .scope-carousel{ min-height:520px; }
+    .scope-carousel-content{ inset:auto 22px 24px 22px; max-width:none; }
+    .scope-carousel-controls{ right:22px; top:22px; bottom:auto; }
   }
   @media(prefers-reduced-motion:reduce){
     .scope-progress-fill,
@@ -293,7 +382,6 @@
     <div class="eyebrow mb-5">— Our scope</div>
     <h1 class="h1 max-w-[22ch]">Twelve sectors. One connected, precise, multi-generational practice.</h1>
     <p class="body max-w-[64ch] mt-8">Our scope spans crops, horticulture, livestock, aquaculture, forestry and land conservation. Each sector is its own discipline; the gains compound when soil, water, people, and data work together.</p>
-    <img src="/images/scopeimg.png" alt="Our Scope — Eden Terranova" class="scope-img" loading="lazy"/>
   </div>
 </section>
 
@@ -317,33 +405,20 @@
         </div>
       </div>
 
-      <div class="scope-constellation" id="scopeConstellation" aria-label="Interactive scope constellation">
-        <div class="scope-orbit" aria-hidden="true"></div>
-        <div class="scope-orbit" aria-hidden="true"></div>
-        <svg class="scope-network" viewBox="0 0 100 100" aria-hidden="true">
-          <path class="scope-connection" data-connect="0 1" d="M50 14 C60 16, 68 22, 74 31"/>
-          <path class="scope-connection" data-connect="1 2" d="M74 31 C80 40, 82 50, 80 60"/>
-          <path class="scope-connection" data-connect="2 3" d="M80 60 C75 70, 67 77, 57 82"/>
-          <path class="scope-connection" data-connect="3 4" d="M57 82 C46 84, 35 80, 27 73"/>
-          <path class="scope-connection" data-connect="4 5" d="M27 73 C18 65, 14 54, 16 43"/>
-          <path class="scope-connection" data-connect="5 6" d="M16 43 C19 32, 26 23, 36 18"/>
-          <path class="scope-connection" data-connect="6 7" d="M36 18 C47 13, 59 15, 69 22"/>
-          <path class="scope-connection" data-connect="7 8" d="M69 22 C79 30, 85 42, 85 54"/>
-          <path class="scope-connection" data-connect="8 9" d="M85 54 C84 67, 77 79, 66 86"/>
-          <path class="scope-connection" data-connect="9 10" d="M66 86 C54 92, 40 91, 29 84"/>
-          <path class="scope-connection" data-connect="10 11" d="M29 84 C18 76, 11 64, 11 51"/>
-          <path class="scope-connection" data-connect="11 0" d="M11 51 C12 35, 27 19, 50 14"/>
-          <path class="scope-connection" data-connect="0 4" d="M50 14 C48 36, 39 58, 27 73"/>
-          <path class="scope-connection" data-connect="3 7" d="M57 82 C56 58, 61 38, 69 22"/>
-          <path class="scope-connection" data-connect="8 11" d="M85 54 C58 56, 34 55, 11 51"/>
-          <circle class="scope-arc" cx="50" cy="50" r="39"/>
-        </svg>
-        <div class="scope-center" aria-live="polite">
-          <div>
-            <div class="scope-center-kicker" id="scopeCenterLayer">Production systems</div>
-            <div class="scope-center-title" id="scopeCenterTitle">Crops</div>
-          </div>
-          <div class="scope-center-line"></div>
+      <div class="scope-carousel" id="scopeCarousel" aria-label="Scope sector carousel">
+        <img id="scopeCarouselImage" class="scope-carousel-img" src="/images/china.png" alt="Eden Terranova international greenhouse project" data-media="china"/>
+        <div class="scope-carousel-content" aria-live="polite">
+          <div class="scope-carousel-kicker" id="scopeCarouselLayer">Production systems</div>
+          <div class="scope-carousel-title" id="scopeCarouselTitle">Crops</div>
+          <p class="scope-carousel-text" id="scopeCarouselText">Cereals, oilseeds, pulses — precision rotations and cover-crop programs built on soil carbon accrual.</p>
+        </div>
+        <div class="scope-carousel-controls">
+          <button class="scope-carousel-button" type="button" id="scopePrev" aria-label="Previous sector">
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12 4L6 10l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="scope-carousel-button" type="button" id="scopeNext" aria-label="Next sector">
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -390,30 +465,39 @@ const sectors = [
   {n:'11', t:'Desertification prevention', short:'Desertification', d:'Drylands rehabilitation at scale: engineered swales, halophyte pioneers, native corridor reconnection.', layer:'land', label:'Land resilience', related:[8,9,11]},
   {n:'12', t:'Environmental protection', short:'Environmental', d:'Compliance, monitoring, restoration. We write the MRV plan; we then hold ourselves to it.', layer:'land', label:'Land resilience', related:[0,8,9,10]},
 ];
-const nodePositions = [
-  [0, 42], [29, 43], [61, 42], [92, 44],
-  [121, 41], [151, 43], [182, 42], [213, 44],
-  [242, 41], [271, 43], [302, 42], [332, 44]
-];
+const scopeMedia = {
+  meeting: {
+    src:'/images/meeting.jpg',
+    alt:'Eden Terranova working meeting'
+  },
+  conference: {
+    src:'/images/conference.jpg',
+    alt:'Eden Terranova conference panel'
+  },
+  china: {
+    src:'/images/china.png',
+    alt:'Eden Terranova international greenhouse project'
+  }
+};
+const sectorMedia = ['china','china','china','china','meeting','meeting','meeting','meeting','conference','conference','conference','conference'];
 
 const scopeSection = document.getElementById('scopeSectors');
-const scopeConstellation = document.getElementById('scopeConstellation');
 const scopeCount = document.getElementById('scopeCount');
 const scopeTitle = document.getElementById('scopeTitle');
 const scopeDesc = document.getElementById('scopeDesc');
 const scopeProgressFill = document.getElementById('scopeProgressFill');
-const scopeCenterTitle = document.getElementById('scopeCenterTitle');
-const scopeCenterLayer = document.getElementById('scopeCenterLayer');
+const scopeCarouselImage = document.getElementById('scopeCarouselImage');
+const scopeCarouselTitle = document.getElementById('scopeCarouselTitle');
+const scopeCarouselText = document.getElementById('scopeCarouselText');
+const scopeCarouselLayer = document.getElementById('scopeCarouselLayer');
 const scopeLayers = [...document.querySelectorAll('.scope-layer')];
-const scopeConnections = [...document.querySelectorAll('.scope-connection')];
+const scopePrev = document.getElementById('scopePrev');
+const scopeNext = document.getElementById('scopeNext');
 let activeScope = -1;
 let manualScope = null;
 let scopeTicking = false;
-
-scopeConstellation.insertAdjacentHTML('beforeend', sectors.map((s, index) => {
-  const [angle, radius] = nodePositions[index];
-  return `<button class="scope-node${index === 0 ? ' active' : ''}" type="button" data-sector="${index}" style="--angle:${angle}deg;--counter:-${angle}deg;--radius:${radius}%;" aria-pressed="${index === 0 ? 'true' : 'false'}"><span class="scope-node-index">${s.n}</span><span class="scope-node-title">${s.short}</span></button>`;
-}).join(''));
+let imageSwapTimer = null;
+let manualScopeTimer = null;
 
 document.getElementById('scopeMobile').innerHTML = [
   ['Production systems', sectors.slice(0,4)],
@@ -427,50 +511,47 @@ document.getElementById('scopeMobile').innerHTML = [
     </div>
   </div>`).join('');
 
-const scopeNodes = [...document.querySelectorAll('.scope-node')];
-
 function setScope(index){
   if (index === activeScope || !sectors[index]) return;
   activeScope = index;
   const item = sectors[index];
-  const related = new Set([index, ...item.related]);
-
-  scopeNodes.forEach(node => {
-    const nodeIndex = Number(node.dataset.sector);
-    node.classList.toggle('active', nodeIndex === index);
-    node.classList.toggle('related', nodeIndex !== index && related.has(nodeIndex));
-    node.setAttribute('aria-pressed', nodeIndex === index ? 'true' : 'false');
-  });
-
-  scopeConnections.forEach(path => {
-    const points = (path.dataset.connect || '').split(' ').map(Number);
-    const connected = points.includes(index);
-    const bothRelated = points.every(point => related.has(point));
-    path.classList.toggle('related', connected || bothRelated);
-    path.classList.toggle('dimmed', !connected && !bothRelated);
-  });
+  const mediaKey = sectorMedia[index] || 'china';
+  const media = scopeMedia[mediaKey];
 
   scopeLayers.forEach(layer => layer.classList.toggle('active', layer.dataset.layer === item.layer));
   scopeCount.textContent = `${String(index + 1).padStart(2, '0')} / 12`;
   scopeTitle.textContent = item.t;
   scopeDesc.textContent = item.d;
-  scopeCenterTitle.textContent = item.t;
-  scopeCenterLayer.textContent = item.label;
+  scopeCarouselTitle.textContent = item.t;
+  scopeCarouselText.textContent = item.d;
+  scopeCarouselLayer.textContent = item.label;
   scopeProgressFill.style.width = `${((index + 1) / 12) * 100}%`;
+  scopePrev.disabled = index === 0;
+  scopeNext.disabled = index === sectors.length - 1;
+  if (scopeCarouselImage.dataset.media !== mediaKey) {
+    if (imageSwapTimer) window.clearTimeout(imageSwapTimer);
+    scopeCarouselImage.style.opacity = '0';
+    imageSwapTimer = window.setTimeout(() => {
+      if (activeScope !== index) return;
+      scopeCarouselImage.src = media.src;
+      scopeCarouselImage.alt = media.alt;
+      scopeCarouselImage.dataset.media = mediaKey;
+      scopeCarouselImage.style.opacity = '1';
+      scopeCarouselImage.style.transform = `scale(${index % 2 ? '1.04' : '1.02'})`;
+    }, 180);
+  }
 }
 
 function updateScope(){
   scopeTicking = false;
   if (window.matchMedia('(max-width: 900px)').matches) {
-    setScope(0);
+    if (activeScope < 0) setScope(0);
     return;
   }
   const rect = scopeSection.getBoundingClientRect();
   const scrollable = Math.max(1, rect.height - window.innerHeight);
   const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
   scopeSection.style.setProperty('--scope-progress', progress.toFixed(3));
-  scopeSection.style.setProperty('--scope-rotation', `${(progress * 9).toFixed(3)}deg`);
-  scopeSection.style.setProperty('--scope-counter', `${(progress * -9).toFixed(3)}deg`);
   if (manualScope === null) setScope(Math.min(11, Math.floor(progress * 12)));
 }
 
@@ -481,32 +562,33 @@ function requestScopeUpdate(){
   }
 }
 
-scopeNodes.forEach(node => {
-  node.addEventListener('pointerenter', () => {
-    manualScope = Number(node.dataset.sector);
-    setScope(manualScope);
+function scrollToScope(index){
+  if (window.matchMedia('(max-width: 900px)').matches) return;
+  const rect = scopeSection.getBoundingClientRect();
+  const sectionTop = window.scrollY + rect.top;
+  const scrollable = Math.max(1, scopeSection.offsetHeight - window.innerHeight);
+  const targetProgress = index === sectors.length - 1 ? 0.985 : (index + 0.5) / sectors.length;
+  window.scrollTo({
+    top: sectionTop + (scrollable * targetProgress),
+    behavior:'smooth'
   });
-  node.addEventListener('focus', () => {
-    manualScope = Number(node.dataset.sector);
-    setScope(manualScope);
-  });
-  node.addEventListener('pointerleave', () => {
+}
+
+function nudgeScope(delta){
+  const nextScope = Math.min(sectors.length - 1, Math.max(0, activeScope + delta));
+  if (nextScope === activeScope) return;
+  manualScope = nextScope;
+  setScope(manualScope);
+  scrollToScope(manualScope);
+  if (manualScopeTimer) window.clearTimeout(manualScopeTimer);
+  manualScopeTimer = window.setTimeout(() => {
     manualScope = null;
     requestScopeUpdate();
-  });
-  node.addEventListener('blur', () => {
-    manualScope = null;
-    requestScopeUpdate();
-  });
-  node.addEventListener('click', () => {
-    manualScope = Number(node.dataset.sector);
-    setScope(manualScope);
-    window.setTimeout(() => {
-      manualScope = null;
-      requestScopeUpdate();
-    }, 900);
-  });
-});
+  }, 1600);
+}
+
+scopePrev.addEventListener('click', () => nudgeScope(-1));
+scopeNext.addEventListener('click', () => nudgeScope(1));
 
 setScope(0);
 window.addEventListener('scroll', requestScopeUpdate, { passive:true });

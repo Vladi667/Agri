@@ -31,18 +31,17 @@ body:not(.gw-transitioning):not(.gw-ready){
 }
 
 body{
-  font-family:"Barlow", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family:"Exo 2", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x:hidden;
 }
-.serif{ font-family:"Bodoni Moda", ui-serif, Georgia, serif; letter-spacing:-0.02em;}
+.serif{ font-family:"Exo 2", ui-sans-serif, system-ui, sans-serif; letter-spacing:-0.01em; font-weight:300;}
 .display{
-  font-family:"Bodoni Moda", ui-serif, Georgia, serif;
-  font-weight:300;
+  font-family:"Exo 2", ui-sans-serif, system-ui, sans-serif;
+  font-weight:200;
   letter-spacing:-0.03em;
-  line-height:0.92;
-  font-variation-settings: "opsz" 96;
+  line-height:0.9;
 }
 .mono{ font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 
@@ -63,7 +62,7 @@ body{
 
 .gw-logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
 .gw-logo .mark{ width:28px; height:28px; }
-.gw-logo .name{ font-weight:600; letter-spacing:-0.02em; font-size:15px;}
+.gw-logo .name{ font-weight:500; letter-spacing:-0.01em; font-size:15px;}
 
 .gw-nav{ display:none; align-items:center; gap:22px; }
 @media (min-width: 1100px){ .gw-nav{ display:flex; } }
@@ -286,9 +285,9 @@ body.gw-transitioning .gw-transition-stage{
 
 .eyebrow{ font-family: ui-monospace, Menlo, monospace; font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:#64748B; }
 
-.h1{ font-family:"Bodoni Moda",serif; font-weight:300; letter-spacing:-0.02em; font-size:clamp(44px,6vw,84px); line-height:0.98; font-variation-settings:"opsz" 96;}
-.h2{ font-family:"Bodoni Moda",serif; font-weight:300; letter-spacing:-0.02em; font-size:clamp(32px,4.6vw,64px); line-height:1.02; font-variation-settings:"opsz" 72;}
-.h3{ font-family:"Bodoni Moda",serif; font-weight:400; letter-spacing:-0.01em; font-size:clamp(22px,2.4vw,30px); line-height:1.2; font-variation-settings:"opsz" 48;}
+.h1{ font-family:"Exo 2",sans-serif; font-weight:200; letter-spacing:-0.03em; font-size:clamp(44px,6vw,84px); line-height:0.96;}
+.h2{ font-family:"Exo 2",sans-serif; font-weight:200; letter-spacing:-0.025em; font-size:clamp(32px,4.6vw,64px); line-height:1.0;}
+.h3{ font-family:"Exo 2",sans-serif; font-weight:300; letter-spacing:-0.015em; font-size:clamp(22px,2.4vw,30px); line-height:1.18;}
 .body{ color:var(--ink-3); font-size:16px; line-height:1.6; }
 .small{ color:var(--muted-2); font-size:14px; line-height:1.55; }
 
@@ -315,8 +314,8 @@ body.gw-transitioning .gw-transition-stage{
 }
 .cinema-copy{ position:absolute; left:0; right:0; bottom:0; padding:0 0 56px; text-align:center; color:#F8F9F5; z-index:2; }
 .cinema-copy .eyebrow{ color:rgba(248,249,245,0.68); margin-bottom:14px; }
-.cinema-copy h2{ font-family:"Bodoni Moda",serif; font-weight:300; font-size:clamp(34px,4.4vw,60px); letter-spacing:-0.02em; line-height:1.0; color:var(--bg); margin:0 auto; max-width:22ch; text-shadow: 0 2px 24px rgba(0,0,0,0.35); font-variation-settings:"opsz" 72; }
-.cinema-copy p{ font-family:"Bodoni Moda",serif; font-style:italic; font-weight:300; font-size:clamp(15px,1.4vw,18px); color:rgba(248,249,245,0.78); margin-top:14px; max-width:46ch; margin-left:auto; margin-right:auto; font-variation-settings:"opsz" 24; }
+.cinema-copy h2{ font-family:"Exo 2",sans-serif; font-weight:200; font-size:clamp(34px,4.4vw,60px); letter-spacing:-0.025em; line-height:1.0; color:var(--bg); margin:0 auto; max-width:22ch; text-shadow: 0 2px 24px rgba(0,0,0,0.35); }
+.cinema-copy p{ font-family:"Exo 2",sans-serif; font-style:italic; font-weight:300; font-size:clamp(15px,1.4vw,18px); color:rgba(248,249,245,0.78); margin-top:14px; max-width:46ch; margin-left:auto; margin-right:auto; }
 @media (max-width: 700px){ .cinema{ aspect-ratio: 4 / 5; } .cinema-copy{ padding:0 20px 36px; } }
 
 /* Footer */

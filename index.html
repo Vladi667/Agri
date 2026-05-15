@@ -879,7 +879,7 @@
     gap:26px;
     opacity:0.22;
     transform:translateX(-14px);
-    transition:opacity .68s cubic-bezier(.22,.8,.2,1), transform .76s cubic-bezier(.22,.8,.2,1), background .28s ease;
+    transition:opacity .68s cubic-bezier(.22,.8,.2,1), transform .76s cubic-bezier(.22,.8,.2,1), background .45s ease, box-shadow .45s ease;
     will-change:opacity,transform;
     position:relative;
   }
@@ -897,10 +897,19 @@
     transition:transform .35s cubic-bezier(.22,.8,.2,1);
   }
   .plant-entry:hover::before{ transform:scaleY(1); }
-  .plant-entry:hover{ background:rgba(15,123,82,0.025); }
+  .plant-entry:hover:not(.focused){ background:rgba(15,123,82,0.018); }
   .plant-entry.lit{
     opacity:1;
     transform:translateX(0);
+  }
+  /* Passed entries step back */
+  .plant-entry.lit.behind{
+    opacity:0.55;
+  }
+  /* Active entry — the hero */
+  .plant-entry.focused{
+    background:rgba(15,123,82,0.032);
+    box-shadow: -80px 0 0 0 rgba(15,123,82,0.032), 80px 0 0 0 rgba(15,123,82,0.032);
   }
   /* Chapter separators */
   .plant-chapter{
@@ -960,12 +969,26 @@
     line-height:1.04;
     color:var(--ink);
     margin-bottom:13px;
+    transition:font-size .55s cubic-bezier(.22,.8,.2,1), letter-spacing .55s cubic-bezier(.22,.8,.2,1), color .35s ease;
+  }
+  .plant-entry.focused .plant-entry-title{
+    font-size:clamp(42px,5.4vw,78px);
+    letter-spacing:-0.04em;
+    color:var(--ink);
   }
   .plant-entry-desc{
     font-size:14px;
     line-height:1.65;
     color:var(--ink-3);
     max-width:44ch;
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:max-height .55s cubic-bezier(.22,.8,.2,1), opacity .4s ease;
+  }
+  .plant-entry.focused .plant-entry-desc{
+    max-height:220px;
+    opacity:1;
   }
   .plant-entry-link{
     display:inline-flex;
@@ -982,8 +1005,14 @@
     transition:opacity .42s ease .3s, transform .42s ease .3s;
   }
   .plant-entry.lit .plant-entry-link{
+    opacity:0;
+    transform:translateX(-6px);
+    pointer-events:none;
+  }
+  .plant-entry.focused .plant-entry-link{
     opacity:1;
     transform:translateX(0);
+    pointer-events:auto;
   }
   .plant-entry-link svg{
     transition:transform .3s cubic-bezier(.22,.8,.2,1);
@@ -1746,7 +1775,7 @@ if (sectorSection) {
   function updatePlant() {
     ticking = false;
     if (window.matchMedia('(max-width:900px)').matches) {
-      entries.forEach(e => e.classList.add('lit'));
+      entries.forEach(e => { e.classList.add('lit'); e.classList.remove('focused','behind'); });
       if (ctaEl) ctaEl.classList.add('visible');
       return;
     }
@@ -1762,7 +1791,11 @@ if (sectorSection) {
       countEls.forEach(el => el.textContent = label);
       fillEls.forEach(el => el.style.width = `${((active + 1) / 12) * 100}%`);
       titleEls.forEach(el => el.textContent = titles[active]);
-      entries.forEach((e, i) => e.classList.toggle('lit', i <= active));
+      entries.forEach((e, i) => {
+        e.classList.toggle('lit',     i <= active);
+        e.classList.toggle('focused', i === active);
+        e.classList.toggle('behind',  i < active);
+      });
       if (ctaEl) ctaEl.classList.toggle('visible', active === 11);
 
       // Video layer reactivity

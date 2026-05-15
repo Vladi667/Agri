@@ -791,14 +791,6 @@
     position:relative;
     z-index:1;
   }
-  .plant-count{
-    font-size:11px;
-    letter-spacing:0.2em;
-    text-transform:uppercase;
-    color:var(--green-deep);
-    font-weight:500;
-    flex-shrink:0;
-  }
   .plant-track{
     position:relative;
     width:84px;
@@ -812,7 +804,6 @@
     inset:0 auto 0 0;
     width:8.33%;
     background:linear-gradient(90deg, rgba(15,123,82,0.28), var(--green-deep));
-    transition:width .55s cubic-bezier(.22,.8,.2,1);
   }
   .plant-active-title{
     font-size:13px;
@@ -1006,6 +997,87 @@
     transform:translateY(0);
     pointer-events:auto;
   }
+
+  /* ── Rack-focus: dim lit entries that are not the current active one ── */
+  .plant-entry.lit.behind{
+    opacity:0.48;
+  }
+  .plant-entry.lit.behind .plant-entry-desc{
+    opacity:0.6;
+  }
+
+  /* ── Ghost chapter word ── */
+  .plant-ghost-word{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:"Exo 2",sans-serif;
+    font-weight:700;
+    font-size:clamp(64px,10vw,148px);
+    letter-spacing:-0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    opacity:0.04;
+    pointer-events:none;
+    white-space:nowrap;
+    overflow:hidden;
+    transition:opacity .9s ease, color .9s ease;
+    user-select:none;
+  }
+
+  /* ── Vertical scan line ── */
+  .plant-scan-line{
+    position:absolute;
+    left:0;
+    right:0;
+    height:2px;
+    background:linear-gradient(90deg, transparent 0%, var(--green-deep) 30%, rgba(16,185,129,0.7) 50%, var(--green-deep) 70%, transparent 100%);
+    opacity:0;
+    z-index:6;
+    pointer-events:none;
+    animation:plantScan 5.2s cubic-bezier(.4,0,.6,1) infinite;
+  }
+  @keyframes plantScan{
+    0%   { top:0%;   opacity:0; }
+    4%   { opacity:0.65; }
+    94%  { opacity:0.45; }
+    100% { top:100%; opacity:0; }
+  }
+
+  /* ── Flip-board counter ── */
+  .plant-count{
+    display:inline-block;
+    flex-shrink:0;
+  }
+  .plant-count-inner{
+    display:block;
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--green-deep);
+    font-weight:500;
+    transform-origin:50% 100%;
+    will-change:transform,opacity;
+  }
+
+  /* ── Letterbox bars ── */
+  .plant-letterbox{
+    position:fixed;
+    left:0;
+    right:0;
+    height:48px;
+    background:var(--ink);
+    z-index:900;
+    pointer-events:none;
+    transition:transform .3s cubic-bezier(.22,.8,.2,1);
+  }
+  #plant-lb-top{ top:0; transform:translateY(-100%); }
+  #plant-lb-bot{ bottom:0; transform:translateY(100%); }
+  #plant-lb-top.open{ transform:translateY(0); }
+  #plant-lb-bot.open{ transform:translateY(0); }
 
   /* Mobile */
   @media(max-width:900px){
@@ -1334,19 +1406,22 @@
       <h2 class="plant-h2">Twelve sectors,<br>one living practice.</h2>
     </div>
 
+    <div class="plant-ghost-word" aria-hidden="true">PRODUCTION</div>
+
     <div class="plant-sticky-banner" aria-hidden="true">
       <span class="plant-sticky-banner-label">Active sector</span>
-      <span class="plant-sticky-banner-title plant-active-title">Crops</span>
+      <span class="plant-sticky-banner-title plant-active-title" id="plant-banner-title">Crops</span>
     </div>
 
     <div class="plant-stage">
-      <video id="plant-tree-img" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <video id="plant-tree-img" muted playsinline preload="auto" aria-hidden="true">
         <source src="/images/plant%20dna.mp4" type="video/mp4">
       </video>
+      <div class="plant-scan-line"></div>
     </div>
 
     <div class="plant-status" aria-hidden="true">
-      <span class="plant-count">01 / 12</span>
+      <span class="plant-count"><span class="plant-count-inner">01 / 12</span></span>
       <span class="plant-track"><span class="plant-fill"></span></span>
       <span class="plant-active-title">Crops</span>
     </div>
@@ -1358,7 +1433,7 @@
       <div class="eyebrow">Services</div>
       <h2 class="plant-services-title">Twelve sectors,<br>one living practice.</h2>
       <div class="plant-status">
-        <span class="plant-count" id="plant-count-right">01 / 12</span>
+        <span class="plant-count"><span class="plant-count-inner" id="plant-count-right">01 / 12</span></span>
         <span class="plant-track"><span class="plant-fill" id="plant-fill-right"></span></span>
         <span class="plant-active-title" id="plant-active-title-right">Crops</span>
       </div>
@@ -1556,6 +1631,10 @@
 
 </main>
 
+<!-- Cinematic letterbox bars -->
+<div class="plant-letterbox" id="plant-lb-top"></div>
+<div class="plant-letterbox" id="plant-lb-bot"></div>
+
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
@@ -1729,49 +1808,154 @@ const sp = document.getElementById('statLinePath');
 if(sp){ const L=sp.getTotalLength(); sp.style.strokeDasharray=L; sp.style.strokeDashoffset=L; ScrollTrigger.create({ trigger:'#stat-line', start:"top 85%", once:true, onEnter:()=>gsap.to(sp,{ strokeDashoffset:0, duration:1.8, ease:"power2.out" }) }); }
 gsap.from('.stat', { y:24, opacity:0, duration:1, stagger:0.12, ease:"power3.out", scrollTrigger:{ trigger:'#impact', start:"top 75%" }});
 
-// ── Plant growth scroll ──
+// ── Plant growth scroll — cinematic agri-tech ──
 const sectorSection = document.getElementById('sectors');
 if (sectorSection) {
-  const treeImg   = document.getElementById('plant-tree-img');
-  const countEls  = [...sectorSection.querySelectorAll('.plant-count')];
-  const fillEls   = [...sectorSection.querySelectorAll('.plant-fill')];
-  const titleEls  = [...sectorSection.querySelectorAll('.plant-active-title')];
-  const entries   = [...sectorSection.querySelectorAll('.plant-entry')];
-  const ctaEl     = document.getElementById('plant-cta');
-  const titles    = ['Crops','Horticulture','Open field production','Protected production','Livestock','Aquaculture','Post-harvest','Agro-industry','Forestry','Land conservation','Desertification prevention','Environmental protection'];
-  const layers    = ['production','production','production','production','value','value','value','value','land','land','land','land'];
+  const treeImg     = document.getElementById('plant-tree-img');
+  const bannerTitle = document.getElementById('plant-banner-title');
+  const ghostWordEl = sectorSection.querySelector('.plant-ghost-word');
+  const plantStage  = sectorSection.querySelector('.plant-stage');
+  const countEls    = [...sectorSection.querySelectorAll('.plant-count-inner')];
+  const fillEls     = [...sectorSection.querySelectorAll('.plant-fill')];
+  const titleEls    = [...sectorSection.querySelectorAll('.plant-active-title')];
+  const entries     = [...sectorSection.querySelectorAll('.plant-entry')];
+  const ctaEl       = document.getElementById('plant-cta');
+  const lbTop       = document.getElementById('plant-lb-top');
+  const lbBot       = document.getElementById('plant-lb-bot');
 
-  let lastActive = -1, lastLayer = '', ticking = false;
+  const titles = ['Crops','Horticulture','Open field production','Protected production','Livestock','Aquaculture','Post-harvest','Agro-industry','Forestry','Land conservation','Desertification prevention','Environmental protection'];
+  const layers = ['production','production','production','production','value','value','value','value','land','land','land','land'];
+  const ghosts = ['PRODUCTION','PRODUCTION','PRODUCTION','PRODUCTION','VALUE CHAIN','VALUE CHAIN','VALUE CHAIN','VALUE CHAIN','LAND','LAND','LAND','LAND'];
+
+  let lastActive = -1, lastLayer = '', lastChapter = -1, ticking = false;
+  let targetFillPct = 8.33, displayFillPct = 8.33;
+
+  // ── #1 Scroll-driven video scrubbing ──
+  let videoDuration = 0;
+  function initVideoScrub() {
+    videoDuration = treeImg.duration || 0;
+    if (videoDuration > 0) treeImg.pause();
+  }
+  if (treeImg && treeImg.readyState >= 1) {
+    initVideoScrub();
+  } else if (treeImg) {
+    treeImg.addEventListener('loadedmetadata', initVideoScrub, { once: true });
+  }
+
+  // ── #8 Scroll inertia — continuous fill lerp loop ──
+  (function fillLoop() {
+    displayFillPct += (targetFillPct - displayFillPct) * 0.09;
+    fillEls.forEach(el => el.style.width = displayFillPct.toFixed(2) + '%');
+    requestAnimationFrame(fillLoop);
+  })();
+
+  // ── #2 Letterbox chapter-cut helper ──
+  let lbTimer = null;
+  function fireLetterbox() {
+    if (!lbTop || !lbBot) return;
+    if (lbTimer) clearTimeout(lbTimer);
+    lbTop.classList.add('open'); lbBot.classList.add('open');
+    lbTimer = setTimeout(() => {
+      lbTop.classList.remove('open'); lbBot.classList.remove('open');
+    }, 380);
+  }
+
+  // ── #3 Flip-board counter ──
+  function flipCount(label) {
+    countEls.forEach(el => {
+      gsap.fromTo(el,
+        { rotateX: 90, opacity: 0 },
+        { rotateX: 0, opacity: 1, duration: 0.28, ease: 'power3.out',
+          onStart() { el.textContent = label; } }
+      );
+    });
+  }
+
+  // ── #7 Magnetic cursor — video panel responds to global mouse ──
+  document.addEventListener('mousemove', e => {
+    if (!plantStage || window.matchMedia('(max-width:900px)').matches) return;
+    const r = sectorSection.getBoundingClientRect();
+    if (r.top > window.innerHeight || r.bottom < 0) return;
+    const cx = window.innerWidth * 0.23;
+    const cy = window.innerHeight * 0.5;
+    const dx = (e.clientX - cx) / window.innerWidth;
+    const dy = (e.clientY - cy) / window.innerHeight;
+    plantStage.style.transform = `scale(1.02) perspective(900px) rotateX(${(-dy * 5).toFixed(2)}deg) rotateY(${(dx * 7).toFixed(2)}deg)`;
+    plantStage.style.transition = 'transform 0.22s ease';
+  }, { passive: true });
 
   function updatePlant() {
     ticking = false;
     if (window.matchMedia('(max-width:900px)').matches) {
-      entries.forEach(e => e.classList.add('lit'));
+      entries.forEach(e => { e.classList.add('lit'); e.classList.remove('behind','focused'); });
       if (ctaEl) ctaEl.classList.add('visible');
+      targetFillPct = 100;
       return;
     }
+
     const rect       = sectorSection.getBoundingClientRect();
     const scrollable = Math.max(1, rect.height - window.innerHeight);
     const progress   = Math.min(1, Math.max(0, -rect.top / scrollable));
 
-    // Counter + highlights
+    // ── #1 Video scrub ──
+    if (videoDuration > 0 && treeImg) {
+      try { treeImg.currentTime = progress * videoDuration; } catch(_) {}
+    }
+
     const active = Math.min(11, Math.floor(progress * 12));
+    // ── #8 Fill lerp target ──
+    targetFillPct = ((active + 1) / 12) * 100;
+
     if (active !== lastActive) {
-      lastActive = active;
       const label = `${String(active + 1).padStart(2,'0')} / 12`;
-      countEls.forEach(el => el.textContent = label);
-      fillEls.forEach(el => el.style.width = `${((active + 1) / 12) * 100}%`);
-      titleEls.forEach(el => el.textContent = titles[active]);
-      entries.forEach((e, i) => e.classList.toggle('lit', i <= active));
+
+      // ── #3 Flip-board counter ──
+      flipCount(label);
+
+      // ── #5 Ghost chapter word ──
+      if (ghostWordEl) ghostWordEl.textContent = ghosts[active];
+
+      // ── #6 Title flies to sticky banner — x wipe from right ──
+      titleEls.forEach(el => { if (el !== bannerTitle) el.textContent = titles[active]; });
+      if (bannerTitle) {
+        bannerTitle.textContent = titles[active];
+        gsap.fromTo(bannerTitle,
+          { x: 38, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.44, ease: 'power3.out' }
+        );
+      }
+
+      // ── #4 Rack-focus — one entry in full detail, rest dimmed ──
+      entries.forEach((e, i) => {
+        e.classList.toggle('lit',     i <= active);
+        e.classList.toggle('focused', i === active);
+        e.classList.toggle('behind',  i < active);
+      });
       if (ctaEl) ctaEl.classList.toggle('visible', active === 11);
 
-      // Video layer reactivity
+      // ── #10 Entry number scale moment ──
+      const numEl = entries[active]?.querySelector('.plant-entry-num');
+      if (numEl) {
+        gsap.fromTo(numEl,
+          { scale: 2.4, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out' }
+        );
+      }
+
+      // ── #2 Letterbox on chapter boundary ──
+      const chapter = active < 4 ? 0 : active < 8 ? 1 : 2;
+      if (lastChapter !== -1 && chapter !== lastChapter) fireLetterbox();
+      lastChapter = chapter;
+
+      // ── Video layer reactivity ──
       const layer = layers[active];
       if (layer !== lastLayer && treeImg) {
         lastLayer = layer;
         treeImg.classList.toggle('layer-value', layer === 'value');
         treeImg.classList.toggle('layer-land',  layer === 'land');
       }
+
+      lastActive = active;
     }
   }
 
@@ -1782,125 +1966,6 @@ if (sectorSection) {
   window.addEventListener('scroll', requestUpdate, { passive: true });
   window.addEventListener('resize', updatePlant);
   updatePlant();
-
-  // dead-code gate — original sector vars never used
-  if (false) {
-  const sectorNodes = [...sectorSection.querySelectorAll('.sector-node')];
-  const sectorConnections = [...sectorSection.querySelectorAll('.sector-connection')];
-  const sectorLayers = [...sectorSection.querySelectorAll('.sector-layer')];
-  const sectorCount = document.getElementById('sector-count');
-  const sectorTitle = document.getElementById('sector-title');
-  const sectorSupport = document.getElementById('sector-support');
-  const sectorProgressFill = document.getElementById('sector-progress-fill');
-  const sectorCenterTitle = document.getElementById('sector-center-title');
-  const sectorCenterLayer = document.getElementById('sector-center-layer');
-  const sectorMeta = [
-    { title:'Crops', support:'Cereals, oilseeds, pulses — precision rotations.', layer:'production', layerLabel:'Production systems', related:[1,2,3,4,11] },
-    { title:'Horticulture', support:'Fruit, vegetables, high-value specialty lines.', layer:'production', layerLabel:'Production systems', related:[0,2,3,7] },
-    { title:'Open field production', support:'Broad-acre optimisation and water stewardship.', layer:'production', layerLabel:'Production systems', related:[0,1,3,8,9] },
-    { title:'Protected production', support:'Greenhouse, net-house and vertical systems.', layer:'production', layerLabel:'Production systems', related:[0,1,2,6,7] },
-    { title:'Livestock', support:'Welfare-first intensification and traceability.', layer:'value', layerLabel:'Value chain infrastructure', related:[5,6,7,0] },
-    { title:'Aquaculture', support:'Closed-loop, species-appropriate production.', layer:'value', layerLabel:'Value chain infrastructure', related:[4,6,7] },
-    { title:'Post-harvest', support:'Cold chain, sorting, traceable logistics.', layer:'value', layerLabel:'Value chain infrastructure', related:[3,4,5,7] },
-    { title:'Agro-industry', support:'Processing integration and value capture.', layer:'value', layerLabel:'Value chain infrastructure', related:[1,3,4,5,6,8] },
-    { title:'Forestry', support:'Silviculture, agroforestry, native species.', layer:'land', layerLabel:'Land resilience', related:[2,7,9,10,11] },
-    { title:'Land conservation', support:'Soil, watersheds, biodiversity corridors.', layer:'land', layerLabel:'Land resilience', related:[2,8,10,11] },
-    { title:'Desertification prevention', support:'Drylands rehabilitation at scale.', layer:'land', layerLabel:'Land resilience', related:[8,9,11] },
-    { title:'Environmental protection', support:'Compliance, monitoring, restoration.', layer:'land', layerLabel:'Land resilience', related:[0,8,9,10] }
-  ];
-  let activeSector = -1;
-  let manualSector = null;
-  let ticking = false;
-
-  function setSector(index) {
-    if (index === activeSector || !sectorMeta[index]) return;
-    activeSector = index;
-    const meta = sectorMeta[index];
-    const related = new Set([index, ...meta.related]);
-
-    sectorNodes.forEach(node => {
-      const nodeIndex = Number(node.dataset.sector);
-      node.classList.toggle('active', nodeIndex === index);
-      node.classList.toggle('related', nodeIndex !== index && related.has(nodeIndex));
-      node.setAttribute('aria-pressed', nodeIndex === index ? 'true' : 'false');
-    });
-
-    sectorConnections.forEach(path => {
-      const points = (path.dataset.connect || '').split(' ').map(Number);
-      const connected = points.includes(index);
-      const bothRelated = points.every(point => related.has(point));
-      path.classList.toggle('related', connected || bothRelated);
-      path.classList.toggle('dimmed', !connected && !bothRelated);
-    });
-
-    sectorLayers.forEach(layer => {
-      layer.classList.toggle('active', layer.dataset.layer === meta.layer);
-    });
-
-    if (sectorCount) sectorCount.textContent = `${String(index + 1).padStart(2, '0')} / 12`;
-    if (sectorTitle) sectorTitle.textContent = meta.title;
-    if (sectorSupport) sectorSupport.textContent = meta.support;
-    if (sectorCenterTitle) sectorCenterTitle.textContent = meta.title;
-    if (sectorCenterLayer) sectorCenterLayer.textContent = meta.layerLabel;
-    if (sectorProgressFill) sectorProgressFill.style.width = `${((index + 1) / 12) * 100}%`;
-  }
-
-  function updateSectorChapter() {
-    ticking = false;
-    if (window.matchMedia('(max-width: 900px)').matches) {
-      setSector(0);
-      return;
-    }
-
-    const rect = sectorSection.getBoundingClientRect();
-    const scrollable = Math.max(1, rect.height - window.innerHeight);
-    const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-    sectorSection.style.setProperty('--sector-progress', progress.toFixed(3));
-    sectorSection.style.setProperty('--sector-rotation', `${(progress * 9).toFixed(3)}deg`);
-    sectorSection.style.setProperty('--sector-counter', `${(progress * -9).toFixed(3)}deg`);
-    if (manualSector === null) {
-      setSector(Math.min(11, Math.floor(progress * 12)));
-    }
-  }
-
-  function requestSectorUpdate() {
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(updateSectorChapter);
-    }
-  }
-
-  setSector(0);
-  window.addEventListener('scroll', requestSectorUpdate, { passive:true });
-  window.addEventListener('resize', requestSectorUpdate);
-  sectorNodes.forEach(node => {
-    node.addEventListener('pointerenter', () => {
-      manualSector = Number(node.dataset.sector);
-      setSector(manualSector);
-    });
-    node.addEventListener('focus', () => {
-      manualSector = Number(node.dataset.sector);
-      setSector(manualSector);
-    });
-    node.addEventListener('pointerleave', () => {
-      manualSector = null;
-      requestSectorUpdate();
-    });
-    node.addEventListener('blur', () => {
-      manualSector = null;
-      requestSectorUpdate();
-    });
-    node.addEventListener('click', () => {
-      manualSector = Number(node.dataset.sector);
-      setSector(manualSector);
-      window.setTimeout(() => {
-        manualSector = null;
-        requestSectorUpdate();
-      }, 900);
-    });
-  });
-  requestSectorUpdate();
-  } // end if(false) dead-code gate
 } // end if(sectorSection)
 
 // ── Drawer system ──

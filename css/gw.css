@@ -368,8 +368,9 @@ body.gw-transitioning .gw-transition-stage{
 .grid-cols-2{ grid-template-columns:repeat(2,1fr); }
 .grid-cols-3{ grid-template-columns:repeat(3,1fr); }
 .grid-cols-4{ grid-template-columns:repeat(4,1fr); }
-@media(min-width:768px){ .md\:grid-cols-4{ grid-template-columns:repeat(4,1fr); } }
+@media(min-width:768px){ .md\:grid-cols-2{ grid-template-columns:repeat(2,1fr); } }
 @media(min-width:768px){ .md\:grid-cols-3{ grid-template-columns:repeat(3,1fr); } }
+@media(min-width:768px){ .md\:grid-cols-4{ grid-template-columns:repeat(4,1fr); } }
 
 /* Gap — 4px base */
 .gap-2{ gap:8px; }

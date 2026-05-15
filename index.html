@@ -720,6 +720,33 @@
     border:1px solid rgba(15,23,42,0.07);
     backdrop-filter:none;
   }
+  .plant-sticky-banner{
+    position:absolute;
+    top:clamp(32px,5vh,64px);
+    left:clamp(24px,4vw,56px);
+    right:clamp(24px,4vw,56px);
+    z-index:4;
+    pointer-events:none;
+  }
+  .plant-sticky-banner-label{
+    display:block;
+    font-size:9px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:rgba(248,249,245,0.55);
+    margin-bottom:8px;
+    font-weight:500;
+  }
+  .plant-sticky-banner-title{
+    font-family:"Exo 2",sans-serif;
+    font-weight:200;
+    font-size:clamp(22px,3vw,38px);
+    letter-spacing:-0.03em;
+    line-height:1.05;
+    color:rgba(248,249,245,0.92);
+    text-shadow:0 2px 18px rgba(0,0,0,0.45);
+    transition:opacity .4s ease;
+  }
   .plant-stage{
     position:absolute;
     inset:-5%;
@@ -784,7 +811,7 @@
     position:absolute;
     inset:0 auto 0 0;
     width:8.33%;
-    background:linear-gradient(90deg,rgba(80,180,120,0.3),rgba(80,180,120,0.85));
+    background:linear-gradient(90deg, rgba(15,123,82,0.28), var(--green-deep));
     transition:width .55s cubic-bezier(.22,.8,.2,1);
   }
   .plant-active-title{
@@ -852,9 +879,25 @@
     gap:26px;
     opacity:0.22;
     transform:translateX(-14px);
-    transition:opacity .68s cubic-bezier(.22,.8,.2,1), transform .76s cubic-bezier(.22,.8,.2,1);
+    transition:opacity .68s cubic-bezier(.22,.8,.2,1), transform .76s cubic-bezier(.22,.8,.2,1), background .28s ease;
     will-change:opacity,transform;
+    position:relative;
   }
+  .plant-entry::before{
+    content:'';
+    position:absolute;
+    left:-2px;
+    top:18%;
+    bottom:18%;
+    width:2px;
+    background:var(--green-deep);
+    border-radius:1px;
+    transform:scaleY(0);
+    transform-origin:center;
+    transition:transform .35s cubic-bezier(.22,.8,.2,1);
+  }
+  .plant-entry:hover::before{ transform:scaleY(1); }
+  .plant-entry:hover{ background:rgba(15,123,82,0.025); }
   .plant-entry.lit{
     opacity:1;
     transform:translateX(0);
@@ -950,6 +993,18 @@
   }
   .plant-entry-link:hover svg{
     transform:translateX(3px);
+  }
+  .plant-cta{
+    padding:6vh 0 4vh;
+    opacity:0;
+    transform:translateY(12px);
+    transition:opacity .6s cubic-bezier(.22,.8,.2,1), transform .6s cubic-bezier(.22,.8,.2,1);
+    pointer-events:none;
+  }
+  .plant-cta.visible{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
   }
 
   /* Mobile */
@@ -1279,6 +1334,11 @@
       <h2 class="plant-h2">Twelve sectors,<br>one living practice.</h2>
     </div>
 
+    <div class="plant-sticky-banner" aria-hidden="true">
+      <span class="plant-sticky-banner-label">Active sector</span>
+      <span class="plant-sticky-banner-title plant-active-title">Crops</span>
+    </div>
+
     <div class="plant-stage">
       <video id="plant-tree-img" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
         <source src="/images/plant%20dna.mp4" type="video/mp4">
@@ -1302,7 +1362,6 @@
         <span class="plant-track"><span class="plant-fill" id="plant-fill-right"></span></span>
         <span class="plant-active-title" id="plant-active-title-right">Crops</span>
       </div>
-      <p class="body" style="max-width:40ch;color:var(--ink-3);font-size:14px;line-height:1.7;">An integrated agricultural services platform — production, value chain infrastructure, and land resilience, connected into one disciplined system.</p>
     </div>
 
     <div class="plant-chapter">
@@ -1444,6 +1503,13 @@
         <p class="plant-entry-desc">Compliance monitoring, ecological restoration, and long-term environmental stewardship programmes.</p>
         <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
+    </div>
+
+    <div class="plant-cta" id="plant-cta">
+      <a href="scope.html" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:10px;">
+        View full scope
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
 
   </div>
@@ -1671,6 +1737,7 @@ if (sectorSection) {
   const fillEls   = [...sectorSection.querySelectorAll('.plant-fill')];
   const titleEls  = [...sectorSection.querySelectorAll('.plant-active-title')];
   const entries   = [...sectorSection.querySelectorAll('.plant-entry')];
+  const ctaEl     = document.getElementById('plant-cta');
   const titles    = ['Crops','Horticulture','Open field production','Protected production','Livestock','Aquaculture','Post-harvest','Agro-industry','Forestry','Land conservation','Desertification prevention','Environmental protection'];
   const layers    = ['production','production','production','production','value','value','value','value','land','land','land','land'];
 
@@ -1680,6 +1747,7 @@ if (sectorSection) {
     ticking = false;
     if (window.matchMedia('(max-width:900px)').matches) {
       entries.forEach(e => e.classList.add('lit'));
+      if (ctaEl) ctaEl.classList.add('visible');
       return;
     }
     const rect       = sectorSection.getBoundingClientRect();
@@ -1695,6 +1763,7 @@ if (sectorSection) {
       fillEls.forEach(el => el.style.width = `${((active + 1) / 12) * 100}%`);
       titleEls.forEach(el => el.textContent = titles[active]);
       entries.forEach((e, i) => e.classList.toggle('lit', i <= active));
+      if (ctaEl) ctaEl.classList.toggle('visible', active === 11);
 
       // Video layer reactivity
       const layer = layers[active];

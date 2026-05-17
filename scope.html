@@ -24,10 +24,10 @@
       radial-gradient(50% 40% at 80% 80%, rgba(244,199,123,0.25), transparent 60%),
       #F8F9F5;
   }
-  /* Two-column editorial intro: text left, conference portrait right */
+  /* Two-column editorial intro: text left, conference photo right */
   .intro-grid{
     display:grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     gap: clamp(40px, 5.5vw, 96px);
     align-items: end;
   }
@@ -36,13 +36,13 @@
     position:relative;
     margin:0;
     align-self:end;
-    max-width:440px;
+    max-width:560px;
     margin-inline-start:auto;
     width:100%;
   }
   .intro-photo-frame{
     position:relative;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 4 / 3;
     overflow:hidden;
     background:rgba(15,23,42,0.04);
   }

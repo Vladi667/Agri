@@ -140,191 +140,149 @@
   .scope-layer-arc,
   .scope-tick{ fill:none; vector-effect:non-scaling-stroke; }
 
-  .scope-inner-ring{
-    stroke:rgba(15,23,42,0.05);
-    stroke-width:.75;
+  /* — Apple-minimal pass: a single hairline visual language — */
+
+  /* Inner reference ring → silent (display:none kills visual; the center text is the anchor) */
+  .scope-inner-ring{ display:none; }
+
+  /* Chronograph ticks → removed for Apple-minimal */
+  .scope-tick{ display:none; }
+
+  /* Three orbit arcs → kept as structural separators, all monotone hairline */
+  .scope-layer-arc{
+    stroke:rgba(15,23,42,0.13);
+    stroke-width:1;
+    stroke-linecap:round;
+    opacity:1;
   }
-  /* Chronograph ticks — instrumentation between inner ring and orbit */
-  .scope-tick{
-    stroke:rgba(15,23,42,0.10);
-    stroke-width:.4;
-    transition:stroke .45s cubic-bezier(.22,.8,.2,1);
+  .scope-layer-arc[data-layer="production"],
+  .scope-layer-arc[data-layer="value"],
+  .scope-layer-arc[data-layer="land"]{
+    stroke:rgba(15,23,42,0.13);
   }
-  .scope-tick.major{
-    stroke:rgba(15,23,42,0.22);
-    stroke-width:.55;
-  }
-  /* ⑤ Two-layer connections — faint base always present, overlay draws on activation */
-  .scope-connection-base{
-    stroke:rgba(15,23,42,0.10);
-    stroke-width:.6;
-    opacity:.5;
-    transition:opacity .45s cubic-bezier(.22,.8,.2,1);
-  }
-  .scope-connection-base.dimmed{ opacity:.09; }
+
+  /* Flowing animated arc → quieted entirely */
+  .scope-arc{ display:none; }
+
+  /* Connections — base lines invisible; only the active sector's bonds render */
+  .scope-connection-base{ display:none; }
 
   .scope-connection-overlay{
-    stroke:rgba(15,123,82,0.85);
-    stroke-width:1.5;
+    stroke:rgba(15,123,82,0.78);
+    stroke-width:.9;
     opacity:0;
-    filter:drop-shadow(0 0 1.5px rgba(15,123,82,0.38));
-    transition:stroke-dashoffset .72s cubic-bezier(.22,.8,.2,1), opacity .35s ease-out;
+    transition:stroke-dashoffset .82s cubic-bezier(.22,.8,.2,1), opacity .42s ease-out;
   }
   .scope-connection-overlay.related{
     opacity:1;
     stroke-dashoffset:0 !important;
   }
 
-  /* Travel pulse dot — data flowing along the active connection */
-  .scope-pulse-dot{
-    fill:rgba(15,123,82,0.96);
-    filter:drop-shadow(0 0 1.6px rgba(15,123,82,0.6));
-    pointer-events:none;
-  }
+  /* Travel pulse dots → silenced (JS no longer spawns them, but kill any remnants) */
+  .scope-pulse-dot{ display:none; }
 
-  /* ② Three-arc orbit ring — color coded by layer */
-  .scope-layer-arc{
-    stroke-width:2.2;
-    stroke-linecap:round;
-    opacity:.78;
-  }
-  .scope-layer-arc[data-layer="production"]{ stroke:rgba(15,123,82,0.58); }
-  .scope-layer-arc[data-layer="value"]     { stroke:rgba(184,118,36,0.52); }
-  .scope-layer-arc[data-layer="land"]      { stroke:rgba(106,78,44,0.46); }
-
-  .scope-arc{
-    stroke:rgba(244,199,123,0.36);
-    stroke-width:.9;
-    stroke-linecap:round;
-    stroke-dasharray:12 326;
-    opacity:.38;
-    animation:scopeFlow 9s linear infinite;
-  }
-
-  /* ③ Center card — smaller, richer */
+  /* Center → pure typography, no card chrome */
   .scope-center{
     position:absolute;
     left:50%;
     top:50%;
     z-index:3;
-    width:clamp(144px,11.5vw,192px);
+    width:clamp(180px,15vw,240px);
     transform:translate(-50%,-50%) rotate(var(--scope-counter));
     display:flex;
     flex-direction:column;
-    padding:18px 20px 20px;
-    border-radius:20px;
-    border:1px solid rgba(15,123,82,0.18);
-    background:rgba(255,255,255,0.84);
-    box-shadow:0 28px 64px -40px rgba(15,91,61,0.46), 0 0 0 6px rgba(255,255,255,0.32);
-    backdrop-filter:blur(22px) saturate(1.1);
+    align-items:center;
+    text-align:center;
+    pointer-events:none;
     transition:transform .18s linear;
   }
   .scope-center-kicker{
-    color:#0F7B52;
-    font-size:9.5px;
-    letter-spacing:.18em;
+    color:rgba(15,23,42,0.48);
+    font-size:10px;
+    letter-spacing:.24em;
     text-transform:uppercase;
+    font-variant-numeric:tabular-nums;
   }
   .scope-center-title{
-    margin-top:9px;
+    margin-top:18px;
     font-family:"Exo 2",sans-serif;
-    font-weight:300;
-    letter-spacing:-0.02em;
-    font-size:clamp(20px,1.9vw,28px);
-    line-height:1.05;
+    font-weight:200;
+    letter-spacing:-0.028em;
+    font-size:clamp(30px,3vw,46px);
+    line-height:.98;
     color:#0B1220;
-    transition:opacity .35s cubic-bezier(.22,.8,.2,1);
+    /* Tiny halo so type stays crisp if a bond passes near */
+    text-shadow:0 0 12px rgba(242,244,236,0.85);
+    transition:opacity .4s cubic-bezier(.22,.8,.2,1);
   }
-  /* ③ New: description inside center card */
   .scope-center-desc{
-    margin-top:7px;
-    font-size:10px;
-    line-height:1.52;
-    color:rgba(11,18,32,0.46);
+    margin-top:18px;
+    max-width:22ch;
+    font-size:11px;
+    line-height:1.6;
+    color:rgba(11,18,32,0.5);
     display:-webkit-box;
     -webkit-line-clamp:3;
     -webkit-box-orient:vertical;
     overflow:hidden;
-    transition:opacity .35s cubic-bezier(.22,.8,.2,1);
+    transition:opacity .4s cubic-bezier(.22,.8,.2,1);
   }
-  .scope-center-line{
-    margin-top:13px;
-    width:100%;
-    height:1px;
-    background:linear-gradient(90deg, rgba(15,123,82,0.48), transparent);
-  }
+  .scope-center-line{ display:none; }
 
-  /* ④ Pulse ring on active node */
-  @keyframes scopePulse{
-    0%  { transform:scale(1);    opacity:.52; }
-    65% { transform:scale(1.68); opacity:0;   }
-    100%{ transform:scale(1.68); opacity:0;   }
-  }
+  /* Nodes — hairline only, no shadow, no backdrop blur, no pulse, no dot */
   .scope-node{
     position:absolute;
     left:50%;
     top:50%;
     z-index:2;
-    width:90px;
-    min-height:70px;
+    width:88px;
+    min-height:54px;
     transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(calc(.92 * var(--enter-scale))) rotate(var(--scope-counter));
     display:grid;
     align-content:center;
-    gap:3px;
-    padding:10px 8px;
-    border:1px solid rgba(15,23,42,0.08);
-    border-radius:16px;
-    background:rgba(255,255,255,0.72);
-    color:#0B1220;
-    box-shadow:0 12px 32px -24px rgba(15,23,42,0.34);
+    gap:2px;
+    padding:9px 8px;
+    border:1px solid rgba(15,23,42,0.10);
+    border-radius:14px;
+    background:transparent;
+    color:rgba(11,18,32,0.5);
     text-align:center;
     cursor:pointer;
-    backdrop-filter:blur(12px);
-    transition:transform .62s cubic-bezier(.22,.8,.2,1), opacity .45s, border-color .45s, box-shadow .45s, background .45s, filter .45s;
+    transition:transform .62s cubic-bezier(.22,.8,.2,1), opacity .45s, border-color .45s, color .45s, background .45s;
   }
-  /* Pulse ring lives as ::before — invisible by default */
-  .scope-node::before{
-    content:'';
-    position:absolute;
-    inset:-5px;
-    border-radius:21px;
-    border:1.5px solid var(--layer-color, rgba(15,123,82,0.42));
-    opacity:0;
-    pointer-events:none;
+  .scope-node::before{ content:none; }
+  .scope-node-dot{ display:none; }
+  .scope-node-index{
+    color:rgba(15,23,42,0.32);
+    font-size:9px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-variant-numeric:tabular-nums;
+    transition:color .45s cubic-bezier(.22,.8,.2,1);
   }
-  .scope-node.active::before{
-    animation:scopePulse 2.8s cubic-bezier(.22,.8,.2,1) infinite;
+  .scope-node-title{
+    font-size:11.5px;
+    line-height:1.18;
+    font-weight:400;
+    letter-spacing:-0.005em;
   }
-  /* ⑥ Layer color dot */
-  .scope-node-dot{
-    width:5px;
-    height:5px;
-    border-radius:50%;
-    background:var(--layer-color, #0F7B52);
-    margin:0 auto 1px;
-    opacity:.88;
-  }
-  .scope-node-index{ color:#0F7B52; font-size:9px; letter-spacing:.16em; text-transform:uppercase; }
-  .scope-node-title{ font-size:11px; line-height:1.18; font-weight:500; letter-spacing:-0.01em; }
-  .scope-node:not(.active):not(.related){ opacity:.52; filter:saturate(.78); }
   .scope-node.related{
-    opacity:.9;
-    border-color:rgba(15,123,82,0.2);
-    background:rgba(255,255,255,0.84);
+    color:rgba(11,18,32,0.82);
+    border-color:rgba(15,23,42,0.20);
   }
+  .scope-node.related .scope-node-index{ color:rgba(15,23,42,0.5); }
   .scope-node.active{
-    opacity:1;
-    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(calc(1.12 * var(--enter-scale))) rotate(var(--scope-counter));
-    background:rgba(255,255,255,0.97);
-    border-color:rgba(15,123,82,0.34);
-    box-shadow:0 24px 50px -28px rgba(15,91,61,0.34), 0 0 0 5px rgba(16,185,129,0.06);
+    color:#0B1220;
+    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(calc(1.08 * var(--enter-scale))) rotate(var(--scope-counter));
+    background:rgba(255,255,255,0.5);
+    border-color:rgba(15,123,82,0.55);
   }
+  .scope-node.active .scope-node-index{ color:#0F7B52; }
   .scope-node:hover,
   .scope-node:focus-visible{
-    opacity:1;
+    color:#0B1220;
+    border-color:rgba(15,23,42,0.30);
     outline:none;
-    background:rgba(255,255,255,0.9);
-    border-color:rgba(15,123,82,0.32);
   }
 
   .scope-mobile{ display:none; }
@@ -427,15 +385,7 @@
       </div>
 
       <div class="scope-constellation" id="scopeConst" aria-label="Sector network">
-        <svg class="scope-network" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <defs>
-            <filter id="connGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="0.7" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-          <circle class="scope-arc" cx="50" cy="50" r="39" fill="none"/>
-        </svg>
+        <svg class="scope-network" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
         <div class="scope-center" aria-live="polite">
           <div class="scope-center-kicker" id="scopeCenterLayer">Production systems</div>
           <div class="scope-center-title" id="scopeCenterTitle">Crops</div>
@@ -528,7 +478,6 @@ document.getElementById('scopeMobile').innerHTML = [
 const R     = 39; // SVG viewBox radius — matches <circle r="39">
 const svgNS = 'http://www.w3.org/2000/svg';
 const netSVG = scopeConst.querySelector('.scope-network');
-const defs   = netSVG.querySelector('defs');
 
 // Helpers
 function svgPt(angleDeg, r) {
@@ -542,28 +491,7 @@ function arcPath(startDeg, endDeg, r) {
   return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
 }
 
-// Inner reference ring
-const innerRing = document.createElementNS(svgNS, 'circle');
-innerRing.setAttribute('class', 'scope-inner-ring');
-innerRing.setAttribute('cx', '50');
-innerRing.setAttribute('cy', '50');
-innerRing.setAttribute('r', '27');
-netSVG.appendChild(innerRing);
-
-// Chronograph tick ring — 60 ticks every 6°, 12 majors align with nodes
-for (let i = 0; i < 60; i++) {
-  const deg = i * 6;
-  const isMajor = i % 5 === 0;
-  const [x1, y1] = svgPt(deg, isMajor ? 31.2 : 32);
-  const [x2, y2] = svgPt(deg, isMajor ? 35   : 34);
-  const tick = document.createElementNS(svgNS, 'line');
-  tick.setAttribute('class', isMajor ? 'scope-tick major' : 'scope-tick');
-  tick.setAttribute('x1', x1); tick.setAttribute('y1', y1);
-  tick.setAttribute('x2', x2); tick.setAttribute('y2', y2);
-  netSVG.appendChild(tick);
-}
-
-// Three colored orbit arcs — 6° gap at each junction
+// Three orbit arcs — 6° gap at each junction (kept as structural separators, styled monotone in CSS)
 [
   { layer:'production', start:-12, end:102 },
   { layer:'value',      start:108, end:222 },
@@ -576,22 +504,7 @@ for (let i = 0; i < 60; i++) {
   netSVG.appendChild(arc);
 });
 
-// Helper: cross-layer connection gradient (stroke that fades from one layer color to another)
-function makeGradient(id, x1, y1, x2, y2, c1, c2) {
-  const grad = document.createElementNS(svgNS, 'linearGradient');
-  grad.setAttribute('id', id);
-  grad.setAttribute('gradientUnits', 'userSpaceOnUse');
-  grad.setAttribute('x1', x1); grad.setAttribute('y1', y1);
-  grad.setAttribute('x2', x2); grad.setAttribute('y2', y2);
-  const s1 = document.createElementNS(svgNS, 'stop');
-  s1.setAttribute('offset', '0%');   s1.setAttribute('stop-color', c1); s1.setAttribute('stop-opacity', '0.92');
-  const s2 = document.createElementNS(svgNS, 'stop');
-  s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', c2); s2.setAttribute('stop-opacity', '0.92');
-  grad.appendChild(s1); grad.appendChild(s2);
-  defs.appendChild(grad);
-}
-
-// Nodes + base/overlay connection lines
+// Nodes + overlay connection lines (base lines hidden in CSS for Apple-minimal)
 const nodes = [];
 sectors.forEach((s, i) => {
   const angleDeg = (i / 12) * 360;
@@ -636,13 +549,6 @@ sectors.forEach((s, i) => {
       overlay.setAttribute('x1', x1); overlay.setAttribute('y1', y1);
       overlay.setAttribute('x2', x2); overlay.setAttribute('y2', y2);
 
-      // Cross-layer? Apply gradient stroke (from→to layer colors)
-      if (s.layer !== sectors[r].layer) {
-        const gid = `cg-${i}-${r}`;
-        makeGradient(gid, x1, y1, x2, y2, LAYER_COLORS[s.layer], LAYER_COLORS[sectors[r].layer]);
-        overlay.setAttribute('stroke', `url(#${gid})`);
-      }
-
       // Draw-from-hidden initial state
       const len = Math.hypot(x2 - x1, y2 - y1);
       overlay.style.strokeDasharray  = len.toFixed(3);
@@ -652,30 +558,7 @@ sectors.forEach((s, i) => {
   });
 });
 
-const baseLines    = [...netSVG.querySelectorAll('.scope-connection-base')];
 const overlayLines = [...netSVG.querySelectorAll('.scope-connection-overlay')];
-
-// Travel pulse dot — small SVG circle traveling along an active connection
-let activeDots = [];
-function spawnPulseDot(line, fromActive) {
-  const a1 = +line.getAttribute(fromActive ? 'x1' : 'x2');
-  const b1 = +line.getAttribute(fromActive ? 'y1' : 'y2');
-  const a2 = +line.getAttribute(fromActive ? 'x2' : 'x1');
-  const b2 = +line.getAttribute(fromActive ? 'y2' : 'y1');
-  const dot = document.createElementNS(svgNS, 'circle');
-  dot.setAttribute('class', 'scope-pulse-dot');
-  dot.setAttribute('r', '0.85');
-  const motion = document.createElementNS(svgNS, 'animateMotion');
-  motion.setAttribute('dur', '2.1s');
-  motion.setAttribute('repeatCount', 'indefinite');
-  motion.setAttribute('path', `M ${a1} ${b1} L ${a2} ${b2}`);
-  motion.setAttribute('calcMode', 'spline');
-  motion.setAttribute('keyTimes', '0;1');
-  motion.setAttribute('keySplines', '.42 0 .58 1');
-  dot.appendChild(motion);
-  netSVG.appendChild(dot);
-  return dot;
-}
 
 function setScope(index) {
   if (index === activeScope || !sectors[index]) return;
@@ -689,22 +572,11 @@ function setScope(index) {
     node.classList.toggle('related', i !== index && relSet.has(i));
   });
 
-  // Connection base lines — dim everything not touching the active sector
-  baseLines.forEach(line => {
-    const from = +line.dataset.from, to = +line.dataset.to;
-    line.classList.toggle('dimmed', from !== index && to !== index);
-  });
-
-  // Clean up old pulse dots
-  activeDots.forEach(d => d.remove());
-  activeDots = [];
-
-  // Connection overlays — related bonds draw in + spawn travel dots
+  // Connection overlays — only the active sector's bonds draw in
   overlayLines.forEach(line => {
     const from = +line.dataset.from, to = +line.dataset.to;
     const lit  = (from === index && relSet.has(to)) || (to === index && relSet.has(from));
     line.classList.toggle('related', lit);
-    if (lit) activeDots.push(spawnPulseDot(line, from === index));
   });
 
   // Left panel

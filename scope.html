@@ -11,6 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/gw.css">
 <style>
+  /* Animatable custom property — enables interpolation inside transform/calc */
+  @property --enter-scale {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 1;
+  }
   body{ padding-top:72px; background:#F8F9F5; }
   .intro{
     padding: 100px 0 60px;
@@ -128,28 +134,53 @@
     pointer-events:none;
   }
   .scope-inner-ring,
-  .scope-connection,
+  .scope-connection-base,
+  .scope-connection-overlay,
   .scope-arc,
-  .scope-layer-arc{ fill:none; vector-effect:non-scaling-stroke; }
+  .scope-layer-arc,
+  .scope-tick{ fill:none; vector-effect:non-scaling-stroke; }
 
   .scope-inner-ring{
     stroke:rgba(15,23,42,0.05);
     stroke-width:.75;
   }
-  /* ⑤ Connection lines — stronger active state */
-  .scope-connection{
-    stroke:rgba(15,23,42,0.09);
-    stroke-width:.75;
+  /* Chronograph ticks — instrumentation between inner ring and orbit */
+  .scope-tick{
+    stroke:rgba(15,23,42,0.10);
+    stroke-width:.4;
+    transition:stroke .45s cubic-bezier(.22,.8,.2,1);
+  }
+  .scope-tick.major{
+    stroke:rgba(15,23,42,0.22);
+    stroke-width:.55;
+  }
+  /* ⑤ Two-layer connections — faint base always present, overlay draws on activation */
+  .scope-connection-base{
+    stroke:rgba(15,23,42,0.10);
+    stroke-width:.6;
     opacity:.5;
-    transition:stroke .45s cubic-bezier(.22,.8,.2,1), stroke-width .45s, opacity .45s, filter .45s;
+    transition:opacity .45s cubic-bezier(.22,.8,.2,1);
   }
-  .scope-connection.related{
-    stroke:rgba(15,123,82,0.76);
+  .scope-connection-base.dimmed{ opacity:.09; }
+
+  .scope-connection-overlay{
+    stroke:rgba(15,123,82,0.85);
     stroke-width:1.5;
-    opacity:1;
+    opacity:0;
     filter:drop-shadow(0 0 1.5px rgba(15,123,82,0.38));
+    transition:stroke-dashoffset .72s cubic-bezier(.22,.8,.2,1), opacity .35s ease-out;
   }
-  .scope-connection.dimmed{ opacity:.09; }
+  .scope-connection-overlay.related{
+    opacity:1;
+    stroke-dashoffset:0 !important;
+  }
+
+  /* Travel pulse dot — data flowing along the active connection */
+  .scope-pulse-dot{
+    fill:rgba(15,123,82,0.96);
+    filter:drop-shadow(0 0 1.6px rgba(15,123,82,0.6));
+    pointer-events:none;
+  }
 
   /* ② Three-arc orbit ring — color coded by layer */
   .scope-layer-arc{
@@ -236,7 +267,7 @@
     z-index:2;
     width:90px;
     min-height:70px;
-    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(.92) rotate(var(--scope-counter));
+    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(calc(.92 * var(--enter-scale))) rotate(var(--scope-counter));
     display:grid;
     align-content:center;
     gap:3px;
@@ -283,7 +314,7 @@
   }
   .scope-node.active{
     opacity:1;
-    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(1.12) rotate(var(--scope-counter));
+    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(calc(1.12 * var(--enter-scale))) rotate(var(--scope-counter));
     background:rgba(255,255,255,0.97);
     border-color:rgba(15,123,82,0.34);
     box-shadow:0 24px 50px -28px rgba(15,91,61,0.34), 0 0 0 5px rgba(16,185,129,0.06);
@@ -323,6 +354,24 @@
   }
   .scope-mobile-card .eyebrow{ color:#0F7B52; }
   @keyframes scopeFlow{ from{ stroke-dashoffset:0; } to{ stroke-dashoffset:-338; } }
+
+  /* Stagger entry — nodes scale in one by one on first view */
+  @keyframes nodeIn{
+    0%   { opacity:0; --enter-scale: 0.55; }
+    100% { opacity:1; --enter-scale: 1; }
+  }
+  .scope-constellation:not(.in-view) .scope-node,
+  .scope-constellation:not(.in-view) .scope-connection-base,
+  .scope-constellation:not(.in-view) .scope-tick{ opacity:0; }
+  .scope-constellation.in-view .scope-node{
+    animation: nodeIn .82s cubic-bezier(.22,.8,.2,1) backwards;
+    animation-delay: calc(var(--n, 0) * 62ms + 180ms);
+  }
+  .scope-constellation.in-view .scope-connection-base,
+  .scope-constellation.in-view .scope-tick{
+    transition: opacity .9s cubic-bezier(.22,.8,.2,1) 220ms;
+  }
+
   @media(max-width:900px){
     .scope-system{ min-height:auto; padding:88px 0; }
     .scope-sticky{ display:none; }
@@ -453,6 +502,7 @@ let activeScope = -1;
 let manualScope = null;
 let scopeTicking = false;
 let manualScopeTimer = null;
+let entryDone = false;
 
 // ⑥ Layer identity colors
 const LAYER_COLORS = {
@@ -478,14 +528,13 @@ document.getElementById('scopeMobile').innerHTML = [
 const R     = 39; // SVG viewBox radius — matches <circle r="39">
 const svgNS = 'http://www.w3.org/2000/svg';
 const netSVG = scopeConst.querySelector('.scope-network');
+const defs   = netSVG.querySelector('defs');
 
-// Helper: clockwise-from-top angle → SVG x,y at radius r
+// Helpers
 function svgPt(angleDeg, r) {
   const a = angleDeg * Math.PI / 180;
-  return [(50 + r * Math.sin(a)).toFixed(2), (50 - r * Math.cos(a)).toFixed(2)];
+  return [+(50 + r * Math.sin(a)).toFixed(3), +(50 - r * Math.cos(a)).toFixed(3)];
 }
-
-// Helper: SVG arc path between two angles
 function arcPath(startDeg, endDeg, r) {
   const [x1, y1] = svgPt(startDeg, r);
   const [x2, y2] = svgPt(endDeg, r);
@@ -493,7 +542,7 @@ function arcPath(startDeg, endDeg, r) {
   return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
 }
 
-// ② Inner reference ring
+// Inner reference ring
 const innerRing = document.createElementNS(svgNS, 'circle');
 innerRing.setAttribute('class', 'scope-inner-ring');
 innerRing.setAttribute('cx', '50');
@@ -501,7 +550,20 @@ innerRing.setAttribute('cy', '50');
 innerRing.setAttribute('r', '27');
 netSVG.appendChild(innerRing);
 
-// ② Three colored orbit arcs — 6° gap at each of the 3 junctions
+// Chronograph tick ring — 60 ticks every 6°, 12 majors align with nodes
+for (let i = 0; i < 60; i++) {
+  const deg = i * 6;
+  const isMajor = i % 5 === 0;
+  const [x1, y1] = svgPt(deg, isMajor ? 31.2 : 32);
+  const [x2, y2] = svgPt(deg, isMajor ? 35   : 34);
+  const tick = document.createElementNS(svgNS, 'line');
+  tick.setAttribute('class', isMajor ? 'scope-tick major' : 'scope-tick');
+  tick.setAttribute('x1', x1); tick.setAttribute('y1', y1);
+  tick.setAttribute('x2', x2); tick.setAttribute('y2', y2);
+  netSVG.appendChild(tick);
+}
+
+// Three colored orbit arcs — 6° gap at each junction
 [
   { layer:'production', start:-12, end:102 },
   { layer:'value',      start:108, end:222 },
@@ -514,43 +576,106 @@ netSVG.appendChild(innerRing);
   netSVG.appendChild(arc);
 });
 
+// Helper: cross-layer connection gradient (stroke that fades from one layer color to another)
+function makeGradient(id, x1, y1, x2, y2, c1, c2) {
+  const grad = document.createElementNS(svgNS, 'linearGradient');
+  grad.setAttribute('id', id);
+  grad.setAttribute('gradientUnits', 'userSpaceOnUse');
+  grad.setAttribute('x1', x1); grad.setAttribute('y1', y1);
+  grad.setAttribute('x2', x2); grad.setAttribute('y2', y2);
+  const s1 = document.createElementNS(svgNS, 'stop');
+  s1.setAttribute('offset', '0%');   s1.setAttribute('stop-color', c1); s1.setAttribute('stop-opacity', '0.92');
+  const s2 = document.createElementNS(svgNS, 'stop');
+  s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', c2); s2.setAttribute('stop-opacity', '0.92');
+  grad.appendChild(s1); grad.appendChild(s2);
+  defs.appendChild(grad);
+}
+
+// Nodes + base/overlay connection lines
 const nodes = [];
 sectors.forEach((s, i) => {
   const angleDeg = (i / 12) * 360;
   const angleRad = angleDeg * Math.PI / 180;
   const color    = LAYER_COLORS[s.layer];
 
-  // ⑥ Node pill with layer dot
+  // Node pill with layer dot
   const node = document.createElement('div');
   node.className = 'scope-node';
   node.setAttribute('role', 'button');
   node.setAttribute('tabindex', '0');
   node.setAttribute('aria-label', `Sector ${s.n}: ${s.t}`);
-  node.style.setProperty('--angle',      `${angleDeg}deg`);
-  node.style.setProperty('--counter',    `${-angleDeg}deg`);
+  node.style.setProperty('--angle',       `${angleDeg}deg`);
+  node.style.setProperty('--counter',     `${-angleDeg}deg`);
   node.style.setProperty('--layer-color', color);
+  node.style.setProperty('--n',           i);
   node.innerHTML = `<div class="scope-node-dot"></div><div class="scope-node-index">${s.n}</div><div class="scope-node-title">${s.short}</div>`;
   scopeConst.appendChild(node);
   nodes.push(node);
 
-  // Connection lines — unique pairs only (i < r avoids duplicates)
+  // Connection pairs — base (always faint) + overlay (draws on activation)
   s.related.forEach(r => {
     if (r > i) {
       const ra = (r / 12) * 360 * Math.PI / 180;
-      const line = document.createElementNS(svgNS, 'line');
-      line.classList.add('scope-connection');
-      line.dataset.from = i;
-      line.dataset.to   = r;
-      line.setAttribute('x1', (50 + R * Math.sin(angleRad)).toFixed(2));
-      line.setAttribute('y1', (50 - R * Math.cos(angleRad)).toFixed(2));
-      line.setAttribute('x2', (50 + R * Math.sin(ra)).toFixed(2));
-      line.setAttribute('y2', (50 - R * Math.cos(ra)).toFixed(2));
-      netSVG.appendChild(line);
+      const x1 = +(50 + R * Math.sin(angleRad)).toFixed(3);
+      const y1 = +(50 - R * Math.cos(angleRad)).toFixed(3);
+      const x2 = +(50 + R * Math.sin(ra)).toFixed(3);
+      const y2 = +(50 - R * Math.cos(ra)).toFixed(3);
+
+      // Base line — faint, always visible
+      const base = document.createElementNS(svgNS, 'line');
+      base.setAttribute('class', 'scope-connection-base');
+      base.dataset.from = i; base.dataset.to = r;
+      base.setAttribute('x1', x1); base.setAttribute('y1', y1);
+      base.setAttribute('x2', x2); base.setAttribute('y2', y2);
+      netSVG.appendChild(base);
+
+      // Overlay line — draws when active
+      const overlay = document.createElementNS(svgNS, 'line');
+      overlay.setAttribute('class', 'scope-connection-overlay');
+      overlay.dataset.from = i; overlay.dataset.to = r;
+      overlay.setAttribute('x1', x1); overlay.setAttribute('y1', y1);
+      overlay.setAttribute('x2', x2); overlay.setAttribute('y2', y2);
+
+      // Cross-layer? Apply gradient stroke (from→to layer colors)
+      if (s.layer !== sectors[r].layer) {
+        const gid = `cg-${i}-${r}`;
+        makeGradient(gid, x1, y1, x2, y2, LAYER_COLORS[s.layer], LAYER_COLORS[sectors[r].layer]);
+        overlay.setAttribute('stroke', `url(#${gid})`);
+      }
+
+      // Draw-from-hidden initial state
+      const len = Math.hypot(x2 - x1, y2 - y1);
+      overlay.style.strokeDasharray  = len.toFixed(3);
+      overlay.style.strokeDashoffset = len.toFixed(3);
+      netSVG.appendChild(overlay);
     }
   });
 });
 
-const connLines = [...netSVG.querySelectorAll('.scope-connection')];
+const baseLines    = [...netSVG.querySelectorAll('.scope-connection-base')];
+const overlayLines = [...netSVG.querySelectorAll('.scope-connection-overlay')];
+
+// Travel pulse dot — small SVG circle traveling along an active connection
+let activeDots = [];
+function spawnPulseDot(line, fromActive) {
+  const a1 = +line.getAttribute(fromActive ? 'x1' : 'x2');
+  const b1 = +line.getAttribute(fromActive ? 'y1' : 'y2');
+  const a2 = +line.getAttribute(fromActive ? 'x2' : 'x1');
+  const b2 = +line.getAttribute(fromActive ? 'y2' : 'y1');
+  const dot = document.createElementNS(svgNS, 'circle');
+  dot.setAttribute('class', 'scope-pulse-dot');
+  dot.setAttribute('r', '0.85');
+  const motion = document.createElementNS(svgNS, 'animateMotion');
+  motion.setAttribute('dur', '2.1s');
+  motion.setAttribute('repeatCount', 'indefinite');
+  motion.setAttribute('path', `M ${a1} ${b1} L ${a2} ${b2}`);
+  motion.setAttribute('calcMode', 'spline');
+  motion.setAttribute('keyTimes', '0;1');
+  motion.setAttribute('keySplines', '.42 0 .58 1');
+  dot.appendChild(motion);
+  netSVG.appendChild(dot);
+  return dot;
+}
 
 function setScope(index) {
   if (index === activeScope || !sectors[index]) return;
@@ -564,14 +689,22 @@ function setScope(index) {
     node.classList.toggle('related', i !== index && relSet.has(i));
   });
 
-  // ⑤ Connection lines — lit bonds pop, everything else recedes
-  connLines.forEach(line => {
-    const from = +line.dataset.from;
-    const to   = +line.dataset.to;
+  // Connection base lines — dim everything not touching the active sector
+  baseLines.forEach(line => {
+    const from = +line.dataset.from, to = +line.dataset.to;
+    line.classList.toggle('dimmed', from !== index && to !== index);
+  });
+
+  // Clean up old pulse dots
+  activeDots.forEach(d => d.remove());
+  activeDots = [];
+
+  // Connection overlays — related bonds draw in + spawn travel dots
+  overlayLines.forEach(line => {
+    const from = +line.dataset.from, to = +line.dataset.to;
     const lit  = (from === index && relSet.has(to)) || (to === index && relSet.has(from));
     line.classList.toggle('related', lit);
-    line.classList.toggle('dimmed',  !lit);
-    line.setAttribute('filter', lit ? 'url(#connGlow)' : '');
+    if (lit) activeDots.push(spawnPulseDot(line, from === index));
   });
 
   // Left panel
@@ -581,7 +714,7 @@ function setScope(index) {
   scopeDesc.textContent  = item.d;
   scopeProgressFill.style.width = `${((index + 1) / 12) * 100}%`;
 
-  // ③ Center card — title + description
+  // Center card
   scopeCenterTitle.textContent = item.t;
   scopeCenterLayer.textContent = item.label;
   scopeCenterDesc.textContent  = item.d;
@@ -589,6 +722,7 @@ function setScope(index) {
 
 function updateScope() {
   scopeTicking = false;
+  if (!entryDone) return;
   if (window.matchMedia('(max-width: 900px)').matches) {
     if (activeScope < 0) setScope(0);
     return;
@@ -634,10 +768,43 @@ nodes.forEach((node, i) => {
   });
 });
 
-setScope(0);
+// Stagger entry: hold node activation + scroll updates until nodes have spiraled in
+const isMobile = window.matchMedia('(max-width: 900px)').matches;
+const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function completeEntry() {
+  entryDone = true;
+  requestScopeUpdate();
+}
+
+if (isMobile) {
+  // Mobile: no constellation rendered, just activate immediately
+  scopeConst.classList.add('in-view');
+  completeEntry();
+  setScope(0);
+} else if (reduced) {
+  // Reduced motion: skip stagger
+  scopeConst.classList.add('in-view');
+  completeEntry();
+  setScope(0);
+} else {
+  const obs = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      scopeConst.classList.add('in-view');
+      // Stagger window: 12 nodes × 62ms + 820ms anim + 180ms initial delay ≈ 1.75s
+      setTimeout(() => {
+        completeEntry();
+        // If user has already scrolled into the middle, updateScope will pick the right sector
+        if (activeScope < 0) setScope(0);
+      }, 1700);
+      obs.disconnect();
+    }
+  }, { threshold: 0.18 });
+  obs.observe(scopeConst);
+}
+
 window.addEventListener('scroll', requestScopeUpdate, { passive: true });
 window.addEventListener('resize', requestScopeUpdate);
-requestScopeUpdate();
 </script>
 </body>
 </html>

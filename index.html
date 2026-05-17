@@ -1103,6 +1103,245 @@
       margin-top:14px;
     }
   }
+
+  /* ── Three-layer editorial spreads (replaces the 12-entry plant-scroll carousel) ── */
+  .layers{
+    padding: clamp(100px, 12vh, 160px) 0 clamp(80px, 10vh, 140px);
+    background: #F8F9F5;
+    position: relative;
+  }
+  .layers-intro{
+    margin-bottom: clamp(72px, 9vh, 120px);
+  }
+  .layers-intro-title{
+    font-family:"Exo 2",sans-serif;
+    font-weight:200;
+    font-size:clamp(40px, 5vw, 72px);
+    line-height:.98;
+    letter-spacing:-0.028em;
+    color:#0B1220;
+    margin:0 0 26px;
+  }
+  .layers-intro-desc{
+    font-size:17px;
+    line-height:1.6;
+    max-width:52ch;
+    color:rgba(15,23,42,0.68);
+  }
+
+  .layer-spread{
+    padding: clamp(72px, 10vh, 130px) 0;
+    position: relative;
+  }
+  .layer-spread + .layer-spread{
+    border-top: 1px solid rgba(15,23,42,0.08);
+  }
+  .layer-grid{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(48px, 6vw, 104px);
+    align-items: center;
+  }
+  .layer-grid-reverse .layer-photo{ order: 2; }
+
+  .layer-photo{ margin: 0; position: relative; }
+  .layer-photo-frame{
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: rgba(15,23,42,0.05);
+  }
+  .layer-photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(0.92) contrast(1.02);
+    transition:transform 1.2s cubic-bezier(.22,.8,.2,1);
+  }
+  .layer-photo-frame:hover img{ transform: scale(1.02); }
+  .layer-photo-caption{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin:18px 0 0;
+    font-size:10.5px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:rgba(15,23,42,0.5);
+    font-variant-numeric:tabular-nums;
+  }
+  .layer-photo-caption-rule{
+    flex:0 0 26px;
+    height:1px;
+    background:rgba(15,23,42,0.22);
+    align-self:center;
+  }
+
+  .layer-content{
+    position: relative;
+    max-width: 560px;
+  }
+  .layer-roman{
+    position: absolute;
+    top: -52px;
+    right: -12px;
+    font-family:"Exo 2",sans-serif;
+    font-weight:100;
+    font-size:clamp(140px, 17vw, 260px);
+    line-height:.82;
+    letter-spacing:-0.05em;
+    color:rgba(15,23,42,0.055);
+    font-variant-numeric:tabular-nums;
+    z-index:0;
+    pointer-events:none;
+    user-select:none;
+  }
+  .layer-kicker{
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 9px;
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(15,23,42,0.55);
+    margin-bottom: 22px;
+    font-variant-numeric: tabular-nums;
+    z-index: 1;
+  }
+  .layer-kicker-dot{ color: rgba(15,23,42,0.22); padding: 0 5px; }
+  .layer-title{
+    position: relative;
+    font-family:"Exo 2",sans-serif;
+    font-weight:200;
+    font-size:clamp(40px, 4.6vw, 72px);
+    line-height:.98;
+    letter-spacing:-0.03em;
+    color:#0B1220;
+    margin: 0 0 22px;
+    z-index: 1;
+  }
+  .layer-desc{
+    position: relative;
+    max-width: 40ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(15,23,42,0.7);
+    margin: 0 0 36px;
+    z-index: 1;
+  }
+
+  .layer-sectors{
+    position: relative;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 36px;
+    border-top: 1px solid rgba(15,23,42,0.1);
+    z-index: 1;
+  }
+  .layer-sectors li{
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(15,23,42,0.08);
+    font-family:"Exo 2",sans-serif;
+    font-weight: 200;
+    font-size: clamp(22px, 2vw, 30px);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: #0B1220;
+    transition: color .35s cubic-bezier(.22,.8,.2,1), padding-left .4s cubic-bezier(.22,.8,.2,1);
+  }
+  .layer-sectors li:hover{
+    color: #0F7B52;
+    padding-left: 6px;
+  }
+  .layer-sector-num{
+    font-size: 0.42em;
+    letter-spacing: 0.18em;
+    font-variant-numeric: tabular-nums;
+    font-weight: 400;
+    color: rgba(15,23,42,0.4);
+    min-width: 2.4em;
+    text-transform: uppercase;
+  }
+
+  .layer-cta{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .005em;
+    color: #0F7B52;
+    text-decoration: none;
+    padding-bottom: 5px;
+    z-index: 1;
+  }
+  .layer-cta::after{
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: #0F7B52;
+    transform: scaleX(0.18);
+    transform-origin: left;
+    transition: transform .55s cubic-bezier(.22,.8,.2,1);
+  }
+  .layer-cta:hover::after,
+  .layer-cta:focus-visible::after{ transform: scaleX(1); }
+  .layer-cta svg{ transition: transform .35s cubic-bezier(.22,.8,.2,1); flex-shrink: 0; }
+  .layer-cta:hover svg{ transform: translateX(5px); }
+  .layer-cta:focus-visible{ outline: none; }
+
+  .layers-outro{
+    margin-top: clamp(72px, 9vh, 120px);
+    padding-top: clamp(48px, 6vh, 80px);
+    border-top: 1px solid rgba(15,23,42,0.08);
+    text-align: center;
+  }
+  .layers-outro-cta{
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-family:"Exo 2",sans-serif;
+    font-weight: 200;
+    font-size: clamp(28px, 3vw, 46px);
+    letter-spacing: -0.026em;
+    color: #0B1220;
+    text-decoration: none;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(15,123,82,0.32);
+    transition: color .45s, border-color .45s;
+  }
+  .layers-outro-cta:hover{
+    color: #0F7B52;
+    border-color: #0F7B52;
+  }
+  .layers-outro-cta svg{ transition: transform .35s cubic-bezier(.22,.8,.2,1); }
+  .layers-outro-cta:hover svg{ transform: translateX(8px); }
+
+  @media (max-width: 900px){
+    .layer-grid{
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .layer-grid-reverse .layer-photo{ order: 0; }
+    .layer-photo-frame{
+      aspect-ratio: 16/10;
+      max-height: 420px;
+    }
+    .layer-roman{
+      font-size: clamp(90px, 22vw, 140px);
+      top: -28px;
+      right: -8px;
+    }
+    .layer-spread{ padding: clamp(56px, 7vh, 90px) 0; }
+  }
 </style>
 </head>
 <body data-page="index" class="antialiased">
@@ -1328,193 +1567,133 @@
 </section>
 
 <!-- Plant growth section -->
-<section class="plant-scroll" id="sectors">
-
-  <!-- ── Sticky left: botanical plant SVG ── -->
-  <div class="plant-sticky">
-    <div class="plant-header">
-      <div class="eyebrow mb-2">Services</div>
-      <h2 class="plant-h2">Twelve sectors,<br>one living practice.</h2>
-    </div>
-
-    <div class="plant-sticky-banner" aria-hidden="true">
-      <span class="plant-sticky-banner-label">Active sector</span>
-      <span class="plant-sticky-banner-title plant-active-title">Crops</span>
-    </div>
-
-    <div class="plant-stage">
-      <video id="plant-tree-img" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="/images/plant%20dna.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <div class="plant-status" aria-hidden="true">
-      <span class="plant-count">01 / 12</span>
-      <span class="plant-track"><span class="plant-fill"></span></span>
-      <span class="plant-active-title">Crops</span>
-    </div>
+<!-- Three-layer editorial spreads (replaces former 12-entry carousel) -->
+<section class="layers" id="sectors">
+  <div class="wrap layers-intro">
+    <div class="eyebrow mb-3">Services</div>
+    <h2 class="layers-intro-title">Twelve sectors,<br>three connected layers.</h2>
+    <p class="layers-intro-desc">Production systems, value chain infrastructure, and land resilience — planned as one connected mandate, not three departments.</p>
   </div>
 
-  <!-- ── Scrolling right: service entries ── -->
-  <div class="plant-services">
-    <div class="plant-services-intro">
-      <div class="eyebrow">Services</div>
-      <h2 class="plant-services-title">Twelve sectors,<br>one living practice.</h2>
-      <div class="plant-status">
-        <span class="plant-count" id="plant-count-right">01 / 12</span>
-        <span class="plant-track"><span class="plant-fill" id="plant-fill-right"></span></span>
-        <span class="plant-active-title" id="plant-active-title-right">Crops</span>
+  <!-- Layer I — Production systems -->
+  <article class="layer-spread">
+    <div class="wrap layer-grid">
+      <figure class="layer-photo">
+        <div class="layer-photo-frame">
+          <img src="/images/On-farm trials.jpg" alt="Eden Terranova on-farm precision trials" loading="lazy"/>
+        </div>
+        <figcaption class="layer-photo-caption">
+          <span class="layer-photo-caption-rule" aria-hidden="true"></span>
+          <span>On-farm trials · Eden Terranova</span>
+        </figcaption>
+      </figure>
+      <div class="layer-content">
+        <div class="layer-roman" aria-hidden="true">I</div>
+        <div class="layer-kicker">
+          <span>Layer one</span>
+          <span class="layer-kicker-dot" aria-hidden="true">·</span>
+          <span>Sectors 01 &ndash; 04</span>
+        </div>
+        <h3 class="layer-title">Production systems</h3>
+        <p class="layer-desc">From open-field grain to vertical greenhouses &mdash; the disciplines where food, feed, and fibre are grown. Soil biology, climate data, and decades of agronomic discipline set the cadence.</p>
+        <ul class="layer-sectors">
+          <li><span class="layer-sector-num">01</span><span class="layer-sector-name">Crops</span></li>
+          <li><span class="layer-sector-num">02</span><span class="layer-sector-name">Horticulture</span></li>
+          <li><span class="layer-sector-num">03</span><span class="layer-sector-name">Open field production</span></li>
+          <li><span class="layer-sector-num">04</span><span class="layer-sector-name">Protected production</span></li>
+        </ul>
+        <a href="scope.html" class="layer-cta">
+          See all four sectors
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
     </div>
+  </article>
 
-    <div class="plant-chapter">
-      <div class="plant-chapter-rule">
-        <span class="plant-chapter-name">Production systems</span>
-        <span class="plant-chapter-count">01 – 04</span>
+  <!-- Layer II — Value chain infrastructure (content left, photo right) -->
+  <article class="layer-spread">
+    <div class="wrap layer-grid layer-grid-reverse">
+      <figure class="layer-photo">
+        <div class="layer-photo-frame">
+          <img src="/images/Soil and Tissue Analysis.jpg" alt="Eden Terranova soil and tissue analysis lab" loading="lazy"/>
+        </div>
+        <figcaption class="layer-photo-caption">
+          <span class="layer-photo-caption-rule" aria-hidden="true"></span>
+          <span>Soil &amp; tissue analysis &middot; Eden Terranova</span>
+        </figcaption>
+      </figure>
+      <div class="layer-content">
+        <div class="layer-roman" aria-hidden="true">II</div>
+        <div class="layer-kicker">
+          <span>Layer two</span>
+          <span class="layer-kicker-dot" aria-hidden="true">·</span>
+          <span>Sectors 05 &ndash; 08</span>
+        </div>
+        <h3 class="layer-title">Value chain<br>infrastructure</h3>
+        <p class="layer-desc">Livestock, aquaculture, post-harvest, processing. The infrastructure that turns yield into traceable, audit-ready outputs &mdash; built so value is captured before the gate, not after.</p>
+        <ul class="layer-sectors">
+          <li><span class="layer-sector-num">05</span><span class="layer-sector-name">Livestock</span></li>
+          <li><span class="layer-sector-num">06</span><span class="layer-sector-name">Aquaculture</span></li>
+          <li><span class="layer-sector-num">07</span><span class="layer-sector-name">Post-harvest</span></li>
+          <li><span class="layer-sector-num">08</span><span class="layer-sector-name">Agro-industry</span></li>
+        </ul>
+        <a href="scope.html" class="layer-cta">
+          See all four sectors
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
     </div>
+  </article>
 
-    <div class="plant-entry" data-sector="0">
-      <span class="plant-entry-num">01</span>
-      <div>
-        <div class="plant-entry-layer">Production systems</div>
-        <h3 class="plant-entry-title">Crops</h3>
-        <p class="plant-entry-desc">Cereals, oilseeds, pulses — precision rotations built around soil biology and multi-season climate data.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <!-- Layer III — Land resilience (photo left, content right) -->
+  <article class="layer-spread">
+    <div class="wrap layer-grid">
+      <figure class="layer-photo">
+        <div class="layer-photo-frame">
+          <img src="/images/Native-species silviculture.png" alt="Eden Terranova native-species silviculture programme" loading="lazy"/>
+        </div>
+        <figcaption class="layer-photo-caption">
+          <span class="layer-photo-caption-rule" aria-hidden="true"></span>
+          <span>Native-species silviculture &middot; Eden Terranova</span>
+        </figcaption>
+      </figure>
+      <div class="layer-content">
+        <div class="layer-roman" aria-hidden="true">III</div>
+        <div class="layer-kicker">
+          <span>Layer three</span>
+          <span class="layer-kicker-dot" aria-hidden="true">·</span>
+          <span>Sectors 09 &ndash; 12</span>
+        </div>
+        <h3 class="layer-title">Land resilience</h3>
+        <p class="layer-desc">Forestry, conservation, drylands rehabilitation, environmental protection. The long horizon &mdash; landscape-scale planning that outlives any single tenancy.</p>
+        <ul class="layer-sectors">
+          <li><span class="layer-sector-num">09</span><span class="layer-sector-name">Forestry</span></li>
+          <li><span class="layer-sector-num">10</span><span class="layer-sector-name">Land conservation</span></li>
+          <li><span class="layer-sector-num">11</span><span class="layer-sector-name">Desertification prevention</span></li>
+          <li><span class="layer-sector-num">12</span><span class="layer-sector-name">Environmental protection</span></li>
+        </ul>
+        <a href="scope.html" class="layer-cta">
+          See all four sectors
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
     </div>
+  </article>
 
-    <div class="plant-entry" data-sector="1">
-      <span class="plant-entry-num">02</span>
-      <div>
-        <div class="plant-entry-layer">Production systems</div>
-        <h3 class="plant-entry-title">Horticulture</h3>
-        <p class="plant-entry-desc">Fruit, vegetables, high-value specialty lines — from orchard design to post-harvest quality control.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="2">
-      <span class="plant-entry-num">03</span>
-      <div>
-        <div class="plant-entry-layer">Production systems</div>
-        <h3 class="plant-entry-title">Open field production</h3>
-        <p class="plant-entry-desc">Broad-acre optimisation and water stewardship across irrigated and dryland farming systems.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="3">
-      <span class="plant-entry-num">04</span>
-      <div>
-        <div class="plant-entry-layer">Production systems</div>
-        <h3 class="plant-entry-title">Protected production</h3>
-        <p class="plant-entry-desc">Greenhouse, net-house and vertical systems engineered for precision climate and yield control.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-chapter">
-      <div class="plant-chapter-rule">
-        <span class="plant-chapter-name">Value chain infrastructure</span>
-        <span class="plant-chapter-count">05 – 08</span>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="4">
-      <span class="plant-entry-num">05</span>
-      <div>
-        <div class="plant-entry-layer">Value chain infrastructure</div>
-        <h3 class="plant-entry-title">Livestock</h3>
-        <p class="plant-entry-desc">Welfare-first intensification, regenerative grazing protocols, and end-to-end traceability systems.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="5">
-      <span class="plant-entry-num">06</span>
-      <div>
-        <div class="plant-entry-layer">Value chain infrastructure</div>
-        <h3 class="plant-entry-title">Aquaculture</h3>
-        <p class="plant-entry-desc">Closed-loop, species-appropriate production systems fully integrated with land-based operations.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="6">
-      <span class="plant-entry-num">07</span>
-      <div>
-        <div class="plant-entry-layer">Value chain infrastructure</div>
-        <h3 class="plant-entry-title">Post-harvest</h3>
-        <p class="plant-entry-desc">Cold chain, sorting, packaging, and traceable logistics from field gate to final market.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="7">
-      <span class="plant-entry-num">08</span>
-      <div>
-        <div class="plant-entry-layer">Value chain infrastructure</div>
-        <h3 class="plant-entry-title">Agro-industry</h3>
-        <p class="plant-entry-desc">Processing integration and value capture across the full agricultural supply chain.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-chapter">
-      <div class="plant-chapter-rule">
-        <span class="plant-chapter-name">Land resilience</span>
-        <span class="plant-chapter-count">09 – 12</span>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="8">
-      <span class="plant-entry-num">09</span>
-      <div>
-        <div class="plant-entry-layer">Land resilience</div>
-        <h3 class="plant-entry-title">Forestry</h3>
-        <p class="plant-entry-desc">Silviculture, agroforestry, and native species programmes tracked over 25-year growth horizons.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="9">
-      <span class="plant-entry-num">10</span>
-      <div>
-        <div class="plant-entry-layer">Land resilience</div>
-        <h3 class="plant-entry-title">Land conservation</h3>
-        <p class="plant-entry-desc">Soil health, watershed management, and biodiversity corridor design at landscape scale.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="10">
-      <span class="plant-entry-num">11</span>
-      <div>
-        <div class="plant-entry-layer">Land resilience</div>
-        <h3 class="plant-entry-title">Desertification prevention</h3>
-        <p class="plant-entry-desc">Drylands rehabilitation, wadi recharge engineering, and sand-barrier programmes at scale.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-entry" data-sector="11">
-      <span class="plant-entry-num">12</span>
-      <div>
-        <div class="plant-entry-layer">Land resilience</div>
-        <h3 class="plant-entry-title">Environmental protection</h3>
-        <p class="plant-entry-desc">Compliance monitoring, ecological restoration, and long-term environmental stewardship programmes.</p>
-        <a href="scope.html" class="plant-entry-link">Explore <svg width="11" height="11" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-
-    <div class="plant-cta" id="plant-cta">
-      <a href="scope.html" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:10px;">
-        View full scope
-        <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-
+  <!-- Section closer -->
+  <div class="wrap layers-outro">
+    <a href="scope.html" class="layers-outro-cta">
+      View the full twelve
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
   </div>
 </section>
 
@@ -1732,9 +1911,9 @@ const sp = document.getElementById('statLinePath');
 if(sp){ const L=sp.getTotalLength(); sp.style.strokeDasharray=L; sp.style.strokeDashoffset=L; ScrollTrigger.create({ trigger:'#stat-line', start:"top 85%", once:true, onEnter:()=>gsap.to(sp,{ strokeDashoffset:0, duration:1.8, ease:"power2.out" }) }); }
 gsap.from('.stat', { y:24, opacity:0, duration:1, stagger:0.12, ease:"power3.out", scrollTrigger:{ trigger:'#impact', start:"top 75%" }});
 
-// ── Plant growth scroll ──
+// ── Plant growth scroll (legacy 12-entry carousel; new layers section replaces it) ──
 const sectorSection = document.getElementById('sectors');
-if (sectorSection) {
+if (sectorSection && sectorSection.classList.contains('plant-scroll')) {
   const treeImg        = document.getElementById('plant-tree-img');
   const countEls       = [...sectorSection.querySelectorAll('.plant-count')];
   const fillEls        = [...sectorSection.querySelectorAll('.plant-fill')];

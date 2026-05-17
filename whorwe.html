@@ -419,20 +419,29 @@
     color:rgba(15,23,42,0.72);
   }
   .about-story-text p{ margin:0; }
-  .about-story-photo{ margin:0; }
+  .about-story-photo{
+    margin:0;
+    max-width:520px;
+    margin-inline:auto;
+  }
+  /* Distinctive Eden treatment — circular crop preserved */
   .about-story-photo-frame{
-    position:relative; aspect-ratio: 5/4; overflow:hidden;
+    position:relative;
+    aspect-ratio: 1/1;
+    border-radius:50%;
+    overflow:hidden;
     background:rgba(15,23,42,0.04);
   }
   .about-story-photo-frame img{
     width:100%; height:100%; object-fit:cover; display:block;
     filter:saturate(0.92);
-    transition:transform 1.2s cubic-bezier(.22,.8,.2,1);
+    transition:transform 1.4s cubic-bezier(.22,.8,.2,1);
   }
-  .about-story-photo:hover .about-story-photo-frame img{ transform:scale(1.02); }
+  .about-story-photo:hover .about-story-photo-frame img{ transform:scale(1.03); }
   .about-story-photo-caption{
-    display:flex; align-items:baseline; gap:14px;
-    margin:18px 0 0;
+    display:flex; align-items:baseline; justify-content:center;
+    gap:14px;
+    margin:22px 0 0;
     font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
     color:rgba(15,23,42,0.5);
   }
@@ -619,7 +628,7 @@
     .hero-about-photo,
     .about-messika-mark{ max-width:none; margin-inline-start:0; }
     .hero-about-photo-frame{ aspect-ratio: 5/4; }
-    .about-story-photo-frame{ aspect-ratio: 4/3; }
+    .about-story-photo{ max-width:380px; }
     .about-model-head{ flex-direction:column; gap:24px; margin-bottom:40px; }
     .about-value{
       grid-template-columns: 60px 1fr;

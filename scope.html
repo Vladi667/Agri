@@ -38,19 +38,20 @@
       radial-gradient(circle at calc(78% - (var(--scope-progress) * 14%)) 64%, rgba(244,199,123,0.06), transparent 30%),
       linear-gradient(180deg, #F2F4EC 0%, #F7F8F1 50%, #F2F4EC 100%);
   }
+  /* ① Overflow fix — nodes were clipped at top */
   .scope-sticky{
     position:sticky;
     top:0;
     min-height:100svh;
     display:flex;
     align-items:center;
-    padding:96px 0;
-    overflow:hidden;
+    padding:clamp(56px,7vh,96px) 0;
+    overflow:visible;
   }
   .scope-layout{
     display:grid;
-    grid-template-columns:minmax(320px,.78fr) minmax(620px,1.22fr);
-    gap:clamp(52px,7vw,118px);
+    grid-template-columns:minmax(300px,.78fr) minmax(540px,1.22fr);
+    gap:clamp(40px,5.5vw,100px);
     align-items:center;
   }
   .scope-narrative{ max-width:540px; }
@@ -100,25 +101,23 @@
     width:26px;
     height:1px;
     background:rgba(15,23,42,0.16);
+    flex-shrink:0;
+    transition:background .45s cubic-bezier(.22,.8,.2,1);
   }
   .scope-layer.active{ color:#0F7B52; }
   .scope-layer.active::before{ background:#0F7B52; }
+
+  /* ① + ② Constellation — constrained by both width AND viewport height */
   .scope-constellation{
     position:relative;
-    width:min(660px,48vw);
+    --const-size: min(600px, 42vw, calc(100svh - 210px));
+    --radius: calc(var(--const-size) * 0.39);
+    width: var(--const-size);
     aspect-ratio:1;
     margin-inline:auto;
-    border-radius:50%;
     transform:rotate(var(--scope-rotation));
     transition:transform .18s linear;
   }
-  .scope-orbit{
-    position:absolute;
-    inset:11%;
-    border:1px solid rgba(15,23,42,0.075);
-    border-radius:50%;
-  }
-  .scope-orbit:nth-child(2){ inset:23%; opacity:.55; }
   .scope-network{
     position:absolute;
     inset:0;
@@ -128,110 +127,175 @@
     overflow:visible;
     pointer-events:none;
   }
+  .scope-inner-ring,
   .scope-connection,
-  .scope-arc{
-    fill:none;
-    vector-effect:non-scaling-stroke;
-  }
-  .scope-connection{
-    stroke:rgba(15,23,42,0.12);
+  .scope-arc,
+  .scope-layer-arc{ fill:none; vector-effect:non-scaling-stroke; }
+
+  .scope-inner-ring{
+    stroke:rgba(15,23,42,0.05);
     stroke-width:.75;
-    opacity:.46;
-    transition:opacity .45s cubic-bezier(.22,.8,.2,1), stroke .45s, stroke-width .45s;
+  }
+  /* ⑤ Connection lines — stronger active state */
+  .scope-connection{
+    stroke:rgba(15,23,42,0.09);
+    stroke-width:.75;
+    opacity:.5;
+    transition:stroke .45s cubic-bezier(.22,.8,.2,1), stroke-width .45s, opacity .45s, filter .45s;
   }
   .scope-connection.related{
-    stroke:rgba(15,123,82,0.34);
-    stroke-width:1;
-    opacity:.9;
+    stroke:rgba(15,123,82,0.76);
+    stroke-width:1.5;
+    opacity:1;
+    filter:drop-shadow(0 0 1.5px rgba(15,123,82,0.38));
   }
-  .scope-connection.dimmed{ opacity:.14; }
-  .scope-arc{
-    stroke:rgba(244,199,123,0.45);
-    stroke-width:1.2;
+  .scope-connection.dimmed{ opacity:.09; }
+
+  /* ② Three-arc orbit ring — color coded by layer */
+  .scope-layer-arc{
+    stroke-width:2.2;
     stroke-linecap:round;
-    stroke-dasharray:18 320;
-    opacity:.42;
-    animation:scopeFlow 7.5s linear infinite;
+    opacity:.78;
   }
+  .scope-layer-arc[data-layer="production"]{ stroke:rgba(15,123,82,0.58); }
+  .scope-layer-arc[data-layer="value"]     { stroke:rgba(184,118,36,0.52); }
+  .scope-layer-arc[data-layer="land"]      { stroke:rgba(106,78,44,0.46); }
+
+  .scope-arc{
+    stroke:rgba(244,199,123,0.36);
+    stroke-width:.9;
+    stroke-linecap:round;
+    stroke-dasharray:12 326;
+    opacity:.38;
+    animation:scopeFlow 9s linear infinite;
+  }
+
+  /* ③ Center card — smaller, richer */
   .scope-center{
     position:absolute;
     left:50%;
     top:50%;
     z-index:3;
-    width:clamp(200px,18vw,258px);
-    min-height:188px;
+    width:clamp(144px,11.5vw,192px);
     transform:translate(-50%,-50%) rotate(var(--scope-counter));
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
-    padding:24px;
-    border-radius:24px;
+    padding:18px 20px 20px;
+    border-radius:20px;
     border:1px solid rgba(15,123,82,0.18);
-    background:rgba(255,255,255,0.78);
-    box-shadow:0 36px 82px -50px rgba(15,91,61,0.42), 0 0 0 8px rgba(255,255,255,0.28);
-    backdrop-filter:blur(18px) saturate(1.08);
+    background:rgba(255,255,255,0.84);
+    box-shadow:0 28px 64px -40px rgba(15,91,61,0.46), 0 0 0 6px rgba(255,255,255,0.32);
+    backdrop-filter:blur(22px) saturate(1.1);
     transition:transform .18s linear;
   }
   .scope-center-kicker{
     color:#0F7B52;
-    font-size:11px;
+    font-size:9.5px;
     letter-spacing:.18em;
     text-transform:uppercase;
   }
   .scope-center-title{
-    margin-top:18px;
+    margin-top:9px;
     font-family:"Exo 2",sans-serif;
     font-weight:300;
     letter-spacing:-0.02em;
-    font-size:clamp(28px,3vw,42px);
-    line-height:1.02;
+    font-size:clamp(20px,1.9vw,28px);
+    line-height:1.05;
     color:#0B1220;
+    transition:opacity .35s cubic-bezier(.22,.8,.2,1);
+  }
+  /* ③ New: description inside center card */
+  .scope-center-desc{
+    margin-top:7px;
+    font-size:10px;
+    line-height:1.52;
+    color:rgba(11,18,32,0.46);
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    transition:opacity .35s cubic-bezier(.22,.8,.2,1);
   }
   .scope-center-line{
-    margin-top:18px;
+    margin-top:13px;
     width:100%;
     height:1px;
-    background:linear-gradient(90deg, rgba(15,123,82,0.45), transparent);
+    background:linear-gradient(90deg, rgba(15,123,82,0.48), transparent);
+  }
+
+  /* ④ Pulse ring on active node */
+  @keyframes scopePulse{
+    0%  { transform:scale(1);    opacity:.52; }
+    65% { transform:scale(1.68); opacity:0;   }
+    100%{ transform:scale(1.68); opacity:0;   }
   }
   .scope-node{
     position:absolute;
     left:50%;
     top:50%;
     z-index:2;
-    width:96px;
-    min-height:78px;
+    width:90px;
+    min-height:70px;
     transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(.92) rotate(var(--scope-counter));
     display:grid;
     align-content:center;
-    gap:5px;
-    padding:12px 10px;
+    gap:3px;
+    padding:10px 8px;
     border:1px solid rgba(15,23,42,0.08);
-    border-radius:18px;
-    background:rgba(255,255,255,0.7);
+    border-radius:16px;
+    background:rgba(255,255,255,0.72);
     color:#0B1220;
-    box-shadow:0 18px 42px -34px rgba(15,23,42,0.38);
+    box-shadow:0 12px 32px -24px rgba(15,23,42,0.34);
     text-align:center;
     cursor:pointer;
     backdrop-filter:blur(12px);
     transition:transform .62s cubic-bezier(.22,.8,.2,1), opacity .45s, border-color .45s, box-shadow .45s, background .45s, filter .45s;
   }
-  .scope-node-index{ color:#0F7B52; font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
-  .scope-node-title{ font-size:12.5px; line-height:1.16; font-weight:500; letter-spacing:-0.01em; }
-  .scope-node:not(.active):not(.related){ opacity:.58; filter:saturate(.85); }
-  .scope-node.related{ opacity:.86; border-color:rgba(15,123,82,0.18); }
+  /* Pulse ring lives as ::before — invisible by default */
+  .scope-node::before{
+    content:'';
+    position:absolute;
+    inset:-5px;
+    border-radius:21px;
+    border:1.5px solid var(--layer-color, rgba(15,123,82,0.42));
+    opacity:0;
+    pointer-events:none;
+  }
+  .scope-node.active::before{
+    animation:scopePulse 2.8s cubic-bezier(.22,.8,.2,1) infinite;
+  }
+  /* ⑥ Layer color dot */
+  .scope-node-dot{
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:var(--layer-color, #0F7B52);
+    margin:0 auto 1px;
+    opacity:.88;
+  }
+  .scope-node-index{ color:#0F7B52; font-size:9px; letter-spacing:.16em; text-transform:uppercase; }
+  .scope-node-title{ font-size:11px; line-height:1.18; font-weight:500; letter-spacing:-0.01em; }
+  .scope-node:not(.active):not(.related){ opacity:.52; filter:saturate(.78); }
+  .scope-node.related{
+    opacity:.9;
+    border-color:rgba(15,123,82,0.2);
+    background:rgba(255,255,255,0.84);
+  }
   .scope-node.active{
     opacity:1;
-    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(1.14) rotate(var(--scope-counter));
-    background:rgba(255,255,255,0.95);
+    transform:translate(-50%,-50%) rotate(var(--angle)) translateY(calc(var(--radius) * -1)) rotate(var(--counter)) scale(1.12) rotate(var(--scope-counter));
+    background:rgba(255,255,255,0.97);
     border-color:rgba(15,123,82,0.34);
-    box-shadow:0 30px 58px -34px rgba(15,91,61,0.34), 0 0 0 6px rgba(16,185,129,0.05);
+    box-shadow:0 24px 50px -28px rgba(15,91,61,0.34), 0 0 0 5px rgba(16,185,129,0.06);
   }
   .scope-node:hover,
   .scope-node:focus-visible{
     opacity:1;
     outline:none;
-    border-color:rgba(15,123,82,0.38);
+    background:rgba(255,255,255,0.9);
+    border-color:rgba(15,123,82,0.32);
   }
+
   .scope-mobile{ display:none; }
   .scope-mobile-grid{
     display:flex;
@@ -271,10 +335,8 @@
     .scope-center,
     .scope-constellation,
     .scope-connection,
-    .scope-arc{
-      transition:none !important;
-      animation:none !important;
-    }
+    .scope-arc{ transition:none !important; animation:none !important; }
+    .scope-node::before{ animation:none !important; }
     .scope-constellation{ transform:none !important; }
   }
   .feature-statement{
@@ -316,14 +378,19 @@
       </div>
 
       <div class="scope-constellation" id="scopeConst" aria-label="Sector network">
-        <div class="scope-orbit"></div>
-        <div class="scope-orbit"></div>
         <svg class="scope-network" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <filter id="connGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="0.7" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
           <circle class="scope-arc" cx="50" cy="50" r="39" fill="none"/>
         </svg>
         <div class="scope-center" aria-live="polite">
           <div class="scope-center-kicker" id="scopeCenterLayer">Production systems</div>
           <div class="scope-center-title" id="scopeCenterTitle">Crops</div>
+          <div class="scope-center-desc" id="scopeCenterDesc">Cereals, oilseeds, pulses — precision rotations and cover-crop programs built on soil carbon accrual.</div>
           <div class="scope-center-line"></div>
         </div>
       </div>
@@ -371,20 +438,28 @@ const sectors = [
   {n:'11', t:'Desertification prevention', short:'Desertification', d:'Drylands rehabilitation at scale: engineered swales, halophyte pioneers, native corridor reconnection.', layer:'land', label:'Land resilience', related:[8,9,11]},
   {n:'12', t:'Environmental protection', short:'Environmental', d:'Compliance, monitoring, restoration. We write the MRV plan; we then hold ourselves to it.', layer:'land', label:'Land resilience', related:[0,8,9,10]},
 ];
-const scopeSection = document.getElementById('scopeSectors');
-const scopeCount    = document.getElementById('scopeCount');
-const scopeTitle    = document.getElementById('scopeTitle');
-const scopeDesc     = document.getElementById('scopeDesc');
+const scopeSection    = document.getElementById('scopeSectors');
+const scopeCount      = document.getElementById('scopeCount');
+const scopeTitle      = document.getElementById('scopeTitle');
+const scopeDesc       = document.getElementById('scopeDesc');
 const scopeProgressFill = document.getElementById('scopeProgressFill');
-const scopeLayers   = [...document.querySelectorAll('.scope-layer')];
-const scopeConst    = document.getElementById('scopeConst');
+const scopeLayers     = [...document.querySelectorAll('.scope-layer')];
+const scopeConst      = document.getElementById('scopeConst');
 const scopeCenterTitle = document.getElementById('scopeCenterTitle');
 const scopeCenterLayer = document.getElementById('scopeCenterLayer');
+const scopeCenterDesc  = document.getElementById('scopeCenterDesc');
 
 let activeScope = -1;
 let manualScope = null;
 let scopeTicking = false;
 let manualScopeTimer = null;
+
+// ⑥ Layer identity colors
+const LAYER_COLORS = {
+  production: '#0F7B52',
+  value:      '#B47728',
+  land:       '#7A6040',
+};
 
 // Mobile grid
 document.getElementById('scopeMobile').innerHTML = [
@@ -399,26 +474,62 @@ document.getElementById('scopeMobile').innerHTML = [
     </div>
   </div>`).join('');
 
-// Build constellation nodes + connection lines
-const R     = 39; // SVG viewBox units (matches <circle r="39">)
+// Build constellation
+const R     = 39; // SVG viewBox radius — matches <circle r="39">
 const svgNS = 'http://www.w3.org/2000/svg';
 const netSVG = scopeConst.querySelector('.scope-network');
-scopeConst.style.setProperty('--radius', 'min(256px, 18.72vw)');
+
+// Helper: clockwise-from-top angle → SVG x,y at radius r
+function svgPt(angleDeg, r) {
+  const a = angleDeg * Math.PI / 180;
+  return [(50 + r * Math.sin(a)).toFixed(2), (50 - r * Math.cos(a)).toFixed(2)];
+}
+
+// Helper: SVG arc path between two angles
+function arcPath(startDeg, endDeg, r) {
+  const [x1, y1] = svgPt(startDeg, r);
+  const [x2, y2] = svgPt(endDeg, r);
+  const large = (endDeg - startDeg) > 180 ? 1 : 0;
+  return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
+}
+
+// ② Inner reference ring
+const innerRing = document.createElementNS(svgNS, 'circle');
+innerRing.setAttribute('class', 'scope-inner-ring');
+innerRing.setAttribute('cx', '50');
+innerRing.setAttribute('cy', '50');
+innerRing.setAttribute('r', '27');
+netSVG.appendChild(innerRing);
+
+// ② Three colored orbit arcs — 6° gap at each of the 3 junctions
+[
+  { layer:'production', start:-12, end:102 },
+  { layer:'value',      start:108, end:222 },
+  { layer:'land',       start:228, end:342 },
+].forEach(({ layer, start, end }) => {
+  const arc = document.createElementNS(svgNS, 'path');
+  arc.setAttribute('class', 'scope-layer-arc');
+  arc.setAttribute('data-layer', layer);
+  arc.setAttribute('d', arcPath(start, end, R));
+  netSVG.appendChild(arc);
+});
 
 const nodes = [];
 sectors.forEach((s, i) => {
   const angleDeg = (i / 12) * 360;
   const angleRad = angleDeg * Math.PI / 180;
+  const color    = LAYER_COLORS[s.layer];
 
-  // Node pill
+  // ⑥ Node pill with layer dot
   const node = document.createElement('div');
   node.className = 'scope-node';
   node.setAttribute('role', 'button');
   node.setAttribute('tabindex', '0');
   node.setAttribute('aria-label', `Sector ${s.n}: ${s.t}`);
-  node.style.setProperty('--angle', `${angleDeg}deg`);
-  node.style.setProperty('--counter', `${-angleDeg}deg`);
-  node.innerHTML = `<div class="scope-node-index">${s.n}</div><div class="scope-node-title">${s.short}</div>`;
+  node.style.setProperty('--angle',      `${angleDeg}deg`);
+  node.style.setProperty('--counter',    `${-angleDeg}deg`);
+  node.style.setProperty('--layer-color', color);
+  node.innerHTML = `<div class="scope-node-dot"></div><div class="scope-node-index">${s.n}</div><div class="scope-node-title">${s.short}</div>`;
   scopeConst.appendChild(node);
   nodes.push(node);
 
@@ -453,13 +564,14 @@ function setScope(index) {
     node.classList.toggle('related', i !== index && relSet.has(i));
   });
 
-  // Connection line states — highlight active sector's bonds, dim the rest
+  // ⑤ Connection lines — lit bonds pop, everything else recedes
   connLines.forEach(line => {
     const from = +line.dataset.from;
     const to   = +line.dataset.to;
     const lit  = (from === index && relSet.has(to)) || (to === index && relSet.has(from));
     line.classList.toggle('related', lit);
     line.classList.toggle('dimmed',  !lit);
+    line.setAttribute('filter', lit ? 'url(#connGlow)' : '');
   });
 
   // Left panel
@@ -469,9 +581,10 @@ function setScope(index) {
   scopeDesc.textContent  = item.d;
   scopeProgressFill.style.width = `${((index + 1) / 12) * 100}%`;
 
-  // Center card
+  // ③ Center card — title + description
   scopeCenterTitle.textContent = item.t;
   scopeCenterLayer.textContent = item.label;
+  scopeCenterDesc.textContent  = item.d;
 }
 
 function updateScope() {

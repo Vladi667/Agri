@@ -276,6 +276,21 @@
   .scope-list-name{
     order:1;
     color:inherit;
+    position:relative;
+    transition:font-weight .55s cubic-bezier(.22,.8,.2,1);
+  }
+  /* Hairline pointer-marker — slides in from 0 to ~32px when active */
+  .scope-list-name::before{
+    content:'';
+    position:absolute;
+    right:100%;
+    top:50%;
+    margin-right:14px;
+    width:0;
+    height:1px;
+    background:#0F7B52;
+    transform:translateY(-50%);
+    transition:width .55s cubic-bezier(.22,.8,.2,1);
   }
   .scope-list-item:hover,
   .scope-list-item:focus-visible{
@@ -284,9 +299,16 @@
   }
   .scope-list-item.related{ color:rgba(15,23,42,0.42); }
   .scope-list-item.active{ color:#0B1220; }
+  .scope-list-item.active .scope-list-name{
+    font-weight:400;
+  }
+  .scope-list-item.active .scope-list-name::before{
+    width:32px;
+  }
   .scope-list-item.active .scope-list-num{
     color:#0F7B52;
     opacity:1;
+    font-weight:500;
   }
   /* Stagger entry — list items fade in one by one on first view */
   @keyframes listIn{

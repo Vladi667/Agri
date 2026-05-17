@@ -227,16 +227,76 @@
   .scope-narrative.is-switching .scope-methods,
   .scope-narrative.is-switching .scope-ghost-num{ opacity:0; }
 
-  /* Constellation — quieter precision instrument supporting the editorial left */
-  .scope-constellation{
+  /* — Vertical cascading sector list (replaces constellation) — */
+  .scope-list{
     position:relative;
-    --const-size: min(520px, 36vw, calc(100svh - 220px));
-    --radius: calc(var(--const-size) * 0.39);
-    width: var(--const-size);
-    aspect-ratio:1;
-    margin-inline:auto;
-    transform:rotate(var(--scope-rotation));
-    transition:transform .18s linear;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    list-style:none;
+    margin:0 0 0 auto;
+    padding:0;
+    width:100%;
+    max-width:520px;
+  }
+  .scope-list-item{
+    position:relative;
+    display:flex;
+    align-items:baseline;
+    justify-content:flex-end;
+    gap:22px;
+    width:100%;
+    background:transparent;
+    border:0;
+    cursor:pointer;
+    padding:6px 0;
+    text-align:right;
+    font-family:"Exo 2",sans-serif;
+    font-weight:200;
+    font-size:clamp(24px, 2.6vw, 38px);
+    line-height:1.05;
+    letter-spacing:-0.022em;
+    color:rgba(15,23,42,0.16);
+    transition:color .55s cubic-bezier(.22,.8,.2,1);
+  }
+  .scope-list-num{
+    order:2;
+    font-size:.32em;
+    letter-spacing:.18em;
+    font-variant-numeric:tabular-nums;
+    font-weight:400;
+    opacity:.5;
+    color:inherit;
+    flex-shrink:0;
+    text-transform:uppercase;
+    min-width:2.4em;
+    text-align:left;
+    transition:color .55s cubic-bezier(.22,.8,.2,1), opacity .55s;
+  }
+  .scope-list-name{
+    order:1;
+    color:inherit;
+  }
+  .scope-list-item:hover,
+  .scope-list-item:focus-visible{
+    color:rgba(15,23,42,0.5);
+    outline:none;
+  }
+  .scope-list-item.related{ color:rgba(15,23,42,0.42); }
+  .scope-list-item.active{ color:#0B1220; }
+  .scope-list-item.active .scope-list-num{
+    color:#0F7B52;
+    opacity:1;
+  }
+  /* Stagger entry — list items fade in one by one on first view */
+  @keyframes listIn{
+    0%   { opacity:0; transform:translateY(8px); }
+    100% { opacity:1; transform:none; }
+  }
+  .scope-list:not(.in-view) .scope-list-item{ opacity:0; }
+  .scope-list.in-view .scope-list-item{
+    animation: listIn .68s cubic-bezier(.22,.8,.2,1) backwards;
+    animation-delay: calc(var(--n, 0) * 48ms + 200ms);
   }
   .scope-network{
     position:absolute;
@@ -516,9 +576,7 @@
         </a>
       </div>
 
-      <div class="scope-constellation" id="scopeConst" aria-label="Sector network">
-        <svg class="scope-network" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
-      </div>
+      <nav class="scope-list" id="scopeList" aria-label="Sector navigation"></nav>
     </div>
   </div>
 
@@ -566,7 +624,7 @@ const sectors = [
   {n:'12', t:'Environmental protection',  short:'Environmental',  d:'Compliance, monitoring, restoration. We write the MRV plan; we then hold ourselves to it.', layer:'land', label:'Land resilience',                                est:2014, kpis:['ALL SITES','MRV CERTIFIED','7 COUNTRIES','INDEPENDENT AUDIT'], methods:['Compliance authoring','Continuous monitoring','Ecosystem restoration'], related:[0,8,9,10]},
 ];
 const scopeSection    = document.getElementById('scopeSectors');
-const scopeConst      = document.getElementById('scopeConst');
+const scopeList       = document.getElementById('scopeList');
 const scopeNarrative  = document.getElementById('scopeNarrative');
 const scopeGhostNum   = document.getElementById('scopeGhostNum');
 const scopeKickerNum  = document.getElementById('scopeKickerNum');
@@ -604,91 +662,19 @@ document.getElementById('scopeMobile').innerHTML = [
     </div>
   </div>`).join('');
 
-// Build constellation
-const R     = 39; // SVG viewBox radius — matches <circle r="39">
-const svgNS = 'http://www.w3.org/2000/svg';
-const netSVG = scopeConst.querySelector('.scope-network');
+// Build the vertical sector list (replaces former constellation)
 
-// Helpers
-function svgPt(angleDeg, r) {
-  const a = angleDeg * Math.PI / 180;
-  return [+(50 + r * Math.sin(a)).toFixed(3), +(50 - r * Math.cos(a)).toFixed(3)];
-}
-function arcPath(startDeg, endDeg, r) {
-  const [x1, y1] = svgPt(startDeg, r);
-  const [x2, y2] = svgPt(endDeg, r);
-  const large = (endDeg - startDeg) > 180 ? 1 : 0;
-  return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`;
-}
-
-// Three orbit arcs — 6° gap at each junction (kept as structural separators, styled monotone in CSS)
-[
-  { layer:'production', start:-12, end:102 },
-  { layer:'value',      start:108, end:222 },
-  { layer:'land',       start:228, end:342 },
-].forEach(({ layer, start, end }) => {
-  const arc = document.createElementNS(svgNS, 'path');
-  arc.setAttribute('class', 'scope-layer-arc');
-  arc.setAttribute('data-layer', layer);
-  arc.setAttribute('d', arcPath(start, end, R));
-  netSVG.appendChild(arc);
+const listItems = sectors.map((s, i) => {
+  const item = document.createElement('button');
+  item.type = 'button';
+  item.className = 'scope-list-item';
+  item.setAttribute('aria-label', `Sector ${s.n}: ${s.t}`);
+  item.style.setProperty('--n', i);
+  item.innerHTML = `<span class="scope-list-name">${s.t}</span><span class="scope-list-num" aria-hidden="true">${s.n}</span>`;
+  item.addEventListener('click', () => activateNode(i));
+  scopeList.appendChild(item);
+  return item;
 });
-
-// Nodes + overlay connection lines (base lines hidden in CSS for Apple-minimal)
-const nodes = [];
-sectors.forEach((s, i) => {
-  const angleDeg = (i / 12) * 360;
-  const angleRad = angleDeg * Math.PI / 180;
-  const color    = LAYER_COLORS[s.layer];
-
-  // Node pill with layer dot
-  const node = document.createElement('div');
-  node.className = 'scope-node';
-  node.setAttribute('role', 'button');
-  node.setAttribute('tabindex', '0');
-  node.setAttribute('aria-label', `Sector ${s.n}: ${s.t}`);
-  node.style.setProperty('--angle',       `${angleDeg}deg`);
-  node.style.setProperty('--counter',     `${-angleDeg}deg`);
-  node.style.setProperty('--layer-color', color);
-  node.style.setProperty('--n',           i);
-  node.innerHTML = `<div class="scope-node-dot"></div><div class="scope-node-index">${s.n}</div><div class="scope-node-title">${s.short}</div>`;
-  scopeConst.appendChild(node);
-  nodes.push(node);
-
-  // Connection pairs — base (always faint) + overlay (draws on activation)
-  s.related.forEach(r => {
-    if (r > i) {
-      const ra = (r / 12) * 360 * Math.PI / 180;
-      const x1 = +(50 + R * Math.sin(angleRad)).toFixed(3);
-      const y1 = +(50 - R * Math.cos(angleRad)).toFixed(3);
-      const x2 = +(50 + R * Math.sin(ra)).toFixed(3);
-      const y2 = +(50 - R * Math.cos(ra)).toFixed(3);
-
-      // Base line — faint, always visible
-      const base = document.createElementNS(svgNS, 'line');
-      base.setAttribute('class', 'scope-connection-base');
-      base.dataset.from = i; base.dataset.to = r;
-      base.setAttribute('x1', x1); base.setAttribute('y1', y1);
-      base.setAttribute('x2', x2); base.setAttribute('y2', y2);
-      netSVG.appendChild(base);
-
-      // Overlay line — draws when active
-      const overlay = document.createElementNS(svgNS, 'line');
-      overlay.setAttribute('class', 'scope-connection-overlay');
-      overlay.dataset.from = i; overlay.dataset.to = r;
-      overlay.setAttribute('x1', x1); overlay.setAttribute('y1', y1);
-      overlay.setAttribute('x2', x2); overlay.setAttribute('y2', y2);
-
-      // Draw-from-hidden initial state
-      const len = Math.hypot(x2 - x1, y2 - y1);
-      overlay.style.strokeDasharray  = len.toFixed(3);
-      overlay.style.strokeDashoffset = len.toFixed(3);
-      netSVG.appendChild(overlay);
-    }
-  });
-});
-
-const overlayLines = [...netSVG.querySelectorAll('.scope-connection-overlay')];
 
 let switchTimer = null;
 function setScope(index) {
@@ -697,17 +683,10 @@ function setScope(index) {
   const item   = sectors[index];
   const relSet = new Set(item.related);
 
-  // Node states
-  nodes.forEach((node, i) => {
-    node.classList.toggle('active',  i === index);
-    node.classList.toggle('related', i !== index && relSet.has(i));
-  });
-
-  // Connection overlays — only the active sector's bonds draw in
-  overlayLines.forEach(line => {
-    const from = +line.dataset.from, to = +line.dataset.to;
-    const lit  = (from === index && relSet.has(to)) || (to === index && relSet.has(from));
-    line.classList.toggle('related', lit);
+  // List item states — active gets full opacity + green index, related steps forward, rest dimmed
+  listItems.forEach((el, i) => {
+    el.classList.toggle('active',  i === index);
+    el.classList.toggle('related', i !== index && relSet.has(i));
   });
 
   // One elegant crossfade on sector change: dim → swap content → restore
@@ -752,10 +731,7 @@ function updateScope() {
   const rect     = scopeSection.getBoundingClientRect();
   const scrollable = Math.max(1, rect.height - window.innerHeight);
   const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-  const rotDeg   = (progress * 24).toFixed(2);
-  scopeSection.style.setProperty('--scope-progress',  progress.toFixed(3));
-  scopeSection.style.setProperty('--scope-rotation',  `${rotDeg}deg`);
-  scopeSection.style.setProperty('--scope-counter',   `${-rotDeg}deg`);
+  scopeSection.style.setProperty('--scope-progress', progress.toFixed(3));
   if (manualScope === null) setScope(Math.min(11, Math.floor(progress * 12)));
 }
 
@@ -783,14 +759,14 @@ function activateNode(i) {
   manualScopeTimer = setTimeout(() => { manualScope = null; requestScopeUpdate(); }, 1600);
 }
 
-nodes.forEach((node, i) => {
-  node.addEventListener('click', () => activateNode(i));
-  node.addEventListener('keydown', e => {
+// List items already have click handlers attached at build time; add keyboard support
+listItems.forEach((el, i) => {
+  el.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateNode(i); }
   });
 });
 
-// Stagger entry: hold node activation + scroll updates until nodes have spiraled in
+// Stagger entry: hold sector activation + scroll updates until the list has cascaded in
 const isMobile = window.matchMedia('(max-width: 900px)').matches;
 const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -801,18 +777,18 @@ function completeEntry() {
 
 if (isMobile) {
   // Mobile: no constellation rendered, just activate immediately
-  scopeConst.classList.add('in-view');
+  scopeList.classList.add('in-view');
   completeEntry();
   setScope(0);
 } else if (reduced) {
   // Reduced motion: skip stagger
-  scopeConst.classList.add('in-view');
+  scopeList.classList.add('in-view');
   completeEntry();
   setScope(0);
 } else {
   const obs = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting) {
-      scopeConst.classList.add('in-view');
+      scopeList.classList.add('in-view');
       // Stagger window: 12 nodes × 62ms + 820ms anim + 180ms initial delay ≈ 1.75s
       setTimeout(() => {
         completeEntry();
@@ -822,7 +798,7 @@ if (isMobile) {
       obs.disconnect();
     }
   }, { threshold: 0.18 });
-  obs.observe(scopeConst);
+  obs.observe(scopeList);
 }
 
 window.addEventListener('scroll', requestScopeUpdate, { passive: true });

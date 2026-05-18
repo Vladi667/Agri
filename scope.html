@@ -306,22 +306,28 @@
   .scope-list-item{
     position:relative;
     display:flex;
-    align-items:baseline;
+    align-items:center;
     justify-content:flex-end;
     gap:22px;
     width:100%;
     background:transparent;
     border:0;
     cursor:pointer;
-    padding:6px 0;
+    padding:0 16px;
+    /* Reserve fixed row height = max active size, so size changes never shift layout */
+    min-height:clamp(48px, 4.6vw, 66px);
     text-align:right;
     font-family:"Exo 2",sans-serif;
     font-weight:200;
-    font-size:clamp(24px, 2.6vw, 38px);
+    /* Smaller default — active will be ~1.5x bigger */
+    font-size:clamp(18px, 1.9vw, 26px);
     line-height:1.05;
-    letter-spacing:-0.022em;
+    letter-spacing:-0.018em;
     color:rgba(15,23,42,0.16);
-    transition:color .55s cubic-bezier(.22,.8,.2,1);
+    border-radius:6px;
+    transition:color .55s cubic-bezier(.22,.8,.2,1),
+               font-size .55s cubic-bezier(.22,.8,.2,1),
+               background-color .45s cubic-bezier(.22,.8,.2,1);
   }
   .scope-list-num{
     order:2;
@@ -362,12 +368,18 @@
     outline:none;
   }
   .scope-list-item.related{ color:rgba(15,23,42,0.42); }
-  .scope-list-item.active{ color:#0B1220; }
+  /* Active sector — dramatically bigger + soft green tint behind it */
+  .scope-list-item.active{
+    color:#0B1220;
+    font-size:clamp(28px, 3.1vw, 42px);
+    background: linear-gradient(90deg, transparent 0%, rgba(15,123,82,0.07) 35%, rgba(15,123,82,0.09) 100%);
+  }
   .scope-list-item.active .scope-list-name{
     font-weight:400;
   }
   .scope-list-item.active .scope-list-name::before{
-    width:32px;
+    width:36px;
+    height:1.5px;
   }
   .scope-list-item.active .scope-list-num{
     color:#0F7B52;
@@ -809,6 +821,36 @@ function setScope(index) {
   }
 }
 
+// Parse a KPI string — extract leading number (with commas/dots) and trailing label
+function parseKpi(text) {
+  const m = text.match(/^([\d,]+(?:\.\d+)?)\s+(.+)$/);
+  if (!m) return { isStatic: true, value: text };
+  const numStr = m[1].replace(/,/g, '');
+  const num = parseFloat(numStr);
+  if (isNaN(num)) return { isStatic: true, value: text };
+  return { isStatic: false, number: num, suffix: ' ' + m[2] };
+}
+
+// Count-up animation for a single number element (cancellable, easeOutCubic)
+function animateNumber(el, target, durMs) {
+  if (el._raf) cancelAnimationFrame(el._raf);
+  const start = performance.now();
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) { el.textContent = target.toLocaleString('en-US'); return; }
+  function tick(now) {
+    const t = Math.min(1, (now - start) / durMs);
+    const ease = 1 - Math.pow(1 - t, 3);
+    const value = Math.round(target * ease);
+    el.textContent = value.toLocaleString('en-US');
+    if (t < 1) {
+      el._raf = requestAnimationFrame(tick);
+    } else {
+      el._raf = null;
+    }
+  }
+  el._raf = requestAnimationFrame(tick);
+}
+
 function writeEditorial(item) {
   const num = item.n;
   scopeGhostNum.textContent  = num;
@@ -819,8 +861,16 @@ function writeEditorial(item) {
   scopeDesc.textContent      = item.d;
   scopeCtaSector.textContent = item.t;
 
-  // KPI row
-  scopeKpis.innerHTML = item.kpis.map(k => `<span class="scope-kpi">${k}</span>`).join('');
+  // KPI row — numbers wrapped in animatable span so they can count up
+  scopeKpis.innerHTML = item.kpis.map(k => {
+    const p = parseKpi(k);
+    if (p.isStatic) return `<span class="scope-kpi">${p.value}</span>`;
+    return `<span class="scope-kpi"><span class="scope-kpi-num" data-target="${p.number}">0</span>${p.suffix}</span>`;
+  }).join('');
+  // Trigger count-up for each KPI number
+  scopeKpis.querySelectorAll('.scope-kpi-num').forEach(el => {
+    animateNumber(el, parseFloat(el.dataset.target), 720);
+  });
 
   // Methods row with hairline dot separators
   scopeMethods.innerHTML = item.methods

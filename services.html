@@ -16,20 +16,118 @@
     padding: 100px 0 60px;
     background: radial-gradient(70% 50% at 80% 20%, rgba(244,199,123,0.35), transparent 60%), #F8F9F5;
   }
+  /* Two-column hero with china.png */
+  .intro-grid{
+    display:grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(48px, 6vw, 96px);
+    align-items: center;
+  }
+  .intro-text{ position:relative; max-width:600px; }
+  .intro-photo-wrap{ margin-inline-start:auto; max-width:560px; width:100%; }
+  .intro-photo-frame{
+    position:relative; aspect-ratio: 4/3; overflow:hidden;
+    background:rgba(15,23,42,0.04);
+  }
+  .intro-photo-frame img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:saturate(0.92) contrast(1.02);
+    transition:transform 1.2s cubic-bezier(.22,.8,.2,1);
+  }
+  .intro-photo-wrap:hover .intro-photo-frame img{ transform:scale(1.02); }
+  .intro-photo-caption{
+    display:flex; align-items:baseline; gap:14px;
+    margin:18px 0 0;
+    font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:rgba(15,23,42,0.5);
+  }
+  .intro-photo-caption .rule{
+    flex:0 0 28px; height:1px;
+    background:rgba(15,23,42,0.22);
+    align-self:center;
+  }
+  @media(max-width:900px){
+    .intro-grid{ grid-template-columns:1fr; gap:36px; }
+    .intro-photo-wrap{ max-width:none; }
+  }
+
+  /* Stats KPI row */
+  .svc-stats{
+    padding: 32px 0 60px;
+    border-bottom: 1px solid rgba(15,23,42,0.1);
+  }
+  .svc-stats-grid{
+    display:grid; grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:24px; align-items:end;
+  }
+  .svc-stat{ display:flex; flex-direction:column; gap:8px; }
+  .svc-stat strong{
+    font-family:"Exo 2",sans-serif; font-weight:200;
+    font-size:clamp(28px,3vw,42px); line-height:.96;
+    letter-spacing:-0.028em; color:#0B1220;
+    font-variant-numeric:tabular-nums;
+  }
+  .svc-stat span{
+    font-size:10.5px; letter-spacing:.2em;
+    text-transform:uppercase; color:rgba(15,23,42,0.52);
+  }
+  @media(max-width:900px){
+    .svc-stats-grid{ grid-template-columns:repeat(2,1fr); gap:32px; }
+  }
+
+  /* Editorial service rows (strips heavy card chrome) */
   .svc-card{
-    border:1px solid rgba(15,23,42,0.08); border-radius:20px; background:#fff;
-    overflow:hidden; transition: border-color .4s, box-shadow .4s;
+    border:0;
+    border-top:1px solid rgba(15,23,42,0.1);
+    border-radius:0;
+    background:transparent;
+    overflow:hidden;
+    transition: background .4s cubic-bezier(.22,.8,.2,1), border-color .4s;
     cursor:pointer;
   }
-  .svc-card:hover{ border-color:rgba(16,185,129,0.3); box-shadow:0 20px 48px -24px rgba(15,23,42,0.18); }
-  .svc-card.active{ border-color:rgba(16,185,129,0.5); box-shadow:0 24px 56px -24px rgba(16,185,129,0.25); }
-  .svc-head{ display:grid; grid-template-columns: 72px 1fr auto; gap:20px; align-items:center; padding:28px; }
-  .svc-num{ font-family:"Exo 2",sans-serif; font-weight:300; font-size:64px; color:var(--green-deep); line-height:1; letter-spacing:-0.02em; }
-  .svc-body{ padding:0 28px 28px; border-top:1px solid rgba(15,23,42,0.06); display:none; }
+  .svc-card:last-child{ border-bottom:1px solid rgba(15,23,42,0.1); }
+  .svc-card:hover{
+    background: rgba(15,123,82,0.025);
+  }
+  .svc-card.active{
+    background: linear-gradient(90deg, transparent 0%, rgba(15,123,82,0.05) 100%);
+    border-color: rgba(15,123,82,0.22);
+  }
+  .svc-head{ display:grid; grid-template-columns: 72px 1fr auto; gap:20px; align-items:center; padding:24px 0; }
+  .svc-num{ font-family:"Exo 2",sans-serif; font-weight:300; font-size:clamp(44px, 4.8vw, 64px); color:var(--green-deep); line-height:1; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+  .svc-body{ padding:0 0 28px; display:none; }
   .svc-card.active .svc-body{ display:block; }
-  .svc-toggle{ width:36px; height:36px; border-radius:999px; background:rgba(15,23,42,0.04); border:1px solid rgba(15,23,42,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--ink-2); transition:background .3s, transform .4s; }
-  .svc-card.active .svc-toggle{ background:var(--green-deep); color:#fff; transform:rotate(45deg); }
-  .svc-toggle svg{ width:16px; height:16px; }
+  .svc-toggle{
+    width:32px; height:32px; border-radius:50%;
+    background:transparent; border:1px solid rgba(15,23,42,0.18);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; color:rgba(15,23,42,0.55);
+    transition:background .3s, transform .4s, color .3s, border-color .3s;
+  }
+  .svc-card.active .svc-toggle{
+    background:transparent; color:var(--green-deep);
+    border-color:var(--green-deep);
+    transform:rotate(45deg);
+  }
+  .svc-toggle svg{ width:14px; height:14px; }
+
+  /* Hairline-underline CTA inside service body */
+  .svc-cta{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top:24px;
+    font-size:14px; font-weight:500; letter-spacing:.005em;
+    color:var(--green-deep); text-decoration:none;
+    padding-bottom:5px; position:relative;
+  }
+  .svc-cta::after{
+    content:''; position:absolute; left:0; right:0; bottom:0;
+    height:1px; background:var(--green-deep);
+    transform:scaleX(0.18); transform-origin:left;
+    transition:transform .55s cubic-bezier(.22,.8,.2,1);
+  }
+  .svc-cta:hover::after{ transform:scaleX(1); }
+  .svc-cta svg{ transition:transform .35s; flex-shrink:0; }
+  .svc-cta:hover svg{ transform:translateX(5px); }
   .bullet-list{ display:flex; flex-direction:column; gap:10px; margin-top:16px; }
   .bullet-item{ display:flex; align-items:flex-start; gap:12px; font-size:14.5px; color:#1E2A3A; line-height:1.5; }
   .bullet-dot{ width:6px; height:6px; border-radius:999px; background:var(--green); flex-shrink:0; margin-top:8px; }
@@ -168,29 +266,56 @@
 <body data-page="services">
 
 <section class="intro">
-  <div class="wrap">
-    <div class="ed-kicker" style="margin-bottom:36px;">
-      <span>Services</span>
-      <span class="rule" aria-hidden="true"></span>
-      <span>Five disciplines</span>
+  <div class="wrap intro-grid">
+    <div class="intro-text">
+      <div class="ed-kicker" style="margin-bottom:36px;">
+        <span>Services</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span>Five disciplines</span>
+      </div>
+      <h1 class="h1 max-w-[22ch]">Five service areas. One continuous relationship.</h1>
+      <p class="body max-w-[62ch] mt-8">We deliver these as a stack — from agronomy and planning through consulting, rural development and agribusiness — or independently, on a mandate-by-mandate basis. Every engagement includes a five-year review at no extra cost.</p>
     </div>
-    <h1 class="h1 max-w-[22ch]">Five service areas. One continuous relationship.</h1>
-    <p class="body max-w-[62ch] mt-8">We deliver these as a stack — from agronomy and planning through consulting, rural development and agribusiness — or independently, on a mandate-by-mandate basis. Every engagement includes a five-year review at no extra cost.</p>
+    <figure class="intro-photo-wrap">
+      <div class="intro-photo-frame">
+        <img src="/images/china.png" alt="Eden Terranova international greenhouse project"/>
+      </div>
+      <figcaption class="intro-photo-caption">
+        <span class="rule" aria-hidden="true"></span>
+        <span>Protected production &middot; China</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Stats KPI row (illustrative placeholders) -->
+<section class="svc-stats">
+  <div class="wrap svc-stats-grid">
+    <div class="svc-stat"><strong>5</strong><span>Service areas</span></div>
+    <div class="svc-stat"><strong>7</strong><span>Countries active</span></div>
+    <div class="svc-stat"><strong>18,400</strong><span>Hectares stewarded</span></div>
+    <div class="svc-stat"><strong>5-year</strong><span>Review included</span></div>
   </div>
 </section>
 
 <!-- Service cards with accordion -->
-<section class="section" style="padding-top:40px">
+<section class="section" style="padding-top:48px">
   <div class="wrap">
-    <div class="eyebrow mb-6">Our five service areas</div>
-    <div class="flex flex-col gap-4" id="svcList"></div>
+    <div class="ed-kicker" style="margin-bottom:36px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>Our five service areas</span>
+    </div>
+    <div class="flex flex-col" id="svcList"></div>
   </div>
 </section>
 
 <!-- Phased engagement -->
 <section class="section" style="background:#F2F4EC">
   <div class="wrap">
-    <div class="eyebrow mb-4">How we engage</div>
+    <div class="ed-kicker" style="margin-bottom:24px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>How we engage</span>
+    </div>
     <h2 class="h2 mb-12 max-w-[20ch]">A phased engagement, always.</h2>
     <!-- Engagement roadmap -->
     <div class="eng-root" id="eng-root">
@@ -268,11 +393,41 @@
 <section class="section">
   <div class="wrap grid md:grid-cols-3 gap-6">
     <div class="md:col-span-1">
-      <div class="eyebrow mb-4">FAQ</div>
+      <div class="ed-kicker" style="margin-bottom:24px;">
+        <span class="rule" aria-hidden="true"></span>
+        <span>FAQ</span>
+      </div>
       <h2 class="h2">Common questions.</h2>
       <p class="body mt-4 max-w-[36ch]">Straightforward answers about how we work and what to expect.</p>
     </div>
     <div class="md:col-span-2 space-y-2" id="faq"></div>
+  </div>
+</section>
+
+<!-- Closing — editorial dark band -->
+<section class="ed-band-dark">
+  <div class="wrap">
+    <div class="ed-kicker ed-kicker-dark" style="margin-bottom:36px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>Start the work</span>
+    </div>
+    <p class="ed-band-quote">
+      Every engagement starts with one conversation about the <em>land</em>.
+    </p>
+    <div class="ed-band-ctas">
+      <a href="contacts.html" class="ed-cta ed-cta-light">
+        Talk to our team
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="scope.html" class="ed-cta ed-cta-light-secondary">
+        See our scope
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -354,9 +509,11 @@ document.getElementById('svcList').innerHTML = svcs.map((s,i) => `
       <div class="bullet-list">
         ${s.bullets.map(b=>`<div class="bullet-item"><span class="bullet-dot"></span><span>${b}</span></div>`).join('')}
       </div>
-      <a href="contacts.html" class="btn btn-primary mt-6" style="display:inline-flex;">
+      <a href="contacts.html" class="svc-cta">
         Discuss this service
-        <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </a>
     </div>
   </div>`).join('');

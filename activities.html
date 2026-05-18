@@ -179,14 +179,14 @@
     position:relative;
   }
 
-  /* white card */
+  /* Editorial seasonal card — chrome-free, hairline-divided */
   .srm-card{
     flex:1;
     width:100%;
-    background:#fff;
-    border:1px solid rgba(15,23,42,0.08);
-    border-radius:20px;
-    padding:24px 20px;
+    background:transparent;
+    border:0;
+    border-radius:0;
+    padding:18px 6px 22px;
     position:relative;
     z-index:1;
     opacity:0;
@@ -194,12 +194,11 @@
     transition:
       opacity .68s cubic-bezier(.22,1,.36,1),
       transform .68s cubic-bezier(.22,1,.36,1),
-      box-shadow .35s;
+      background .35s;
     transition-delay:calc(var(--qi) * 360ms + 180ms);
   }
   .srm-card:hover{
-    box-shadow:0 22px 52px -18px rgba(15,23,42,0.2);
-    transform:translateY(-3px) !important;
+    background:rgba(15,123,82,0.025);
   }
   .srm-root.active .srm-card{
     opacity:1;
@@ -254,16 +253,56 @@
   }
   .srm-card:hover .srm-ghost{ color:rgba(15,123,82,0.08); }
 
-  /* season tag */
+  /* season tag — editorial tracked-caps with hairline rule */
   .srm-tag{
-    display:inline-flex; align-items:center; gap:5px;
-    padding:3px 9px;
-    border-radius:999px;
-    background:rgba(16,185,129,0.1);
-    border:1px solid rgba(16,185,129,0.2);
-    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
-    color:var(--green-deep);
-    margin-bottom:10px;
+    display:inline-flex; align-items:center; gap:10px;
+    padding:0;
+    background:transparent;
+    border:0;
+    font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:rgba(15,23,42,0.5);
+    font-variant-numeric:tabular-nums;
+    margin-bottom:14px;
+  }
+  .srm-tag::before{
+    content:'';
+    display:inline-block;
+    width:18px; height:1px;
+    background:rgba(15,123,82,0.4);
+  }
+  .srm-tag svg{ display:none; }
+
+  /* Activities stats — editorial KPI row (matches services.html .svc-stats) */
+  .act-stats{
+    padding: 12px 0 60px;
+    border-bottom: 1px solid rgba(15,23,42,0.1);
+    margin-bottom: 80px;
+  }
+  .act-stats-grid{
+    display:grid; grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:24px; align-items:end;
+  }
+  .act-stat{ display:flex; flex-direction:column; gap:8px; }
+  .act-stat strong{
+    font-family:"Exo 2",sans-serif; font-weight:200;
+    font-size:clamp(34px, 3.6vw, 54px); line-height:.96;
+    letter-spacing:-0.028em; color:#0B1220;
+    font-variant-numeric:tabular-nums;
+  }
+  .act-stat strong .sup{
+    font-size:.55em; color:var(--green-deep); vertical-align:super;
+    font-weight:400; margin-left:1px;
+  }
+  .act-stat .l{
+    font-size:10.5px; letter-spacing:.2em;
+    text-transform:uppercase; color:rgba(15,23,42,0.52);
+  }
+  .act-stat .d{
+    font-size:13px; line-height:1.5;
+    color:rgba(15,23,42,0.62);
+  }
+  @media(max-width:900px){
+    .act-stats-grid{ grid-template-columns:repeat(2,1fr); gap:32px; }
   }
 
   @media(max-width:900px){
@@ -307,8 +346,13 @@
 </section>
 
 <!-- World map hero visual -->
-<section style="padding:0 0 0">
+<section style="padding:24px 0 0">
   <div class="wrap">
+    <div class="ed-kicker" style="margin-bottom:18px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>Where we work</span>
+    </div>
+    <h2 class="h2 max-w-[22ch]" style="margin-bottom:36px;">Operations on four continents.</h2>
     <div class="map-hero map-hero-world">
       <section class="mapSection">
         <div class="mapStage">
@@ -321,26 +365,28 @@
         </div>
       </section>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-      <div>
-        <div style="font-family:'Exo 2',sans-serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">12</div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Countries</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Active field operations</div>
-      </div>
-      <div>
-        <div style="font-family:'Exo 2',sans-serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">184<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Farms</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Transformed enterprises</div>
-      </div>
-      <div>
-        <div style="font-family:'Exo 2',sans-serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">47<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">%</span></div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Avg. yield uplift</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Independently verified</div>
-      </div>
-      <div>
-        <div style="font-family:'Exo 2',sans-serif; font-weight:300; font-size:56px; letter-spacing:-0.03em; color:var(--ink); line-height:1;">10<span style="font-size:.55em; color:var(--green-deep); vertical-align:super;">+</span></div>
-        <div style="font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:#8C9AAE; margin-top:4px;">Years</div>
-        <div style="color:#1E2A3A; font-size:14px; margin-top:4px;">Of field experience</div>
+    <div class="act-stats">
+      <div class="act-stats-grid">
+        <div class="act-stat">
+          <strong><span class="act-num" data-target="12">0</span></strong>
+          <span class="l">Countries</span>
+          <span class="d">Active field operations</span>
+        </div>
+        <div class="act-stat">
+          <strong><span class="act-num" data-target="184">0</span><span class="sup">+</span></strong>
+          <span class="l">Farms</span>
+          <span class="d">Transformed enterprises</span>
+        </div>
+        <div class="act-stat">
+          <strong><span class="act-num" data-target="47">0</span><span class="sup">%</span></strong>
+          <span class="l">Avg. yield uplift</span>
+          <span class="d">Independently verified</span>
+        </div>
+        <div class="act-stat">
+          <strong><span class="act-num" data-target="10">0</span><span class="sup">+</span></strong>
+          <span class="l">Years</span>
+          <span class="d">Of field experience</span>
+        </div>
       </div>
     </div>
   </div>
@@ -359,7 +405,10 @@
   <div class="cinema-wash"></div>
   <div class="cinema-grain"></div>
   <div class="cinema-copy">
-    <div class="eyebrow">The rhythm</div>
+    <div class="ed-kicker ed-kicker-dark" style="justify-content:center; margin-bottom:18px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>The rhythm</span>
+    </div>
     <h2>The cycle is the product.</h2>
     <p>Instrument, plant, scout, harvest, review. Every season the same rhythm — every year a stronger acre.</p>
   </div>
@@ -370,7 +419,10 @@
   <div class="wrap">
     <div class="flex items-end justify-between flex-wrap gap-6 mb-12">
       <div>
-        <div class="eyebrow mb-3">Seasonal rhythm</div>
+        <div class="ed-kicker" style="margin-bottom:18px;">
+          <span class="rule" aria-hidden="true"></span>
+          <span>Seasonal rhythm</span>
+        </div>
         <h2 class="h2 max-w-[20ch]">A year on an Eden Terranova farm.</h2>
       </div>
       <p class="body max-w-[40ch]">Every client sees the same rhythm: instrument, plant, scout, harvest, review. The rhythm is the product.</p>
@@ -451,6 +503,33 @@
   </div>
 </section>
 
+<!-- Closing — editorial dark band -->
+<section class="ed-band-dark">
+  <div class="wrap">
+    <div class="ed-kicker ed-kicker-dark" style="margin-bottom:36px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>Bring us into your field</span>
+    </div>
+    <p class="ed-band-quote">
+      The work doesn&rsquo;t talk about itself &mdash; the <em>land</em> does.
+    </p>
+    <div class="ed-band-ctas">
+      <a href="contacts.html" class="ed-cta ed-cta-light">
+        Start a conversation
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="scope.html" class="ed-cta ed-cta-light-secondary">
+        See our scope
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
@@ -516,6 +595,35 @@ const acts = [
   io.observe(root);
 })();
 
+// ── KPI count-up: animate stat numbers when they enter the viewport ──
+(function(){
+  var nums = document.querySelectorAll('.act-num');
+  if (!nums.length) return;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function animateNumber(el, target, durMs){
+    if (reduced){ el.textContent = target.toLocaleString('en-US'); return; }
+    var start = performance.now();
+    function tick(now){
+      var t = Math.min(1, (now - start) / durMs);
+      var ease = 1 - Math.pow(1 - t, 3);
+      var value = Math.round(target * ease);
+      el.textContent = value.toLocaleString('en-US');
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        var target = parseFloat(e.target.dataset.target);
+        if (!isNaN(target)) animateNumber(e.target, target, 1100);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  nums.forEach(function(n){ io.observe(n); });
+})();
+
 document.getElementById('actList').innerHTML = acts.map(a => `
   <div class="activity">
     <div class="visual ${a.c}">
@@ -524,7 +632,10 @@ document.getElementById('actList').innerHTML = acts.map(a => `
       <div class="badge">${a.b}</div>
     </div>
     <div>
-      <div class="eyebrow mb-3">Activity</div>
+      <div class="ed-kicker" style="margin-bottom:18px;">
+        <span class="rule" aria-hidden="true"></span>
+        <span>${a.b}</span>
+      </div>
       <h3 class="h2" style="font-size:clamp(28px,3.5vw,44px)">${a.t}</h3>
       <p class="body mt-5 max-w-[52ch]">${a.d}</p>
       <div class="stat-row">

@@ -27,29 +27,41 @@
   @media (max-width: 960px){ .intro-grid{ grid-template-columns: 1fr; gap:40px; } }
   .visual-panel{
     border-radius: 22px; overflow: hidden; position: relative;
-    box-shadow: 0 32px 80px -24px rgba(15,23,42,0.22);
   }
   .visual-panel img{ width:100%; height:100%; object-fit:cover; display:block; }
+  /* Distinctive Eden circular crop — chrome-free editorial */
   .story-visual{
     aspect-ratio:1/1 !important;
     max-width:430px;
     margin-left:auto;
     border-radius:999px;
-    box-shadow:0 28px 72px -28px rgba(15,23,42,0.28);
-    background:#fff;
+    background:rgba(15,23,42,0.04);
+    transition: transform 1.2s cubic-bezier(.22,.8,.2,1);
   }
+  .story-visual img{
+    filter: saturate(0.94);
+    transition: transform 1.4s cubic-bezier(.22,.8,.2,1);
+  }
+  .story-visual:hover img{ transform: scale(1.03); }
   .proof-line{
     font-family:"Exo 2",sans-serif; font-weight:300; font-style:italic;
     font-size:clamp(18px,1.7vw,22px); color:#1F5F3A; letter-spacing:-0.005em;
     margin-top:20px; max-width:42ch;
   }
-  /* Credentials strip */
+  /* Credentials strip — editorial tracked-caps with dot separators */
   .creds{
-    border-top:1px solid rgba(15,23,42,0.07);
-    border-bottom:1px solid rgba(15,23,42,0.07);
-    padding:28px 0; background:#F8F9F5;
+    border-top:1px solid rgba(15,23,42,0.1);
+    border-bottom:1px solid rgba(15,23,42,0.1);
+    padding:26px 0; background:#F8F9F5;
   }
-  .pill{ display:inline-block; padding:5px 12px; border-radius:999px; background:#fff; border:1px solid rgba(15,23,42,0.08); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:#64748B;}
+  .creds-list{
+    display:flex; flex-wrap:wrap; align-items:baseline;
+    gap:6px 18px;
+    font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:rgba(15,23,42,0.65);
+    line-height:1.6;
+  }
+  .creds-sep{ color:rgba(15,23,42,0.22); padding:0 2px; }
 
   /* Mission — site convention */
   .mission-block{
@@ -68,43 +80,52 @@
   }
   .mission-text em{ font-style:normal; color:#34D399; }
 
-  /* ── Differentiation — exact eng-card chassis ── */
-  .diff-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-  @media(max-width:960px){ .diff-grid{ grid-template-columns:1fr; } }
+  /* ── Differentiation — editorial chrome-free cells ── */
+  .diff-grid{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:0;
+    border-top:1px solid rgba(15,23,42,0.1);
+    border-bottom:1px solid rgba(15,23,42,0.1);
+  }
+  @media(max-width:960px){
+    .diff-grid{ grid-template-columns:1fr; }
+    .diff-card + .diff-card{ border-top:1px solid rgba(15,23,42,0.1); border-left:0 !important; }
+  }
   .diff-card{
-    position:relative; background:#fff;
-    border:1px solid rgba(15,23,42,0.08); border-radius:18px;
-    padding:20px 16px;
+    position:relative; background:transparent;
+    border:0;
+    border-radius:0;
+    padding:36px clamp(20px, 2vw, 32px) 32px;
     overflow:hidden;
     opacity:0; transform:translateY(26px);
     transition:
       opacity .65s cubic-bezier(.22,1,.36,1),
       transform .65s cubic-bezier(.22,1,.36,1),
-      box-shadow .35s, border-color .35s;
+      background .35s;
     transition-delay:calc(var(--di) * 160ms + 80ms);
   }
+  .diff-card + .diff-card{ border-left:1px solid rgba(15,23,42,0.1); }
   .diff-grid.active .diff-card{ opacity:1; transform:none; }
   .diff-card:hover{
-    transform:translateY(-3px) !important;
-    box-shadow:0 20px 48px -16px rgba(15,23,42,0.18);
-    border-color:rgba(16,185,129,0.3);
+    background:rgba(15,123,82,0.025);
   }
   .diff-card .diff-ghost{
-    position:absolute; top:8px; right:10px;
+    position:absolute; top:14px; right:18px;
     font-family:"Exo 2",sans-serif; font-weight:300;
-    font-size:44px; line-height:1;
-    color:rgba(15,23,42,0.045); letter-spacing:-0.02em;
+    font-size:clamp(44px, 4vw, 56px); line-height:1;
+    color:rgba(15,23,42,0.055); letter-spacing:-0.02em;
     pointer-events:none; user-select:none;
+    font-variant-numeric:tabular-nums;
     transition:color .4s;
   }
   .diff-card:hover .diff-ghost{ color:rgba(15,123,82,0.08); }
   .diff-card .lead{
     font-family:"Exo 2",sans-serif; font-weight:400;
     font-size:17px; letter-spacing:-0.005em; line-height:1.25;
-    color:#0B1220; margin-top:6px; max-width:22ch;
+    color:#0B1220; margin-top:12px; max-width:22ch;
   }
   .diff-card .lead em{ font-style:normal; color:#1F5F3A; }
-  .diff-card .desc{ color:#64748B; font-size:13.5px; line-height:1.55; margin-top:8px; max-width:30ch; }
+  .diff-card .desc{ color:rgba(15,23,42,0.6); font-size:13.5px; line-height:1.55; margin-top:8px; max-width:30ch; }
 
   /* ── Framework — animated horizontal roadmap (matches .eng-root exactly) ── */
   .framework{ background:#F2F4EC; }
@@ -139,26 +160,25 @@
 
   .fw-item{
     display:flex; flex-direction:column; align-items:center;
-    padding:0 8px; position:relative;
+    padding:0 12px; position:relative;
   }
+  /* Editorial chrome-free framework card */
   .fw-card{
     flex:1; width:100%;
-    background:#fff;
-    border:1px solid rgba(15,23,42,0.08);
-    border-radius:18px;
-    padding:20px 16px;
+    background:transparent;
+    border:0;
+    border-radius:0;
+    padding:18px 4px 22px;
     position:relative; z-index:1;
     opacity:0; transform:translateY(26px);
     transition:
       opacity .65s cubic-bezier(.22,1,.36,1),
       transform .65s cubic-bezier(.22,1,.36,1),
-      box-shadow .35s, border-color .35s;
+      background .35s;
     transition-delay:calc(var(--fi) * 300ms + 160ms);
   }
   .fw-card:hover{
-    box-shadow:0 20px 48px -16px rgba(15,23,42,0.18);
-    border-color:rgba(16,185,129,0.30);
-    transform:translateY(-3px) !important;
+    background:rgba(15,123,82,0.025);
   }
   .fw-root.active .fw-card{ opacity:1; transform:none; }
   .fw-ghost{
@@ -249,11 +269,19 @@
         </div>
         <h1 class="h1 max-w-[20ch]">Precision agriculture. Real-world execution.</h1>
         <p class="proof-line">Two decades of mandates. Multiple continents. One discipline.</p>
-        <div class="mt-9 flex flex-col sm:flex-row gap-3">
-          <a href="#framework" class="btn btn-primary lg">See the method
-            <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="mt-9 flex flex-col sm:flex-row gap-8 items-start sm:items-center">
+          <a href="#framework" class="ed-cta">
+            See the method
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </a>
-          <a href="#engage" class="btn btn-ghost lg">Start a conversation</a>
+          <a href="#engage" class="ed-cta" style="color:rgba(15,23,42,0.65);">
+            Start a conversation
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
         </div>
       </div>
       <div class="visual-panel story-visual">
@@ -263,16 +291,22 @@
   </div>
 </section>
 
-<!-- Credentials strip -->
+<!-- Credentials strip — editorial tracked-caps with dot separators -->
 <section class="creds">
   <div class="wrap">
-    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
-      <div class="eyebrow" style="color:#0B4D35;">Trusted by</div>
-      <div class="flex flex-wrap gap-2">
-        <span class="pill">Sovereign agriculture funds</span>
-        <span class="pill">Government ministries</span>
-        <span class="pill">Institutional land investors</span>
-        <span class="pill">MENA &amp; Africa operators</span>
+    <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-10">
+      <div class="ed-kicker" style="flex-shrink:0;">
+        <span class="rule" aria-hidden="true"></span>
+        <span>Trusted by</span>
+      </div>
+      <div class="creds-list">
+        <span>Sovereign agriculture funds</span>
+        <span class="creds-sep" aria-hidden="true">·</span>
+        <span>Government ministries</span>
+        <span class="creds-sep" aria-hidden="true">·</span>
+        <span>Institutional land investors</span>
+        <span class="creds-sep" aria-hidden="true">·</span>
+        <span>MENA &amp; Africa operators</span>
       </div>
     </div>
   </div>
@@ -308,24 +342,24 @@
 <!-- Differentiation -->
 <section class="section" style="padding-top:0">
   <div class="wrap">
-    <div class="eyebrow mb-5">What sets us apart</div>
+    <div class="ed-kicker" style="margin-bottom:24px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>What sets us apart</span>
+    </div>
     <h2 class="h2 mb-12 max-w-[20ch]">What we do that no one else does.</h2>
     <div class="diff-grid" id="diff-grid">
       <div class="diff-card" style="--di:0">
         <span class="diff-ghost" aria-hidden="true">01</span>
-        <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Both ends</div>
         <div class="lead">Agronomy <em>and</em> capital, in the same hands.</div>
         <p class="desc">Most firms know land or money. We move between the two — and the recommendation that lands on the board table is the one that holds in the field.</p>
       </div>
       <div class="diff-card" style="--di:1">
         <span class="diff-ghost" aria-hidden="true">02</span>
-        <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Year five</div>
         <div class="lead">We commit to the long arc, not the handover.</div>
         <p class="desc">Most engagements end at handover. Ours begin there. Year-1, year-5, and year-10 reviews are on our calendar and our budget.</p>
       </div>
       <div class="diff-card" style="--di:2">
         <span class="diff-ghost" aria-hidden="true">03</span>
-        <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Where it's hard</div>
         <div class="lead">Frontier markets. Climate-stressed land.</div>
         <p class="desc">Where consultancies parachute in and out, we settle in. Mixed-tenure systems, mixed climates, mixed risk — that is where our mandates run.</p>
       </div>
@@ -336,7 +370,10 @@
 <!-- Unified framework — animated horizontal roadmap -->
 <section class="section framework" id="framework">
   <div class="wrap">
-    <div class="eyebrow mb-5">Our discipline</div>
+    <div class="ed-kicker" style="margin-bottom:24px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>Our discipline</span>
+    </div>
     <h2 class="h2 mb-6 max-w-[18ch]">Four values. Six principles.</h2>
     <p class="body max-w-[60ch] mb-14">Values explain <em style="font-style:normal; color:#1F5F3A;">why</em>. Principles explain <em style="font-style:normal; color:#1F5F3A;">how</em>. If a decision fails any of the four, it does not happen.</p>
 
@@ -349,7 +386,6 @@
       <div class="fw-item" style="--fi:0">
         <div class="fw-card">
           <span class="fw-ghost" aria-hidden="true">01</span>
-          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Value 01</div>
           <div class="fw-name">Patience.</div>
           <p class="fw-body"><em>Year-5 reviews, always on us.</em> Present at year one, year five, and year ten of every engagement.</p>
         </div>
@@ -361,7 +397,6 @@
       <div class="fw-item" style="--fi:1">
         <div class="fw-card">
           <span class="fw-ghost" aria-hidden="true">02</span>
-          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Value 02</div>
           <div class="fw-name">Proof.</div>
           <p class="fw-body"><em>Third-party audit on every claim.</em> Every recommendation is measured and verified independently.</p>
         </div>
@@ -373,7 +408,6 @@
       <div class="fw-item" style="--fi:2">
         <div class="fw-card">
           <span class="fw-ghost" aria-hidden="true">03</span>
-          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Value 03</div>
           <div class="fw-name">Restraint.</div>
           <p class="fw-body"><em>The simplest protocol that holds.</em> Quick answers, not reports on a shelf — tailor-made to each land, market, and challenge.</p>
         </div>
@@ -385,7 +419,6 @@
       <div class="fw-item" style="--fi:3">
         <div class="fw-card">
           <span class="fw-ghost" aria-hidden="true">04</span>
-          <div class="eyebrow mb-1" style="font-size:9px;letter-spacing:.18em">Value 04</div>
           <div class="fw-name">Stewardship.</div>
           <p class="fw-body"><em>100-year plans, always open.</em> Practices, technology, and capability built for this land — field to boardroom.</p>
         </div>
@@ -405,7 +438,10 @@
   <div class="cinema-wash"></div>
   <div class="cinema-grain"></div>
   <div class="cinema-copy">
-    <div class="eyebrow">The long arc</div>
+    <div class="ed-kicker ed-kicker-dark" style="justify-content:center; margin-bottom:18px;">
+      <span class="rule" aria-hidden="true"></span>
+      <span>The long arc</span>
+    </div>
     <h2>The land that pays back.</h2>
     <p>What we plant in year one is measured in decades. Patience, proof, restraint, stewardship — verified by the tree, not the deck.</p>
   </div>

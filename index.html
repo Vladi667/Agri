@@ -1104,6 +1104,78 @@
     }
   }
 
+  /* ── Trusted-by client marquee (replaces field-record stats) ── */
+  .clients-strip{
+    padding: clamp(56px, 7vh, 90px) 0;
+    background: var(--bg);
+    border-top: 1px solid rgba(15,23,42,0.06);
+    border-bottom: 1px solid rgba(15,23,42,0.06);
+    overflow: hidden;
+    position: relative;
+  }
+  .clients-strip-kicker{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(15,23,42,0.42);
+    margin-bottom: 40px;
+  }
+  .clients-strip-kicker .rule{
+    width: 28px;
+    height: 1px;
+    background: rgba(15,23,42,0.22);
+    flex-shrink: 0;
+  }
+  .clients-strip-kicker .dot{
+    color: rgba(15,23,42,0.22);
+    padding: 0 4px;
+  }
+  .clients-marquee{
+    position: relative;
+    overflow: hidden;
+    /* Soft edge fade — premium */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+  }
+  .clients-track{
+    display: flex;
+    align-items: center;
+    gap: clamp(60px, 7vw, 110px);
+    width: max-content;
+    animation: clients-scroll 56s linear infinite;
+  }
+  .clients-marquee:hover .clients-track{
+    animation-play-state: paused;
+  }
+  .clients-track img{
+    height: 30px;
+    width: auto;
+    max-width: 170px;
+    object-fit: contain;
+    display: block;
+    filter: grayscale(1) opacity(0.5);
+    transition: filter .45s cubic-bezier(.22,.8,.2,1), opacity .45s;
+    flex-shrink: 0;
+  }
+  .clients-track img:hover{
+    filter: grayscale(0) opacity(1);
+  }
+  @keyframes clients-scroll{
+    from{ transform: translateX(0); }
+    to  { transform: translateX(-50%); }
+  }
+  @media (max-width: 768px){
+    .clients-track img{ height: 24px; max-width: 140px; }
+    .clients-track{ gap: clamp(40px, 8vw, 60px); animation-duration: 42s; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .clients-track{ animation: none; }
+  }
+
   /* ── Three-layer editorial spreads (replaces the 12-entry plant-scroll carousel) ── */
   .layers{
     padding: clamp(72px, 8vh, 110px) 0 clamp(56px, 6vh, 90px);
@@ -1525,43 +1597,39 @@
 </aside>
 
 <!-- Stats strip -->
-<section id="impact" class="section" style="background:var(--bg)">
+<!-- Trusted-by marquee — premium horizontal client strip -->
+<section class="clients-strip" id="impact">
   <div class="wrap">
-    <div class="flex items-end justify-between flex-wrap gap-6 mb-16">
-      <div class="max-w-[48ch]">
-        <div class="eyebrow mb-4">The field record</div>
-        <h2 class="h2">Technological innovation, compounded across seasons.</h2>
-      </div>
-      <p class="body max-w-[42ch]">From baseline soil sampling to five-year stewardship reviews, every engagement is instrumented end-to-end — efficiency and growth verified by independent audits.</p>
+    <div class="clients-strip-kicker">
+      <span class="rule" aria-hidden="true"></span>
+      <span>Trusted by</span>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>Selected clients &amp; partners</span>
     </div>
-    <svg id="stat-line" class="w-full h-4 mb-10" viewBox="0 0 1600 4" preserveAspectRatio="none">
-      <path id="statLinePath" d="M0,2 L1600,2" stroke="#0F172A" stroke-width="1" fill="none"/>
-    </svg>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-y-14 gap-x-8">
-      <div class="stat">
-        <div class="stat-num tabular"><span data-count="47" data-suffix="%">0</span></div>
-        <div class="hairline my-4 opacity-70"></div>
-        <div class="stat-label mb-2">Avg. yield uplift</div>
-        <div class="stat-desc">High-value land. Food systems. Measured returns.</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num tabular"><span data-count="12" data-suffix="">0</span></div>
-        <div class="hairline my-4 opacity-70"></div>
-        <div class="stat-label mb-2">Reach</div>
-        <div class="stat-desc">A UAE platform with international execution.</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num tabular"><span data-count="184" data-suffix="+">0</span></div>
-        <div class="hairline my-4 opacity-70"></div>
-        <div class="stat-label mb-2">Farms transformed</div>
-        <div class="stat-desc">Operating value across crops, water, and land.</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num serif">Net<span class="unit">·0</span></div>
-        <div class="hairline my-4 opacity-70"></div>
-        <div class="stat-label mb-2">Carbon pathways</div>
-        <div class="stat-desc">5- and 25-year plans for every client.</div>
-      </div>
+  </div>
+  <div class="clients-marquee" aria-label="Selected clients">
+    <div class="clients-track">
+      <img src="/images/clients/netafim.png" alt="Netafim" loading="lazy"/>
+      <img src="/images/clients/strauss-group.png" alt="Strauss Group" loading="lazy"/>
+      <img src="/images/clients/tnuva.png" alt="Tnuva" loading="lazy"/>
+      <img src="/images/clients/israel-discount-bank.png" alt="Israel Discount Bank" loading="lazy"/>
+      <img src="/images/clients/kingenta.png" alt="Kingenta" loading="lazy"/>
+      <img src="/images/clients/optimum-agriculture.png" alt="Optimum Agriculture" loading="lazy"/>
+      <img src="/images/clients/growtec.png" alt="Growtec" loading="lazy"/>
+      <img src="/images/clients/kic.png" alt="KIC" loading="lazy"/>
+      <img src="/images/clients/zabar-solar.png" alt="Zabar Solar" loading="lazy"/>
+      <img src="/images/clients/kenzy.png" alt="Kenzy" loading="lazy"/>
+      <!-- Duplicated set for seamless infinite loop -->
+      <img src="/images/clients/netafim.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/strauss-group.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/tnuva.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/israel-discount-bank.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/kingenta.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/optimum-agriculture.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/growtec.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/kic.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/zabar-solar.png" alt="" aria-hidden="true" loading="lazy"/>
+      <img src="/images/clients/kenzy.png" alt="" aria-hidden="true" loading="lazy"/>
     </div>
   </div>
 </section>

@@ -493,6 +493,31 @@ body.gw-transitioning .gw-transition-stage{
 .ed-cta-light-secondary{ color: rgba(248,249,245,0.7); }
 .ed-cta-light-secondary::after{ background: rgba(248,249,245,0.5); }
 
+/* Dark editorial band — full-width section for mission / engage / approach moments */
+.ed-band-dark{
+  background: #0B1220;
+  padding: clamp(80px, 10vh, 130px) 0;
+  color: #F8F9F5;
+}
+.ed-band-quote{
+  font-family: "Exo 2", sans-serif;
+  font-weight: 200;
+  font-size: clamp(28px, 3.4vw, 50px);
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+  color: #F8F9F5;
+  max-width: 32ch;
+  margin: 0 0 48px;
+}
+.ed-band-quote em{
+  font-style: normal;
+  color: #16C28A;
+}
+.ed-band-ctas{
+  display: flex; gap: 36px;
+  align-items: center; flex-wrap: wrap;
+}
+
 /* Chrome-free editorial photo frame */
 .ed-photo{ margin:0; position:relative; }
 .ed-photo-frame{

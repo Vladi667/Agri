@@ -45,11 +45,12 @@
       var isLocalPage = url.origin === window.location.origin && /\.(html|aspx)$/i.test(url.pathname);
       if (!isLocalPage || isSamePageHash) return;
 
-      event.preventDefault();
-      sessionStorage.setItem('gw_nav', '1'); // tell next page: use short overlay
-      document.body.classList.remove('gw-ready');
-      document.body.classList.add('gw-transitioning');
-      window.setTimeout(function(){ window.location.href = url.href; }, 580);
+      // Flag the destination page to use the short overlay; let the browser
+      // navigate immediately. The outgoing overlay used to fire here too,
+      // which made the loader appear TWICE per navigation (outgoing flash,
+      // brief gap, then incoming overlay). Only the destination overlay
+      // runs now — one clean transition per navigation.
+      sessionStorage.setItem('gw_nav', '1');
     }, true);
   }
 

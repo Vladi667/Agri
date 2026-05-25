@@ -372,13 +372,15 @@
     display: block;
     font-family: "Exo 2", sans-serif;
     font-weight: 200;
-    font-size: clamp(16px, 1.5vw, 21px);
-    letter-spacing: -0.02em;
+    font-size: clamp(14px, 1.25vw, 18px);
+    letter-spacing: -0.018em;
     line-height: 1.04;
     color: #0B1220;
-    /* Long words like "Generational" must not bleed past the divider */
-    overflow-wrap: break-word;
-    hyphens: auto;
+    /* Each word stays on one line; the hyphenation auto-break was
+       splitting "Traceable" mid-word. The font-size cap (18px) is
+       chosen so the longest label ("Generational", 12 chars) still
+       fits a single cell at standard desktop widths. */
+    white-space: nowrap;
   }
   .about-messika-proof span{
     display: block;

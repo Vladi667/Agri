@@ -41,27 +41,38 @@
   .tl-hd-sub{ padding-top:10px; max-width:40ch; color:#64748B; }
 
   /* Outer container */
-  /* Our Model — five statement lines. Each verb is the anchor; scan-then-read. */
+  /* Our Model — five horizontal acts. Each cell carries ONE sentence with
+     a green verb. No rail. No dots. No ordinals. Vertical hairlines between
+     are structural dividers, not decoration. Scan-then-read works left-to-right. */
   .about-model-acts{
     list-style: none;
     padding: 0;
-    margin: clamp(32px, 4vh, 56px) 0 clamp(56px, 7vh, 96px);
-    max-width: 38ch;
+    margin: clamp(40px, 5vh, 64px) 0 clamp(56px, 7vh, 96px);
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid rgba(15,23,42,0.10);
+    border-bottom: 1px solid rgba(15,23,42,0.10);
   }
   .about-model-act{
     font-family: "Exo 2", sans-serif;
     font-weight: 200;
-    font-size: clamp(22px, 2.4vw, 36px);
-    letter-spacing: -0.022em;
-    line-height: 1.22;
-    color: rgba(15,23,42,0.42);
+    font-size: clamp(15px, 1.35vw, 21px);
+    letter-spacing: -0.016em;
+    line-height: 1.32;
+    color: rgba(15,23,42,0.5);
     margin: 0;
-    padding: clamp(14px, 1.8vh, 22px) 0;
-    border-top: 1px solid rgba(15,23,42,0.08);
+    padding: clamp(28px, 3.6vh, 44px) clamp(16px, 1.6vw, 24px);
+    border-left: 1px solid rgba(15,23,42,0.10);
     transition: color .55s cubic-bezier(.22,.8,.2,1);
   }
+  .about-model-act:first-child{
+    border-left: 0;
+    padding-left: 0;
+  }
   .about-model-act:last-child{
-    border-bottom: 1px solid rgba(15,23,42,0.08);
+    padding-right: 0;
   }
   .about-model-act em{
     font-style: normal;
@@ -69,9 +80,27 @@
     color: #0F7B52;
   }
   .about-model-act:hover{ color: #0B1220; }
+  /* Mid-desktop tightening so 5 cells fit cleanly */
+  @media (max-width: 1180px) and (min-width: 901px){
+    .about-model-act{
+      font-size: 14px;
+      padding: 28px 16px;
+    }
+  }
+  /* Mobile: collapse to vertical stack with horizontal hairlines */
   @media (max-width: 900px){
-    .about-model-acts{ max-width: none; }
-    .about-model-act{ font-size: clamp(20px, 5vw, 26px); }
+    .about-model-acts{
+      grid-template-columns: 1fr;
+      border-bottom: 0;
+    }
+    .about-model-act{
+      border-left: 0;
+      border-bottom: 1px solid rgba(15,23,42,0.10);
+      padding: clamp(20px, 2.6vh, 28px) 0;
+      font-size: clamp(20px, 4.8vw, 26px);
+      line-height: 1.25;
+    }
+    .about-model-act:last-child{ border-bottom: 0; }
   }
   /* ── Philosophy cards ── */
   .philosophy-card{

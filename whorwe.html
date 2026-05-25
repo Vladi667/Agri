@@ -41,37 +41,27 @@
   .tl-hd-sub{ padding-top:10px; max-width:40ch; color:#64748B; }
 
   /* Outer container */
-  /* Five horizontal acts as a compact strip. Each cell carries ONE sentence
-     with a green verb anchor. 1px structural hairlines between cells. */
+  /* Five sentences across a row. No hairlines, no dividers, no kicker.
+     Whitespace and the green verbs do all the work. */
   .about-model-acts{
     list-style: none;
     padding: 0;
-    margin: clamp(20px, 2.6vh, 32px) 0 0;
+    margin: 0 0 clamp(28px, 3.5vh, 44px);
     max-width: none;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0;
-    border-top: 1px solid rgba(15,23,42,0.10);
-    border-bottom: 1px solid rgba(15,23,42,0.10);
+    gap: clamp(20px, 2.4vw, 40px);
   }
   .about-model-act{
     font-family: "Exo 2", sans-serif;
     font-weight: 200;
     font-size: clamp(13px, 1.1vw, 17px);
     letter-spacing: -0.014em;
-    line-height: 1.32;
+    line-height: 1.4;
     color: rgba(15,23,42,0.5);
     margin: 0;
-    padding: clamp(18px, 2.2vh, 26px) clamp(14px, 1.4vw, 22px);
-    border-left: 1px solid rgba(15,23,42,0.10);
+    padding: 0;
     transition: color .55s cubic-bezier(.22,.8,.2,1);
-  }
-  .about-model-act:first-child{
-    border-left: 0;
-    padding-left: 0;
-  }
-  .about-model-act:last-child{
-    padding-right: 0;
   }
   .about-model-act em{
     font-style: normal;
@@ -81,25 +71,19 @@
   .about-model-act:hover{ color: #0B1220; }
   /* Mid-desktop tightening so 5 cells fit cleanly */
   @media (max-width: 1180px) and (min-width: 901px){
-    .about-model-act{
-      font-size: 12.5px;
-      padding: 18px 12px;
-    }
+    .about-model-acts{ gap: 18px; }
+    .about-model-act{ font-size: 12.5px; }
   }
-  /* Mobile: collapse to vertical stack with horizontal hairlines */
+  /* Mobile: stack vertically, no hairlines either — pure whitespace separation */
   @media (max-width: 900px){
     .about-model-acts{
       grid-template-columns: 1fr;
-      border-bottom: 0;
+      gap: clamp(14px, 1.8vh, 20px);
     }
     .about-model-act{
-      border-left: 0;
-      border-bottom: 1px solid rgba(15,23,42,0.10);
-      padding: clamp(16px, 2vh, 22px) 0;
       font-size: clamp(17px, 4.2vw, 22px);
-      line-height: 1.28;
+      line-height: 1.32;
     }
-    .about-model-act:last-child{ border-bottom: 0; }
   }
   /* ── Philosophy cards ── */
   .philosophy-card{
@@ -255,10 +239,9 @@
     color:rgba(15,23,42,0.68);
   }
 
-  /* Our model — compact strip sitting where the stats row used to */
+  /* Our model — minimalist strip under Our Story. No section borders. */
   .about-model{
-    padding: clamp(28px, 3.6vh, 48px) 0 clamp(36px, 4.5vh, 60px);
-    border-bottom: 1px solid rgba(15,23,42,0.1);
+    padding: clamp(8px, 1vh, 16px) 0 clamp(72px, 9vh, 110px);
   }
 
   /* Story — chrome-free editorial frame */
@@ -520,35 +503,6 @@
   </div>
 </section>
 
-<!-- ── Our model — five-act statement, compact strip right after the hero ── -->
-<section class="about-model">
-  <div class="wrap">
-
-    <div class="about-kicker" data-fade style="--delay:0ms">
-      <span class="rule" aria-hidden="true"></span>
-      <span>Our model &middot; Five acts, in order</span>
-    </div>
-
-    <ol class="about-model-acts">
-      <li class="about-model-act" data-fade style="--delay:80ms">We <em>diagnose</em> before we plan.</li>
-      <li class="about-model-act" data-fade style="--delay:160ms">We <em>build</em> only what the land can carry.</li>
-      <li class="about-model-act" data-fade style="--delay:240ms">We <em>train</em> the operators who will run it.</li>
-      <li class="about-model-act" data-fade style="--delay:320ms">We <em>measure</em> on year one, year five, year ten.</li>
-      <li class="about-model-act" data-fade style="--delay:400ms">We <em>steward</em> what remains when we leave.</li>
-    </ol>
-
-    <div class="about-model-cta" data-fade style="--delay:480ms">
-      <a href="scope.html" class="about-cta">
-        See where this model runs &middot; Twelve sectors
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </div>
-
-  </div>
-</section>
-
 <!-- ── Story + chrome-free editorial photo ── -->
 <section class="section about-story">
   <div class="wrap about-story-grid">
@@ -573,6 +527,30 @@
         <span>Agricultural operations &middot; Eden Terranova</span>
       </figcaption>
     </figure>
+  </div>
+</section>
+
+<!-- ── Our model — five-act statement, sits under Our Story ── -->
+<section class="about-model">
+  <div class="wrap">
+
+    <ol class="about-model-acts">
+      <li class="about-model-act" data-fade style="--delay:80ms">We <em>diagnose</em> before we plan.</li>
+      <li class="about-model-act" data-fade style="--delay:160ms">We <em>build</em> only what the land can carry.</li>
+      <li class="about-model-act" data-fade style="--delay:240ms">We <em>train</em> the operators who will run it.</li>
+      <li class="about-model-act" data-fade style="--delay:320ms">We <em>measure</em> on year one, year five, year ten.</li>
+      <li class="about-model-act" data-fade style="--delay:400ms">We <em>steward</em> what remains when we leave.</li>
+    </ol>
+
+    <div class="about-model-cta" data-fade style="--delay:480ms">
+      <a href="scope.html" class="about-cta">
+        See where this model runs &middot; Twelve sectors
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+
   </div>
 </section>
 

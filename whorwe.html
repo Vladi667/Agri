@@ -355,26 +355,35 @@
     align-items: start;
   }
   .about-messika-proof > div{
-    padding: 0 clamp(14px, 1.6vw, 22px);
+    padding: 0 clamp(22px, 2.4vw, 36px);
     border-left: 1px solid rgba(15,23,42,0.12);
+    /* Guarantee enough room for the longest word ("Generational")
+       before the next vertical hairline starts. */
+    min-width: 0;
   }
   .about-messika-proof > div:first-child{
     padding-left: 0;
     border-left: 0;
   }
+  .about-messika-proof > div:last-child{
+    padding-right: 0;
+  }
   .about-messika-proof strong{
     display: block;
     font-family: "Exo 2", sans-serif;
     font-weight: 200;
-    font-size: clamp(20px, 2vw, 28px);
-    letter-spacing: -0.022em;
-    line-height: 1.02;
+    font-size: clamp(16px, 1.5vw, 21px);
+    letter-spacing: -0.02em;
+    line-height: 1.04;
     color: #0B1220;
+    /* Long words like "Generational" must not bleed past the divider */
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
   .about-messika-proof span{
     display: block;
-    margin-top: 12px;
-    font-size: 10.5px;
+    margin-top: 10px;
+    font-size: 10px;
     letter-spacing: .18em;
     text-transform: uppercase;
     color: rgba(15,23,42,0.46);

@@ -190,69 +190,6 @@
     opacity:1;
     transform:none;
   }
-  .messika-band{
-    background:#0B1220;
-    color:#F8F9F5;
-    overflow:hidden;
-    position:relative;
-  }
-  .messika-band::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(circle at 18% 20%, rgba(244,199,123,0.14), transparent 32%),
-      radial-gradient(circle at 84% 34%, rgba(16,185,129,0.11), transparent 30%);
-    pointer-events:none;
-  }
-  .messika-panel{
-    position:relative;
-    display:grid;
-    grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);
-    gap:64px;
-    align-items:center;
-  }
-  .messika-logo-stage{
-    min-height:360px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:1px solid rgba(255,255,255,0.1);
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
-      radial-gradient(circle at 50% 45%, rgba(255,255,255,0.1), transparent 42%);
-  }
-  .messika-logo-stage img{
-    width:min(78%, 340px);
-    filter:invert(1);
-  }
-  .messika-proof{
-    display:grid;
-    grid-template-columns:repeat(3, minmax(0,1fr));
-    gap:1px;
-    background:rgba(255,255,255,0.14);
-    border:1px solid rgba(255,255,255,0.14);
-    margin-top:34px;
-  }
-  .messika-proof div{
-    padding:18px;
-    background:rgba(255,255,255,0.045);
-  }
-  .messika-proof strong{
-    display:block;
-    font-family:"Exo 2",sans-serif;
-    font-size:22px;
-    font-weight:400;
-    color:#F8F9F5;
-  }
-  .messika-proof span{
-    display:block;
-    margin-top:5px;
-    color:rgba(248,249,245,0.62);
-    font-size:12px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-  }
   blockquote{ font-family:"Exo 2",sans-serif; font-weight:200; font-size:clamp(24px,2.8vw,40px); letter-spacing:-0.02em; line-height:1.18; color:#1E2A3A; }
   blockquote em{ font-style:normal; color:var(--green-deep); }
   @media (max-width: 768px){
@@ -262,16 +199,6 @@
     }
     .story-visual{
       max-width:100%;
-    }
-    .messika-panel{
-      grid-template-columns:1fr;
-      gap:36px;
-    }
-    .messika-logo-stage{
-      min-height:220px;
-    }
-    .messika-proof{
-      grid-template-columns:1fr;
     }
   }
   /* === Editorial DNA refactor (god-tier minimal pass) === */
@@ -421,115 +348,99 @@
     align-self:center;
   }
 
-  /* Messika partnership — premium botanical-green band, jewelry-vitrine register */
+  /* Messika partnership — Apple-style: calm ground, typography is the moment */
   .about-messika{
     position:relative;
-    background:
-      /* Champagne wash, top-left — luxury connotation */
-      radial-gradient(72% 58% at 16% 18%, rgba(232, 212, 170, 0.28), transparent 58%),
-      /* Deeper emerald glow, bottom-right — brand-green anchor */
-      radial-gradient(64% 56% at 84% 84%, rgba(15, 123, 82, 0.22), transparent 60%),
-      /* Refined sage base — deeper, less chalky than spring meadow */
-      linear-gradient(180deg, #DCE6D4 0%, #B6C9A8 100%);
-    padding: clamp(96px, 12vh, 150px) 0;
-    border-top: 1px solid rgba(14, 69, 48, 0.28);
-    border-bottom: 1px solid rgba(14, 69, 48, 0.28);
+    background:#F8F9F5;
+    padding: clamp(120px, 16vh, 200px) 0;
+    border-top: 1px solid rgba(15,23,42,0.06);
+    border-bottom: 1px solid rgba(15,23,42,0.06);
   }
-  /* Subtle vertical grain — readable only at close range, signals craft */
-  .about-messika::after{
-    content:'';
-    position:absolute; inset:0;
-    background-image:
-      repeating-linear-gradient(90deg, rgba(14,69,48,0.018) 0 1px, transparent 1px 6px);
-    pointer-events:none;
-    mix-blend-mode:multiply;
-    opacity:.55;
+  .about-messika-stack{
+    max-width: 1080px;
   }
-  .about-messika-grid{
-    position:relative;
-    z-index:1;
-    display:grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(48px, 6vw, 100px);
-    align-items:center;
-  }
-  /* Vitrine: solid clean white, deep-green double hairline, no glass blur */
-  .about-messika-mark{
-    display:flex; flex-direction:column; align-items:flex-start;
-    gap:0;
-    padding: clamp(44px, 5.5vw, 72px) clamp(32px, 4vw, 56px);
-    background:#FBFBF7;
-    border:1px solid rgba(14,69,48,0.18);
-    box-shadow:
-      0 1px 0 rgba(14,69,48,0.05) inset,
-      0 30px 60px -40px rgba(14,69,48,0.22),
-      0 0 0 6px rgba(255,255,255,0.42);
-    position:relative;
-  }
-  /* Inner hairline — second border at 8px inset = jewelry-display vitrine */
-  .about-messika-mark::before{
-    content:'';
-    position:absolute;
-    inset:8px;
-    border:1px solid rgba(14,69,48,0.10);
-    pointer-events:none;
-  }
-  /* Logo — original brand mark, served as-is. Monogram + diamond glyph +
-     "André Messika Diamonds" wordmark are part of the asset. */
-  .about-messika-logo{
-    display:block;
-    width:100%;
-    max-width: clamp(220px, 22vw, 320px);
-    height:auto;
-    object-fit:contain;
-    margin-bottom: clamp(28px, 3.2vw, 40px);
-    /* Subtle premium lift without altering the mark itself */
-    filter: drop-shadow(0 1px 0 rgba(14,69,48,0.04));
-  }
-  /* Hairline divider between logo and metadata */
-  .about-messika-mark-rule{
-    width:48px; height:1px;
-    background:rgba(14,69,48,0.32);
-    margin: 0 0 18px;
-  }
-  .about-messika-kicker{
+  /* Tracked kicker with one tiny emerald dot — the only accent in the section */
+  .about-messika-eyebrow{
     display:flex; align-items:center; gap:14px;
-    font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
-    color:rgba(14,69,48,0.62);
-    margin-bottom:10px;
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color: rgba(15,23,42,0.5);
+    margin: 0 0 clamp(56px, 7vh, 96px);
   }
-  .about-messika-kicker .rule{
-    flex:0 0 24px; height:1px;
-    background:rgba(14,69,48,0.32);
+  .about-messika-eyebrow .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:#0E4530;
+    flex-shrink:0;
   }
-  .about-messika-desc{
-    max-width:54ch;
-    font-size:16px; line-height:1.62;
-    color:rgba(15,23,42,0.74);
-    margin: 0 0 32px;
+  /* The partner name IS the moment. Ultralight, massive, confident. */
+  .about-messika-name{
+    font-family:"Exo 2", sans-serif;
+    font-weight: 100;
+    font-size: clamp(64px, 9.5vw, 152px);
+    letter-spacing: -0.04em;
+    line-height: 0.94;
+    color:#0B1220;
+    margin: 0 0 clamp(18px, 2vh, 30px);
   }
-  /* Proof grid — clean white cells with deep-green hairlines, no glass blur */
+  /* Quiet caption */
+  .about-messika-caption{
+    font-size: clamp(15px, 1.4vw, 19px);
+    letter-spacing: 0.005em;
+    color: rgba(15,23,42,0.5);
+    margin: 0 0 clamp(80px, 10vh, 130px);
+  }
+  /* Asymmetric body: copy on left, three proof lines on right */
+  .about-messika-body-grid{
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(48px, 6vw, 104px);
+    align-items: start;
+  }
+  .about-messika-body{
+    font-size: clamp(17px, 1.5vw, 22px);
+    line-height: 1.55;
+    letter-spacing: -0.008em;
+    color: rgba(15,23,42,0.78);
+    max-width: 46ch;
+    margin: 0;
+  }
+  /* Proof: three columns, vertical hairline separators, no card chrome */
   .about-messika-proof{
-    display:grid; grid-template-columns:repeat(3, minmax(0,1fr));
-    gap:1px;
-    background:rgba(14,69,48,0.22);
-    border:1px solid rgba(14,69,48,0.22);
-    margin-bottom:32px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    align-items: start;
   }
   .about-messika-proof > div{
-    padding:20px;
-    background:#FBFBF7;
+    padding: 0 clamp(14px, 1.6vw, 22px);
+    border-left: 1px solid rgba(15,23,42,0.12);
+  }
+  .about-messika-proof > div:first-child{
+    padding-left: 0;
+    border-left: 0;
   }
   .about-messika-proof strong{
-    display:block;
-    font-family:"Exo 2",sans-serif;
-    font-size:19px; font-weight:300;
-    color:#0E4530; letter-spacing:-0.018em;
+    display: block;
+    font-family: "Exo 2", sans-serif;
+    font-weight: 200;
+    font-size: clamp(20px, 2vw, 28px);
+    letter-spacing: -0.022em;
+    line-height: 1.02;
+    color: #0B1220;
   }
   .about-messika-proof span{
-    display:block; margin-top:8px;
-    color:rgba(14,69,48,0.58);
-    font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    display: block;
+    margin-top: 12px;
+    font-size: 10.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(15,23,42,0.46);
+  }
+  /* CTA sits below the asymmetric body, generous breathing room above */
+  .about-messika-cta-wrap{
+    margin-top: clamp(56px, 7vh, 96px);
+  }
+  .about-messika .about-cta{
+    font-size: clamp(14px, 1.2vw, 17px);
   }
 
   /* Model (renamed from "journey") */
@@ -646,12 +557,11 @@
   /* Responsive */
   @media (max-width: 900px){
     .about-story-grid,
-    .about-messika-grid{
+    .about-story-grid{
       grid-template-columns: 1fr;
       gap:36px;
     }
     .about-stats-grid{ grid-template-columns: repeat(2, 1fr); gap:32px; }
-    .about-messika-mark{ max-width:none; margin-inline-start:0; }
     .about-story-photo{ max-width:380px; }
     .about-model-head{ flex-direction:column; gap:24px; margin-bottom:40px; }
     .about-value{
@@ -659,7 +569,19 @@
       gap:18px;
     }
     .about-value-body{ grid-column: 1 / -1; max-width:none; }
-    .about-messika-proof{ grid-template-columns:1fr; }
+    /* Messika partnership on small screens: stack body + proof, hairlines become rules between proof rows */
+    .about-messika-body-grid{
+      grid-template-columns: 1fr;
+      gap: clamp(40px, 6vh, 64px);
+    }
+    .about-messika-proof{ grid-template-columns: 1fr; }
+    .about-messika-proof > div{
+      padding: 22px 0;
+      border-left: 0;
+      border-bottom: 1px solid rgba(15,23,42,0.10);
+    }
+    .about-messika-proof > div:first-child{ padding-top: 0; }
+    .about-messika-proof > div:last-child{ border-bottom: 0; padding-bottom: 0; }
   }
 </style>
 </head>
@@ -727,29 +649,40 @@
   </div>
 </section>
 
-<!-- ── Andr&eacute; Messika partnership — converted to light editorial ── -->
+<!-- ── Andr&eacute; Messika partnership — typography is the moment ── -->
 <section class="section about-messika">
-  <div class="wrap about-messika-grid">
-    <div class="about-messika-mark" aria-label="Andr&eacute; Messika Diamonds partnership">
-      <img class="about-messika-logo" src="/images/andre-messika.png" alt="Andr&eacute; Messika Diamonds" loading="lazy" decoding="async"/>
-      <span class="about-messika-mark-rule" aria-hidden="true"></span>
-      <div class="about-messika-kicker">
-        <span class="rule" aria-hidden="true"></span>
-        <span>In partnership with</span>
+  <div class="wrap about-messika-stack">
+
+    <div class="about-messika-eyebrow">
+      <span class="dot" aria-hidden="true"></span>
+      <span>In partnership with</span>
+    </div>
+
+    <h2 class="about-messika-name">Andr&eacute; Messika</h2>
+    <p class="about-messika-caption">Luxury diamonds and fine jewellery. Paris.</p>
+
+    <div class="about-messika-body-grid">
+      <p class="about-messika-body">
+        A partnership built on precision. The discipline that defines exceptional diamonds (ethical sourcing, traceable provenance, an uncompromising standard of craft) is the same discipline we bring to land.
+      </p>
+
+      <div class="about-messika-proof">
+        <div>
+          <strong>Ethical</strong>
+          <span>Sourcing standard</span>
+        </div>
+        <div>
+          <strong>Traceable</strong>
+          <span>Provenance and craft</span>
+        </div>
+        <div>
+          <strong>Generational</strong>
+          <span>Value horizon</span>
+        </div>
       </div>
     </div>
-    <div>
-      <div class="about-kicker">
-        <span class="rule" aria-hidden="true"></span>
-        <span>In partnership</span>
-      </div>
-      <h2 class="about-h2">A partnership built on precision.</h2>
-      <p class="about-messika-desc">Andr&eacute; Messika brings the same discipline that defines exceptional diamonds to our agricultural mandates: ethical sourcing, traceable provenance, and an uncompromising standard of craft that holds across generations.</p>
-      <div class="about-messika-proof">
-        <div><strong>Ethical</strong><span>Sourcing standard</span></div>
-        <div><strong>Traceable</strong><span>Provenance &amp; craft</span></div>
-        <div><strong>Legacy</strong><span>Generational value</span></div>
-      </div>
+
+    <div class="about-messika-cta-wrap">
       <a href="https://www.andremessika.com/" class="about-cta" target="_blank" rel="noopener">
         Visit Andr&eacute; Messika
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -757,6 +690,7 @@
         </svg>
       </a>
     </div>
+
   </div>
 </section>
 

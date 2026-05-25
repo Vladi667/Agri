@@ -47,11 +47,11 @@
     border-bottom:1px solid rgba(15,23,42,0.09);
   }
 
-  /* The green vertical line — draws downward on .active */
+  /* Deep emerald vertical line — draws downward on .active, harmonised with Messika band above */
   .tl-v2-line{
     position:absolute;
     left:0; top:18px; bottom:18px; width:1px;
-    background:linear-gradient(180deg, var(--green) 0%, var(--green-deep) 55%, rgba(15,123,82,0.10) 100%);
+    background:linear-gradient(180deg, #0E4530 0%, rgba(14,69,48,0.62) 58%, rgba(14,69,48,0.08) 100%);
     transform-origin:top center;
     transform:scaleY(0);
     transition:transform 1.9s cubic-bezier(.22,1,.36,1);
@@ -84,15 +84,15 @@
   }
   .tl-v2.active .tl-v2-item::after{ transform:scaleX(1); }
 
-  /* Dot on the vertical line — springs in */
+  /* Dot on the vertical line — springs in. Champagne halo ties to Messika band above. */
   .tl-v2-item::before{
     content:'';
     position:absolute;
     left:-56px; top:42px;
     width:8px; height:8px; border-radius:50%;
     background:#F2F4EC;
-    border:1.5px solid var(--green);
-    box-shadow:0 0 0 4px rgba(16,185,129,0.12);
+    border:1.5px solid #0E4530;
+    box-shadow:0 0 0 5px rgba(232,212,170,0.22);
     transform:scale(0);
     transition:transform .52s cubic-bezier(.34,1.56,.64,1);
     transition-delay:calc(var(--tl-i) * 155ms + 270ms);
@@ -114,7 +114,7 @@
     user-select:none;
     transition:color .5s;
   }
-  .tl-v2-item:hover .tl-v2-num{ color:rgba(15,123,82,0.09); }
+  .tl-v2-item:hover .tl-v2-num{ color:rgba(14,69,48,0.10); }
 
   @media(max-width:768px){
     .tl-hd{ flex-direction:column; gap:12px; margin-bottom:40px; }
@@ -560,8 +560,21 @@
   .tl-v2-kicker{
     display:inline-block;
     font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
-    color:rgba(15,23,42,0.5);
+    color:rgba(14,69,48,0.68);
     margin-bottom:14px;
+  }
+  /* CTA bridge at the end of the model timeline */
+  .about-model-cta{
+    margin-top: clamp(36px, 4vh, 56px);
+    padding-top: clamp(28px, 3vh, 40px);
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .about-model-cta-rule{
+    flex:1; height:1px;
+    background:rgba(14,69,48,0.18);
+    max-width:120px;
   }
   .tl-v2-title{
     font-family:"Exo 2",sans-serif;
@@ -761,7 +774,7 @@
   </div>
 </section>
 
-<!-- ── Our model (reframed from "journey"; pills replaced with tracked kickers) ── -->
+<!-- ── Our model — five operating acts. Parallel content, honest sequence. ── -->
 <section class="section about-model">
   <div class="wrap">
 
@@ -771,9 +784,9 @@
           <span class="rule" aria-hidden="true"></span>
           <span>Our model</span>
         </div>
-        <h2 class="about-h2">Five connected commitments.</h2>
+        <h2 class="about-h2">How we work, in five acts.</h2>
       </div>
-      <p class="about-model-sub">Clear diagnosis. Practical execution. Operators trained. Results measured. Not a sequence in time &mdash; five aspects that operate at once.</p>
+      <p class="about-model-sub">Each act earns the next. We do not skip diagnosis to start building, we do not leave before the operators can run it, and we do not call it finished before year ten.</p>
     </div>
 
     <div class="tl-v2" id="tl-v2-root">
@@ -781,38 +794,48 @@
 
       <div class="tl-v2-item" style="--tl-i:0">
         <span class="tl-v2-num" aria-hidden="true">01</span>
-        <div class="tl-v2-kicker">Platform</div>
-        <h3 class="tl-v2-title">Eden Terranova</h3>
-        <p class="tl-v2-body">A focused platform for productive land, water resilience, and agricultural value creation.</p>
+        <div class="tl-v2-kicker">Diagnose</div>
+        <h3 class="tl-v2-title">Soil, water, climate, capital.</h3>
+        <p class="tl-v2-body">Independent field, lab and financial diagnosis before any plan is drawn. We commit to what the land can carry, not to what the brief asks for.</p>
       </div>
 
       <div class="tl-v2-item" style="--tl-i:1">
         <span class="tl-v2-num" aria-hidden="true">02</span>
-        <div class="tl-v2-kicker">Partnership</div>
-        <h3 class="tl-v2-title">Andr&eacute; Messika</h3>
-        <p class="tl-v2-body">Ethical craft, traceable provenance, and a generational standard that mirrors our own approach to land.</p>
+        <div class="tl-v2-kicker">Build</div>
+        <h3 class="tl-v2-title">Agronomy and infrastructure, on the ground.</h3>
+        <p class="tl-v2-body">Agronomy, agro-technology, irrigation, post-harvest infrastructure. Designed to operate, not to demo.</p>
       </div>
 
       <div class="tl-v2-item" style="--tl-i:2">
         <span class="tl-v2-num" aria-hidden="true">03</span>
-        <div class="tl-v2-kicker">Execution</div>
-        <h3 class="tl-v2-title">Agronomy and operating know-how</h3>
-        <p class="tl-v2-body">Agronomy, agro-technology, post-harvest planning, and operator training in one operating model.</p>
+        <div class="tl-v2-kicker">Train</div>
+        <h3 class="tl-v2-title">Operators who outlast our presence.</h3>
+        <p class="tl-v2-body">Every program transfers to local operators on a fixed schedule. We measure our success by what continues running after we leave.</p>
       </div>
 
       <div class="tl-v2-item" style="--tl-i:3">
         <span class="tl-v2-num" aria-hidden="true">04</span>
-        <div class="tl-v2-kicker">Mandates</div>
-        <h3 class="tl-v2-title">Rural development &amp; food security</h3>
-        <p class="tl-v2-body">For investors, governments, family offices, and funds seeking real agricultural transformation.</p>
+        <div class="tl-v2-kicker">Measure</div>
+        <h3 class="tl-v2-title">Audited on year one, year five, year ten.</h3>
+        <p class="tl-v2-body">Independent third-party verification against MRV plans we authored ourselves. The same standard at every review, on every site.</p>
       </div>
 
       <div class="tl-v2-item" style="--tl-i:4">
         <span class="tl-v2-num" aria-hidden="true">05</span>
-        <div class="tl-v2-kicker">Legacy</div>
-        <h3 class="tl-v2-title">Generational stewardship</h3>
-        <p class="tl-v2-body">Every engagement is designed to leave behind stronger land, stronger operators, and a clearer path for the next generation.</p>
+        <div class="tl-v2-kicker">Steward</div>
+        <h3 class="tl-v2-title">Land left stronger than we found it.</h3>
+        <p class="tl-v2-body">Generational stewardship is the only outcome that justifies the work. Every engagement is designed to outlive our presence on the site.</p>
       </div>
+    </div>
+
+    <div class="about-model-cta" data-fade style="--delay:200ms">
+      <span class="about-model-cta-rule" aria-hidden="true"></span>
+      <a href="scope.html" class="about-cta">
+        See where this model runs &middot; Twelve sectors
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
     </div>
 
   </div>

@@ -41,86 +41,115 @@
   .tl-hd-sub{ padding-top:10px; max-width:40ch; color:#64748B; }
 
   /* Outer container */
+  /* Horizontal 5-act timeline — Apple-style process row */
   .tl-v2{
     position:relative;
-    padding-left:52px;
-    border-bottom:1px solid rgba(15,23,42,0.09);
+    display:grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(20px, 2.4vw, 40px);
+    padding: 40px 0 0;
   }
 
-  /* Deep emerald vertical line — draws downward on .active, harmonised with Messika band above */
+  /* Horizontal rail — draws left to right on .active, harmonised with Messika band */
   .tl-v2-line{
     position:absolute;
-    left:0; top:18px; bottom:18px; width:1px;
-    background:linear-gradient(180deg, #0E4530 0%, rgba(14,69,48,0.62) 58%, rgba(14,69,48,0.08) 100%);
-    transform-origin:top center;
-    transform:scaleY(0);
+    left:0; right:0; top:14px;
+    width:auto; height:1px;
+    background:linear-gradient(90deg, #0E4530 0%, rgba(14,69,48,0.62) 58%, rgba(14,69,48,0.08) 100%);
+    transform-origin:left center;
+    transform:scaleX(0);
     transition:transform 1.9s cubic-bezier(.22,1,.36,1);
   }
-  .tl-v2.active .tl-v2-line{ transform:scaleY(1); }
+  .tl-v2.active .tl-v2-line{ transform:scaleX(1); }
 
-  /* Each step */
+  /* Each act = one column */
   .tl-v2-item{
     position:relative;
-    padding:38px 0;
+    padding: 36px 0 0;
     opacity:0;
-    transform:translateY(30px);
+    transform:translateY(16px);
     transition:
       opacity .68s cubic-bezier(.22,1,.36,1),
       transform .68s cubic-bezier(.22,1,.36,1);
-    transition-delay:calc(var(--tl-i) * 155ms + 80ms);
+    transition-delay:calc(var(--tl-i) * 130ms + 80ms);
   }
   .tl-v2.active .tl-v2-item{ opacity:1; transform:none; }
 
-  /* Horizontal divider that draws from left to right */
-  .tl-v2-item::after{
-    content:'';
-    position:absolute;
-    top:0; left:0; right:0; height:1px;
-    background:rgba(15,23,42,0.09);
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:transform .72s cubic-bezier(.22,1,.36,1);
-    transition-delay:calc(var(--tl-i) * 155ms);
-  }
-  .tl-v2.active .tl-v2-item::after{ transform:scaleX(1); }
+  /* The per-item top-hairline divider isn't needed in horizontal mode */
+  .tl-v2-item::after{ display:none; }
 
-  /* Dot on the vertical line — springs in. Champagne halo ties to Messika band above. */
+  /* Dot — sits on the horizontal rail above the column */
   .tl-v2-item::before{
     content:'';
     position:absolute;
-    left:-56px; top:42px;
+    left:0; top:10px;
     width:8px; height:8px; border-radius:50%;
     background:#F2F4EC;
     border:1.5px solid #0E4530;
     box-shadow:0 0 0 5px rgba(232,212,170,0.22);
     transform:scale(0);
     transition:transform .52s cubic-bezier(.34,1.56,.64,1);
-    transition-delay:calc(var(--tl-i) * 155ms + 270ms);
+    transition-delay:calc(var(--tl-i) * 130ms + 270ms);
     z-index:1;
   }
   .tl-v2.active .tl-v2-item::before{ transform:scale(1); }
 
-  /* Large ghost ordinal number */
+  /* Ordinal: small tracked caps inline at top of each column, not a 108px ghost */
   .tl-v2-num{
-    position:absolute;
-    right:0; top:24px;
+    position:static;
+    display:block;
     font-family:"Exo 2",sans-serif;
-    font-weight:300;
-    font-size:clamp(72px, 8vw, 108px);
+    font-weight:500;
+    font-size:11px;
     line-height:1;
-    color:rgba(15,23,42,0.055);
-    letter-spacing:-0.02em;
-    pointer-events:none;
-    user-select:none;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:rgba(14,69,48,0.58);
+    font-variant-numeric:tabular-nums;
+    margin-bottom:16px;
     transition:color .5s;
   }
-  .tl-v2-item:hover .tl-v2-num{ color:rgba(14,69,48,0.10); }
+  .tl-v2-item:hover .tl-v2-num{ color:#0E4530; }
 
+  /* Horizontal column mode: stack to one column on small screens */
+  @media(max-width:900px){
+    .tl-v2{
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 0 0 0 52px;
+      border-bottom: 1px solid rgba(15,23,42,0.09);
+    }
+    .tl-v2-line{
+      left:0; top:18px; bottom:18px; right:auto;
+      width:1px; height:auto;
+      background:linear-gradient(180deg, #0E4530 0%, rgba(14,69,48,0.62) 58%, rgba(14,69,48,0.08) 100%);
+      transform-origin:top center;
+      transform:scaleY(0);
+    }
+    .tl-v2.active .tl-v2-line{ transform:scaleY(1); }
+    .tl-v2-item{
+      padding: 36px 0;
+    }
+    .tl-v2-item::after{
+      display:block;
+      content:'';
+      position:absolute;
+      top:0; left:0; right:0; height:1px;
+      background:rgba(15,23,42,0.09);
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform .72s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--tl-i) * 155ms);
+    }
+    .tl-v2.active .tl-v2-item::after{ transform:scaleX(1); }
+    .tl-v2-item::before{
+      left:-40px; top:42px;
+    }
+  }
   @media(max-width:768px){
     .tl-hd{ flex-direction:column; gap:12px; margin-bottom:40px; }
     .tl-v2{ padding-left:36px; }
     .tl-v2-item::before{ left:-40px; }
-    .tl-v2-num{ font-size:56px; }
   }
   /* ── Philosophy cards ── */
   .philosophy-card{
@@ -371,22 +400,22 @@
     background:#0E4530;
     flex-shrink:0;
   }
-  /* The partner name IS the moment. Ultralight, massive, confident. */
+  /* The partner name IS the moment. Ultralight, confident, restrained. */
   .about-messika-name{
     font-family:"Exo 2", sans-serif;
     font-weight: 100;
-    font-size: clamp(64px, 9.5vw, 152px);
-    letter-spacing: -0.04em;
-    line-height: 0.94;
+    font-size: clamp(48px, 6.8vw, 104px);
+    letter-spacing: -0.038em;
+    line-height: 0.96;
     color:#0B1220;
-    margin: 0 0 clamp(18px, 2vh, 30px);
+    margin: 0 0 clamp(16px, 1.8vh, 26px);
   }
   /* Quiet caption */
   .about-messika-caption{
-    font-size: clamp(15px, 1.4vw, 19px);
+    font-size: clamp(13px, 1.1vw, 16px);
     letter-spacing: 0.005em;
     color: rgba(15,23,42,0.5);
-    margin: 0 0 clamp(80px, 10vh, 130px);
+    margin: 0 0 clamp(72px, 9vh, 116px);
   }
   /* Asymmetric body: copy on left, three proof lines on right */
   .about-messika-body-grid{
@@ -396,11 +425,11 @@
     align-items: start;
   }
   .about-messika-body{
-    font-size: clamp(17px, 1.5vw, 22px);
-    line-height: 1.55;
-    letter-spacing: -0.008em;
-    color: rgba(15,23,42,0.78);
-    max-width: 46ch;
+    font-size: clamp(15px, 1.2vw, 18px);
+    line-height: 1.6;
+    letter-spacing: -0.004em;
+    color: rgba(15,23,42,0.74);
+    max-width: 48ch;
     margin: 0;
   }
   /* Proof: three columns, vertical hairline separators, no card chrome */
@@ -457,38 +486,48 @@
     color:rgba(15,23,42,0.62);
   }
   .tl-v2-kicker{
-    display:inline-block;
-    font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
-    color:rgba(14,69,48,0.68);
+    display:block;
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:rgba(14,69,48,0.74);
+    font-weight:500;
     margin-bottom:14px;
   }
   /* CTA bridge at the end of the model timeline */
   .about-model-cta{
-    margin-top: clamp(36px, 4vh, 56px);
-    padding-top: clamp(28px, 3vh, 40px);
+    margin-top: clamp(56px, 6vh, 80px);
+    padding-top: clamp(32px, 3.5vh, 44px);
+    border-top: 1px solid rgba(14,69,48,0.12);
     display:flex;
     align-items:center;
     gap:18px;
   }
-  .about-model-cta-rule{
-    flex:1; height:1px;
-    background:rgba(14,69,48,0.18);
-    max-width:120px;
-  }
   .tl-v2-title{
     font-family:"Exo 2",sans-serif;
     font-weight:300;
-    font-size:clamp(24px, 2.4vw, 32px);
+    font-size:clamp(17px, 1.4vw, 21px);
     letter-spacing:-0.022em;
-    line-height:1.1;
+    line-height:1.18;
     color:#0B1220;
-    margin: 0 0 10px;
+    margin: 0 0 12px;
   }
   .tl-v2-body{
-    font-size:15px; line-height:1.6;
-    color:rgba(15,23,42,0.68);
-    max-width:52ch;
+    font-size:13.5px; line-height:1.58;
+    color:rgba(15,23,42,0.66);
+    max-width:none;
     margin:0;
+  }
+  /* On wide screens (5 columns + gap), give the body room; on narrower
+     desktop ranges (1100-1300px) the columns get tight — tighten body */
+  @media (max-width: 1180px) and (min-width: 901px){
+    .tl-v2{ gap: 18px; }
+    .tl-v2-title{ font-size:16px; }
+    .tl-v2-body{ font-size:13px; line-height:1.5; }
+  }
+  /* On mobile the column expands again — restore generous reading sizes */
+  @media (max-width: 900px){
+    .tl-v2-kicker{ display:inline-block; font-size:10.5px; margin-bottom: 12px; }
+    .tl-v2-title{ font-size:clamp(22px, 2.4vw, 30px); margin-bottom: 10px; }
+    .tl-v2-body{ font-size:15px; line-height:1.6; max-width:52ch; }
   }
 
   /* Values typographic sequence (replaces card grid + stroke icons) */
@@ -749,7 +788,6 @@
     </div>
 
     <div class="about-model-cta" data-fade style="--delay:200ms">
-      <span class="about-model-cta-rule" aria-hidden="true"></span>
       <a href="scope.html" class="about-cta">
         See where this model runs &middot; Twelve sectors
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">

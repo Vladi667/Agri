@@ -41,115 +41,23 @@
   .tl-hd-sub{ padding-top:10px; max-width:40ch; color:#64748B; }
 
   /* Outer container */
-  /* Horizontal 5-act timeline — Apple-style process row */
-  .tl-v2{
-    position:relative;
-    display:grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: clamp(20px, 2.4vw, 40px);
-    padding: 40px 0 0;
+  /* Our Model — one editorial statement, no process strip */
+  .about-model-statement{
+    font-family:"Exo 2", sans-serif;
+    font-weight: 200;
+    font-size: clamp(28px, 3.4vw, 50px);
+    letter-spacing: -0.022em;
+    line-height: 1.28;
+    color: #0B1220;
+    max-width: 26ch;
+    margin: clamp(28px, 3.5vh, 44px) 0 clamp(56px, 7vh, 96px);
+    padding: 0;
+    border: 0;
+    quotes: none;
   }
-
-  /* Horizontal rail — draws left to right on .active, harmonised with Messika band */
-  .tl-v2-line{
-    position:absolute;
-    left:0; right:0; top:14px;
-    width:auto; height:1px;
-    background:linear-gradient(90deg, #0E4530 0%, rgba(14,69,48,0.62) 58%, rgba(14,69,48,0.08) 100%);
-    transform-origin:left center;
-    transform:scaleX(0);
-    transition:transform 1.9s cubic-bezier(.22,1,.36,1);
-  }
-  .tl-v2.active .tl-v2-line{ transform:scaleX(1); }
-
-  /* Each act = one column */
-  .tl-v2-item{
-    position:relative;
-    padding: 36px 0 0;
-    opacity:0;
-    transform:translateY(16px);
-    transition:
-      opacity .68s cubic-bezier(.22,1,.36,1),
-      transform .68s cubic-bezier(.22,1,.36,1);
-    transition-delay:calc(var(--tl-i) * 130ms + 80ms);
-  }
-  .tl-v2.active .tl-v2-item{ opacity:1; transform:none; }
-
-  /* The per-item top-hairline divider isn't needed in horizontal mode */
-  .tl-v2-item::after{ display:none; }
-
-  /* Dot — sits on the horizontal rail above the column */
-  .tl-v2-item::before{
-    content:'';
-    position:absolute;
-    left:0; top:10px;
-    width:8px; height:8px; border-radius:50%;
-    background:#F2F4EC;
-    border:1.5px solid #0E4530;
-    box-shadow:0 0 0 5px rgba(232,212,170,0.22);
-    transform:scale(0);
-    transition:transform .52s cubic-bezier(.34,1.56,.64,1);
-    transition-delay:calc(var(--tl-i) * 130ms + 270ms);
-    z-index:1;
-  }
-  .tl-v2.active .tl-v2-item::before{ transform:scale(1); }
-
-  /* Ordinal: small tracked caps inline at top of each column, not a 108px ghost */
-  .tl-v2-num{
-    position:static;
-    display:block;
-    font-family:"Exo 2",sans-serif;
-    font-weight:500;
-    font-size:11px;
-    line-height:1;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    color:rgba(14,69,48,0.58);
-    font-variant-numeric:tabular-nums;
-    margin-bottom:16px;
-    transition:color .5s;
-  }
-  .tl-v2-item:hover .tl-v2-num{ color:#0E4530; }
-
-  /* Horizontal column mode: stack to one column on small screens */
-  @media(max-width:900px){
-    .tl-v2{
-      grid-template-columns: 1fr;
-      gap: 0;
-      padding: 0 0 0 52px;
-      border-bottom: 1px solid rgba(15,23,42,0.09);
-    }
-    .tl-v2-line{
-      left:0; top:18px; bottom:18px; right:auto;
-      width:1px; height:auto;
-      background:linear-gradient(180deg, #0E4530 0%, rgba(14,69,48,0.62) 58%, rgba(14,69,48,0.08) 100%);
-      transform-origin:top center;
-      transform:scaleY(0);
-    }
-    .tl-v2.active .tl-v2-line{ transform:scaleY(1); }
-    .tl-v2-item{
-      padding: 36px 0;
-    }
-    .tl-v2-item::after{
-      display:block;
-      content:'';
-      position:absolute;
-      top:0; left:0; right:0; height:1px;
-      background:rgba(15,23,42,0.09);
-      transform:scaleX(0);
-      transform-origin:left;
-      transition:transform .72s cubic-bezier(.22,1,.36,1);
-      transition-delay:calc(var(--tl-i) * 155ms);
-    }
-    .tl-v2.active .tl-v2-item::after{ transform:scaleX(1); }
-    .tl-v2-item::before{
-      left:-40px; top:42px;
-    }
-  }
-  @media(max-width:768px){
-    .tl-hd{ flex-direction:column; gap:12px; margin-bottom:40px; }
-    .tl-v2{ padding-left:36px; }
-    .tl-v2-item::before{ left:-40px; }
+  .about-model-statement em{
+    font-style: normal;
+    color: #0F7B52;
   }
   /* ── Philosophy cards ── */
   .philosophy-card{
@@ -475,25 +383,7 @@
 
   /* Model (renamed from "journey") */
   .about-model{ background: #F2F4EC; }
-  .about-model-head{
-    display:flex; align-items:flex-start; gap:48px;
-    margin-bottom:64px;
-  }
-  .about-model-head > div:first-child{ flex:0 0 auto; }
-  .about-model-sub{
-    padding-top:10px;
-    max-width:40ch;
-    font-size:16px; line-height:1.6;
-    color:rgba(15,23,42,0.62);
-  }
-  .tl-v2-kicker{
-    display:block;
-    font-size:11px; letter-spacing:.22em; text-transform:uppercase;
-    color:rgba(14,69,48,0.74);
-    font-weight:500;
-    margin-bottom:14px;
-  }
-  /* CTA bridge at the end of the model timeline */
+  /* CTA bridge at the end of the model statement */
   .about-model-cta{
     margin-top: clamp(56px, 6vh, 80px);
     padding-top: clamp(32px, 3.5vh, 44px);
@@ -501,34 +391,6 @@
     display:flex;
     align-items:center;
     gap:18px;
-  }
-  .tl-v2-title{
-    font-family:"Exo 2",sans-serif;
-    font-weight:300;
-    font-size:clamp(17px, 1.4vw, 21px);
-    letter-spacing:-0.022em;
-    line-height:1.18;
-    color:#0B1220;
-    margin: 0 0 12px;
-  }
-  .tl-v2-body{
-    font-size:13.5px; line-height:1.58;
-    color:rgba(15,23,42,0.66);
-    max-width:none;
-    margin:0;
-  }
-  /* On wide screens (5 columns + gap), give the body room; on narrower
-     desktop ranges (1100-1300px) the columns get tight — tighten body */
-  @media (max-width: 1180px) and (min-width: 901px){
-    .tl-v2{ gap: 18px; }
-    .tl-v2-title{ font-size:16px; }
-    .tl-v2-body{ font-size:13px; line-height:1.5; }
-  }
-  /* On mobile the column expands again — restore generous reading sizes */
-  @media (max-width: 900px){
-    .tl-v2-kicker{ display:inline-block; font-size:10.5px; margin-bottom: 12px; }
-    .tl-v2-title{ font-size:clamp(22px, 2.4vw, 30px); margin-bottom: 10px; }
-    .tl-v2-body{ font-size:15px; line-height:1.6; max-width:52ch; }
   }
 
   /* Values typographic sequence (replaces card grid + stroke icons) */
@@ -603,7 +465,6 @@
     }
     .about-stats-grid{ grid-template-columns: repeat(2, 1fr); gap:32px; }
     .about-story-photo{ max-width:380px; }
-    .about-model-head{ flex-direction:column; gap:24px; margin-bottom:40px; }
     .about-value{
       grid-template-columns: 60px 1fr;
       gap:18px;
@@ -734,59 +595,18 @@
   </div>
 </section>
 
-<!-- ── Our model — five operating acts. Parallel content, honest sequence. ── -->
+<!-- ── Our model — one editorial statement. No process strip. ── -->
 <section class="section about-model">
   <div class="wrap">
 
-    <div class="about-model-head" data-fade style="--delay:0ms">
-      <div>
-        <div class="about-kicker">
-          <span class="rule" aria-hidden="true"></span>
-          <span>Our model</span>
-        </div>
-        <h2 class="about-h2">How we work, in five acts.</h2>
-      </div>
-      <p class="about-model-sub">Each act earns the next. We do not skip diagnosis to start building, we do not leave before the operators can run it, and we do not call it finished before year ten.</p>
+    <div class="about-kicker" data-fade style="--delay:0ms">
+      <span class="rule" aria-hidden="true"></span>
+      <span>Our model &middot; Five acts, in order</span>
     </div>
 
-    <div class="tl-v2" id="tl-v2-root">
-      <div class="tl-v2-line" aria-hidden="true"></div>
-
-      <div class="tl-v2-item" style="--tl-i:0">
-        <span class="tl-v2-num" aria-hidden="true">01</span>
-        <div class="tl-v2-kicker">Diagnose</div>
-        <h3 class="tl-v2-title">Soil, water, climate, capital.</h3>
-        <p class="tl-v2-body">Independent field, lab and financial diagnosis before any plan is drawn. We commit to what the land can carry, not to what the brief asks for.</p>
-      </div>
-
-      <div class="tl-v2-item" style="--tl-i:1">
-        <span class="tl-v2-num" aria-hidden="true">02</span>
-        <div class="tl-v2-kicker">Build</div>
-        <h3 class="tl-v2-title">Agronomy and infrastructure, on the ground.</h3>
-        <p class="tl-v2-body">Agronomy, agro-technology, irrigation, post-harvest infrastructure. Designed to operate, not to demo.</p>
-      </div>
-
-      <div class="tl-v2-item" style="--tl-i:2">
-        <span class="tl-v2-num" aria-hidden="true">03</span>
-        <div class="tl-v2-kicker">Train</div>
-        <h3 class="tl-v2-title">Operators who outlast our presence.</h3>
-        <p class="tl-v2-body">Every program transfers to local operators on a fixed schedule. We measure our success by what continues running after we leave.</p>
-      </div>
-
-      <div class="tl-v2-item" style="--tl-i:3">
-        <span class="tl-v2-num" aria-hidden="true">04</span>
-        <div class="tl-v2-kicker">Measure</div>
-        <h3 class="tl-v2-title">Audited on year one, year five, year ten.</h3>
-        <p class="tl-v2-body">Independent third-party verification against MRV plans we authored ourselves. The same standard at every review, on every site.</p>
-      </div>
-
-      <div class="tl-v2-item" style="--tl-i:4">
-        <span class="tl-v2-num" aria-hidden="true">05</span>
-        <div class="tl-v2-kicker">Steward</div>
-        <h3 class="tl-v2-title">Land left stronger than we found it.</h3>
-        <p class="tl-v2-body">Generational stewardship is the only outcome that justifies the work. Every engagement is designed to outlive our presence on the site.</p>
-      </div>
-    </div>
+    <blockquote class="about-model-statement" data-fade style="--delay:80ms">
+      We diagnose before we plan. We build only what the land can carry. We train the operators who will run it. We measure on year one, year five, year ten. We <em>steward</em> what remains when we leave.
+    </blockquote>
 
     <div class="about-model-cta" data-fade style="--delay:200ms">
       <a href="scope.html" class="about-cta">
@@ -878,21 +698,6 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   items.forEach(function(el){ io.observe(el); });
-})();
-
-// ── Timeline v2: activate on scroll ──
-(function(){
-  var root = document.getElementById('tl-v2-root');
-  if(!root) return;
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){
-        e.target.classList.add('active');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  io.observe(root);
 })();
 </script>
 </body>

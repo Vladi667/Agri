@@ -41,23 +41,37 @@
   .tl-hd-sub{ padding-top:10px; max-width:40ch; color:#64748B; }
 
   /* Outer container */
-  /* Our Model — one editorial statement, no process strip */
-  .about-model-statement{
-    font-family:"Exo 2", sans-serif;
-    font-weight: 200;
-    font-size: clamp(28px, 3.4vw, 50px);
-    letter-spacing: -0.022em;
-    line-height: 1.28;
-    color: #0B1220;
-    max-width: 26ch;
-    margin: clamp(28px, 3.5vh, 44px) 0 clamp(56px, 7vh, 96px);
+  /* Our Model — five statement lines. Each verb is the anchor; scan-then-read. */
+  .about-model-acts{
+    list-style: none;
     padding: 0;
-    border: 0;
-    quotes: none;
+    margin: clamp(32px, 4vh, 56px) 0 clamp(56px, 7vh, 96px);
+    max-width: 38ch;
   }
-  .about-model-statement em{
+  .about-model-act{
+    font-family: "Exo 2", sans-serif;
+    font-weight: 200;
+    font-size: clamp(22px, 2.4vw, 36px);
+    letter-spacing: -0.022em;
+    line-height: 1.22;
+    color: rgba(15,23,42,0.42);
+    margin: 0;
+    padding: clamp(14px, 1.8vh, 22px) 0;
+    border-top: 1px solid rgba(15,23,42,0.08);
+    transition: color .55s cubic-bezier(.22,.8,.2,1);
+  }
+  .about-model-act:last-child{
+    border-bottom: 1px solid rgba(15,23,42,0.08);
+  }
+  .about-model-act em{
     font-style: normal;
+    font-weight: 300;
     color: #0F7B52;
+  }
+  .about-model-act:hover{ color: #0B1220; }
+  @media (max-width: 900px){
+    .about-model-acts{ max-width: none; }
+    .about-model-act{ font-size: clamp(20px, 5vw, 26px); }
   }
   /* ── Philosophy cards ── */
   .philosophy-card{
@@ -604,9 +618,13 @@
       <span>Our model &middot; Five acts, in order</span>
     </div>
 
-    <blockquote class="about-model-statement" data-fade style="--delay:80ms">
-      We diagnose before we plan. We build only what the land can carry. We train the operators who will run it. We measure on year one, year five, year ten. We <em>steward</em> what remains when we leave.
-    </blockquote>
+    <ol class="about-model-acts">
+      <li class="about-model-act" data-fade style="--delay:80ms">We <em>diagnose</em> before we plan.</li>
+      <li class="about-model-act" data-fade style="--delay:160ms">We <em>build</em> only what the land can carry.</li>
+      <li class="about-model-act" data-fade style="--delay:240ms">We <em>train</em> the operators who will run it.</li>
+      <li class="about-model-act" data-fade style="--delay:320ms">We <em>measure</em> on year one, year five, year ten.</li>
+      <li class="about-model-act" data-fade style="--delay:400ms">We <em>steward</em> what remains when we leave.</li>
+    </ol>
 
     <div class="about-model-cta" data-fade style="--delay:200ms">
       <a href="scope.html" class="about-cta">

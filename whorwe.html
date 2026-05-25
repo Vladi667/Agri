@@ -474,16 +474,17 @@
     border:1px solid rgba(14,69,48,0.10);
     pointer-events:none;
   }
-  /* Logo — SVG via CSS mask so we can recolor to deep emerald */
+  /* Logo — original brand mark, served as-is. Monogram + diamond glyph +
+     "André Messika Diamonds" wordmark are part of the asset. */
   .about-messika-logo{
     display:block;
     width:100%;
-    max-width:280px;
-    height:clamp(48px, 5vw, 72px);
-    background-color:#0E4530;
-    -webkit-mask: url('/images/messika-logo.svg') no-repeat center / contain;
-            mask: url('/images/messika-logo.svg') no-repeat center / contain;
+    max-width: clamp(220px, 22vw, 320px);
+    height:auto;
+    object-fit:contain;
     margin-bottom: clamp(28px, 3.2vw, 40px);
+    /* Subtle premium lift without altering the mark itself */
+    filter: drop-shadow(0 1px 0 rgba(14,69,48,0.04));
   }
   /* Hairline divider between logo and metadata */
   .about-messika-mark-rule{
@@ -500,19 +501,6 @@
   .about-messika-kicker .rule{
     flex:0 0 24px; height:1px;
     background:rgba(14,69,48,0.32);
-  }
-  .about-messika-name{
-    font-family:"Exo 2",sans-serif;
-    font-weight:200;
-    font-size:clamp(24px, 2.6vw, 34px);
-    letter-spacing:-0.028em;
-    line-height:1;
-    color:#0E4530;
-  }
-  .about-messika-tagline{
-    font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
-    color:rgba(14,69,48,0.5);
-    margin-top:8px;
   }
   .about-messika-desc{
     max-width:54ch;
@@ -742,15 +730,13 @@
 <!-- ── Andr&eacute; Messika partnership — converted to light editorial ── -->
 <section class="section about-messika">
   <div class="wrap about-messika-grid">
-    <div class="about-messika-mark" aria-label="Andr&eacute; Messika partnership">
-      <span class="about-messika-logo" role="img" aria-label="Andr&eacute; Messika wordmark"></span>
+    <div class="about-messika-mark" aria-label="Andr&eacute; Messika Diamonds partnership">
+      <img class="about-messika-logo" src="/images/andre-messika.png" alt="Andr&eacute; Messika Diamonds" loading="lazy" decoding="async"/>
       <span class="about-messika-mark-rule" aria-hidden="true"></span>
       <div class="about-messika-kicker">
         <span class="rule" aria-hidden="true"></span>
         <span>In partnership with</span>
       </div>
-      <div class="about-messika-name">Andr&eacute; Messika</div>
-      <div class="about-messika-tagline">Luxury Diamonds &amp; Fine Jewellery</div>
     </div>
     <div>
       <div class="about-kicker">

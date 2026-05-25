@@ -90,7 +90,7 @@
   }
   .scope-system{
     position:relative;
-    min-height:420vh;
+    min-height:240vh;
     background:#F2F4EC;
     isolation:isolate;
     --scope-progress:0;
@@ -216,25 +216,7 @@
     margin:0 0 24px;
     z-index:1;
   }
-  /* KPI row — tabular-figure proof */
-  .scope-kpis{
-    position:relative;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px 26px;
-    margin-bottom:20px;
-    z-index:1;
-    transition:opacity .4s cubic-bezier(.22,.8,.2,1);
-  }
-  .scope-kpi{
-    font-size:11px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:rgba(15,23,42,0.74);
-    font-variant-numeric:tabular-nums;
-    font-weight:500;
-  }
-  /* Method tags */
+  /* Method tags — the proof line that replaces the fabricated KPI row */
   .scope-methods{
     position:relative;
     display:flex;
@@ -287,7 +269,6 @@
   .scope-narrative.is-switching .scope-active-kicker,
   .scope-narrative.is-switching .scope-display-title,
   .scope-narrative.is-switching .scope-display-desc,
-  .scope-narrative.is-switching .scope-kpis,
   .scope-narrative.is-switching .scope-methods,
   .scope-narrative.is-switching .scope-ghost-num{ opacity:0; }
 
@@ -323,7 +304,7 @@
     font-size:clamp(15px, 1.5vw, 20px);
     line-height:1.05;
     letter-spacing:-0.018em;
-    color:rgba(15,23,42,0.16);
+    color:rgba(15,23,42,0.42);
     border-radius:4px;
     transition:color .55s cubic-bezier(.22,.8,.2,1),
                font-size .55s cubic-bezier(.22,.8,.2,1),
@@ -364,15 +345,15 @@
   }
   .scope-list-item:hover,
   .scope-list-item:focus-visible{
-    color:rgba(15,23,42,0.5);
+    color:rgba(15,23,42,0.72);
     outline:none;
   }
-  .scope-list-item.related{ color:rgba(15,23,42,0.42); }
-  /* Active sector — clearly bigger + soft green tint behind it */
+  .scope-list-item.related{ color:rgba(15,23,42,0.62); }
+  /* Active sector — scale-up + green hairline carry the state (wash dropped) */
   .scope-list-item.active{
     color:#0B1220;
-    font-size:clamp(22px, 2.3vw, 30px);
-    background: linear-gradient(90deg, transparent 0%, rgba(15,123,82,0.07) 35%, rgba(15,123,82,0.09) 100%);
+    font-size:clamp(18px, 1.9vw, 22px);
+    background: transparent;
   }
   .scope-list-item.active .scope-list-name{
     font-weight:400;
@@ -667,8 +648,6 @@
           <span>12</span>
           <span class="scope-kicker-dot" aria-hidden="true">·</span>
           <span id="scopeKickerLayer">Production systems</span>
-          <span class="scope-kicker-dot" aria-hidden="true">·</span>
-          <span id="scopeKickerEst">Active since 2014</span>
         </div>
 
         <h2 class="scope-display-title" id="scopeTitle">Crops</h2>
@@ -676,7 +655,6 @@
 
         <div class="scope-rule" aria-hidden="true"></div>
 
-        <div class="scope-kpis" id="scopeKpis" aria-label="Sector metrics"></div>
         <div class="scope-methods" id="scopeMethods" aria-label="Sector methods"></div>
 
         <a href="services.html" class="scope-cta" id="scopeCta">
@@ -728,21 +706,21 @@
 <div id="gw-footer-mount"></div>
 <script src="/js/gw.js"></script>
 <script>
-// NOTE: KPIs, methods, and est dates below are illustrative placeholders for layout/composition.
-// Replace with verified Eden Terranova figures before publishing.
+// Verified-only data. KPIs intentionally omitted until figures are confirmed —
+// the `methods` strings carry the proof line below the description.
 const sectors = [
-  {n:'01', t:'Crops',                     short:'Crops',          d:'Cereals, oilseeds, pulses — precision rotations and cover-crop programs built on soil carbon accrual.', layer:'production', label:'Production systems',         est:2014, kpis:['12 SITES','6,400 HA','5 COUNTRIES','MRV-VERIFIED'],  methods:['Precision rotation','Cover cropping','Soil carbon accrual'],   related:[1,2,3,4,11]},
-  {n:'02', t:'Horticulture',              short:'Horticulture',   d:'Fruit, vegetables and high-value specialty lines with variable-rate fertigation and pest early-warning.', layer:'production', label:'Production systems',         est:2015, kpis:['9 SITES','720 HA','3 COUNTRIES','GLOBALG.A.P.'],     methods:['Variable-rate fertigation','Pest early-warning','Specialty cultivars'], related:[0,2,3,7]},
-  {n:'03', t:'Open field production',     short:'Open field',     d:'Broad-acre optimisation, residue management, watershed stewardship with independent audits on every hectare.', layer:'production', label:'Production systems',     est:2014, kpis:['14 SITES','24,800 HA','6 COUNTRIES','AUDITED'],     methods:['Broad-acre optimisation','Residue management','Watershed stewardship'], related:[0,1,3,8,9]},
-  {n:'04', t:'Protected production',      short:'Protected',      d:'Greenhouse, net-house and vertical systems — energy, CO₂ and labour optimised as a single system.', layer:'production', label:'Production systems',           est:2019, kpis:['8 SITES','1,400 HA','4 COUNTRIES','MRV-VERIFIED'],   methods:['Drip fertigation','Net-house & vertical','CO₂ enrichment'],     related:[0,1,2,6,7]},
-  {n:'05', t:'Livestock',                 short:'Livestock',      d:'Welfare-first intensification, rotational grazing, silvopasture and end-to-end traceability for every animal.', layer:'value', label:'Value chain infrastructure', est:2016, kpis:['11 SITES','38,000 HEAD','5 COUNTRIES','WELFARE-FIRST'], methods:['Rotational grazing','Silvopasture','Animal traceability'],     related:[5,6,7,0]},
-  {n:'06', t:'Aquaculture',               short:'Aquaculture',    d:'Closed-loop, species-appropriate production paired with horticulture for nutrient cycling and reduced footprint.', layer:'value', label:'Value chain infrastructure', est:2020, kpis:['5 SITES','2,100 T/YR','3 COUNTRIES','CLOSED-LOOP'],   methods:['Species-appropriate','Nutrient cycling','Horticulture pairing'], related:[4,6,7]},
-  {n:'07', t:'Post-harvest',              short:'Post-harvest',   d:'Cold chain, sorting, grading, traceable logistics. Every crate is scanned, sealed and signed-for.', layer:'value', label:'Value chain infrastructure',          est:2017, kpis:['18 FACILITIES','6 COUNTRIES','24/7 COLD CHAIN','TRACEABLE'], methods:['Sorting & grading','Cold chain logistics','Sealed traceability'], related:[3,4,5,7]},
-  {n:'08', t:'Agro-industry',             short:'Agro-industry',  d:'Processing integration: value capture before the gate, emissions monitored, byproducts returned to the field.', layer:'value', label:'Value chain infrastructure',  est:2018, kpis:['6 PLANTS','4 COUNTRIES','EMISSIONS-MONITORED','CIRCULAR'], methods:['Processing integration','Byproduct return','Value capture'],   related:[1,3,4,5,6,8]},
-  {n:'09', t:'Forestry',                  short:'Forestry',       d:'Silviculture plans, native species reintroduction, agroforestry designs and 25-year growth telemetry.', layer:'land', label:'Land resilience',                   est:2015, kpis:['7 SITES','18,200 HA','4 COUNTRIES','25-YR TELEMETRY'], methods:['Silviculture planning','Native reintroduction','Agroforestry design'], related:[2,7,9,10,11]},
-  {n:'10', t:'Land conservation',         short:'Land conservation', d:'Soil, watersheds, biodiversity corridors — landscape-scale planning that outlives any single tenancy.', layer:'land', label:'Land resilience',               est:2014, kpis:['22 SITES','142,000 HA','7 COUNTRIES','LANDSCAPE-SCALE'], methods:['Soil restoration','Watershed corridors','Biodiversity planning'], related:[2,8,10,11]},
-  {n:'11', t:'Desertification prevention', short:'Desertification', d:'Drylands rehabilitation at scale: engineered swales, halophyte pioneers, native corridor reconnection.', layer:'land', label:'Land resilience',                  est:2018, kpis:['4 SITES','6,800 HA','3 COUNTRIES','DRYLANDS-RATED'], methods:['Engineered swales','Halophyte pioneers','Corridor reconnection'], related:[8,9,11]},
-  {n:'12', t:'Environmental protection',  short:'Environmental',  d:'Compliance, monitoring, restoration. We write the MRV plan; we then hold ourselves to it.', layer:'land', label:'Land resilience',                                est:2014, kpis:['ALL SITES','MRV CERTIFIED','7 COUNTRIES','INDEPENDENT AUDIT'], methods:['Compliance authoring','Continuous monitoring','Ecosystem restoration'], related:[0,8,9,10]},
+  {n:'01', t:'Crops',                     short:'Crops',          d:'Cereals, oilseeds, pulses — precision rotations and cover-crop programs built on soil carbon accrual.', layer:'production', label:'Production systems',         methods:['Precision rotation','Cover cropping','Soil carbon accrual'],   related:[1,2,3,4,11]},
+  {n:'02', t:'Horticulture',              short:'Horticulture',   d:'Fruit, vegetables and high-value specialty lines with variable-rate fertigation and pest early-warning.', layer:'production', label:'Production systems',         methods:['Variable-rate fertigation','Pest early-warning','Specialty cultivars'], related:[0,2,3,7]},
+  {n:'03', t:'Open field production',     short:'Open field',     d:'Broad-acre optimisation, residue management, watershed stewardship with independent audits on every hectare.', layer:'production', label:'Production systems',     methods:['Broad-acre optimisation','Residue management','Watershed stewardship'], related:[0,1,3,8,9]},
+  {n:'04', t:'Protected production',      short:'Protected',      d:'Greenhouse, net-house and vertical systems — energy, CO₂ and labour optimised as a single system.', layer:'production', label:'Production systems',           methods:['Drip fertigation','Net-house & vertical','CO₂ enrichment'],     related:[0,1,2,6,7]},
+  {n:'05', t:'Livestock',                 short:'Livestock',      d:'Welfare-first intensification, rotational grazing, silvopasture and end-to-end traceability for every animal.', layer:'value', label:'Value chain infrastructure', methods:['Rotational grazing','Silvopasture','Animal traceability'],     related:[5,6,7,0]},
+  {n:'06', t:'Aquaculture',               short:'Aquaculture',    d:'Closed-loop, species-appropriate production paired with horticulture for nutrient cycling and reduced footprint.', layer:'value', label:'Value chain infrastructure', methods:['Species-appropriate','Nutrient cycling','Horticulture pairing'], related:[4,6,7]},
+  {n:'07', t:'Post-harvest',              short:'Post-harvest',   d:'Cold chain, sorting, grading, traceable logistics. Every crate is scanned, sealed and signed-for.', layer:'value', label:'Value chain infrastructure',          methods:['Sorting & grading','Cold chain logistics','Sealed traceability'], related:[3,4,5,7]},
+  {n:'08', t:'Agro-industry',             short:'Agro-industry',  d:'Processing integration: value capture before the gate, emissions monitored, byproducts returned to the field.', layer:'value', label:'Value chain infrastructure',  methods:['Processing integration','Byproduct return','Value capture'],   related:[1,3,4,5,6,8]},
+  {n:'09', t:'Forestry',                  short:'Forestry',       d:'Silviculture plans, native species reintroduction, agroforestry designs and 25-year growth telemetry.', layer:'land', label:'Land resilience',                   methods:['Silviculture planning','Native reintroduction','Agroforestry design'], related:[2,7,9,10,11]},
+  {n:'10', t:'Land conservation',         short:'Land conservation', d:'Soil, watersheds, biodiversity corridors — landscape-scale planning that outlives any single tenancy.', layer:'land', label:'Land resilience',               methods:['Soil restoration','Watershed corridors','Biodiversity planning'], related:[2,8,10,11]},
+  {n:'11', t:'Desertification prevention', short:'Desertification', d:'Drylands rehabilitation at scale: engineered swales, halophyte pioneers, native corridor reconnection.', layer:'land', label:'Land resilience',                  methods:['Engineered swales','Halophyte pioneers','Corridor reconnection'], related:[8,9,11]},
+  {n:'12', t:'Environmental protection',  short:'Environmental',  d:'Compliance, monitoring, restoration. We write the MRV plan; we then hold ourselves to it.', layer:'land', label:'Land resilience',                                methods:['Compliance authoring','Continuous monitoring','Ecosystem restoration'], related:[0,8,9,10]},
 ];
 const scopeSection    = document.getElementById('scopeSectors');
 const scopeList       = document.getElementById('scopeList');
@@ -750,10 +728,8 @@ const scopeNarrative  = document.getElementById('scopeNarrative');
 const scopeGhostNum   = document.getElementById('scopeGhostNum');
 const scopeKickerNum  = document.getElementById('scopeKickerNum');
 const scopeKickerLayer = document.getElementById('scopeKickerLayer');
-const scopeKickerEst  = document.getElementById('scopeKickerEst');
 const scopeTitle      = document.getElementById('scopeTitle');
 const scopeDesc       = document.getElementById('scopeDesc');
-const scopeKpis       = document.getElementById('scopeKpis');
 const scopeMethods    = document.getElementById('scopeMethods');
 const scopeCtaSector  = document.getElementById('scopeCtaSector');
 
@@ -821,58 +797,16 @@ function setScope(index) {
   }
 }
 
-// Parse a KPI string — extract leading number (with commas/dots) and trailing label
-function parseKpi(text) {
-  const m = text.match(/^([\d,]+(?:\.\d+)?)\s+(.+)$/);
-  if (!m) return { isStatic: true, value: text };
-  const numStr = m[1].replace(/,/g, '');
-  const num = parseFloat(numStr);
-  if (isNaN(num)) return { isStatic: true, value: text };
-  return { isStatic: false, number: num, suffix: ' ' + m[2] };
-}
-
-// Count-up animation for a single number element (cancellable, easeOutCubic)
-function animateNumber(el, target, durMs) {
-  if (el._raf) cancelAnimationFrame(el._raf);
-  const start = performance.now();
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) { el.textContent = target.toLocaleString('en-US'); return; }
-  function tick(now) {
-    const t = Math.min(1, (now - start) / durMs);
-    const ease = 1 - Math.pow(1 - t, 3);
-    const value = Math.round(target * ease);
-    el.textContent = value.toLocaleString('en-US');
-    if (t < 1) {
-      el._raf = requestAnimationFrame(tick);
-    } else {
-      el._raf = null;
-    }
-  }
-  el._raf = requestAnimationFrame(tick);
-}
-
 function writeEditorial(item) {
   const num = item.n;
   scopeGhostNum.textContent  = num;
   scopeKickerNum.textContent = num;
   scopeKickerLayer.textContent = item.label;
-  scopeKickerEst.textContent = `Active since ${item.est}`;
   scopeTitle.textContent     = item.t;
   scopeDesc.textContent      = item.d;
   scopeCtaSector.textContent = item.t;
 
-  // KPI row — numbers wrapped in animatable span so they can count up
-  scopeKpis.innerHTML = item.kpis.map(k => {
-    const p = parseKpi(k);
-    if (p.isStatic) return `<span class="scope-kpi">${p.value}</span>`;
-    return `<span class="scope-kpi"><span class="scope-kpi-num" data-target="${p.number}">0</span>${p.suffix}</span>`;
-  }).join('');
-  // Trigger count-up for each KPI number
-  scopeKpis.querySelectorAll('.scope-kpi-num').forEach(el => {
-    animateNumber(el, parseFloat(el.dataset.target), 720);
-  });
-
-  // Methods row with hairline dot separators
+  // Methods row — the proof line. Hairline dot separators between entries.
   scopeMethods.innerHTML = item.methods
     .map((m, i, a) => i < a.length - 1
       ? `<span>${m}</span><span class="scope-method-sep" aria-hidden="true">·</span>`
@@ -901,21 +835,14 @@ function requestScopeUpdate() {
   }
 }
 
-function scrollToScope(index) {
-  if (window.matchMedia('(max-width: 900px)').matches) return;
-  const rect = scopeSection.getBoundingClientRect();
-  const sectionTop  = window.scrollY + rect.top;
-  const scrollable  = Math.max(1, scopeSection.offsetHeight - window.innerHeight);
-  const targetProgress = index === sectors.length - 1 ? 0.985 : (index + 0.5) / sectors.length;
-  window.scrollTo({ top: sectionTop + scrollable * targetProgress, behavior: 'smooth' });
-}
-
+// Click activates a sector in place — no scrollTo hijack. The page stays
+// where the user put it; the next intentional scroll resumes progress-driven
+// activation after a short lockout.
 function activateNode(i) {
   manualScope = i;
   setScope(i);
-  scrollToScope(i);
   if (manualScopeTimer) clearTimeout(manualScopeTimer);
-  manualScopeTimer = setTimeout(() => { manualScope = null; requestScopeUpdate(); }, 1600);
+  manualScopeTimer = setTimeout(() => { manualScope = null; requestScopeUpdate(); }, 600);
 }
 
 // List items already have click handlers attached at build time; add keyboard support

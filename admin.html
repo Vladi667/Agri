@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin console — Eden Terranova</title>
+<link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ padding-top:72px; background:#F5F6EF; min-height:100vh; }
+  .console{ max-width:1180px; margin:0 auto; padding:36px 24px 96px; }
+  .tabs{ display:flex; gap:6px; margin:24px 0 22px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .tab{ appearance:none; background:none; border:0; font-family:"Exo 2",sans-serif; font-size:14.5px; color:var(--muted-2);
+        padding:10px 16px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
+  .tab:hover{ color:var(--ink); }
+  .tab.active{ color:var(--green-deep); border-color:var(--green-deep); font-weight:500; }
+  .panel{ display:none; } .panel.active{ display:block; }
+
+  .grid2{ display:grid; grid-template-columns:360px 1fr; gap:24px; align-items:start; }
+  @media (max-width:860px){ .grid2{ grid-template-columns:1fr; } }
+
+  .ff{ display:flex; flex-direction:column; gap:5px; margin-bottom:12px; }
+  .ff label{ font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:#64748B; }
+  .ff input, .ff select, .ff textarea{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:11px 13px; font-size:14px; font-family:"Exo 2",sans-serif; outline:none; }
+  .ff input:focus, .ff select:focus, .ff textarea:focus{ border-color:var(--green-deep); box-shadow:0 0 0 5px rgba(16,185,129,.08); }
+  .ff textarea{ min-height:80px; resize:vertical; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .btn-sm{ padding:.5rem .9rem; font-size:13px; border-radius:999px; cursor:pointer; }
+
+  table.t{ width:100%; border-collapse:collapse; }
+  table.t th, table.t td{ text-align:left; padding:11px 10px; border-bottom:1px solid var(--line); font-size:13.5px; vertical-align:top; }
+  table.t th{ font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted-2); font-weight:500; }
+  .badge{ display:inline-block; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; padding:.3rem .6rem; border-radius:999px; border:1px solid var(--line); background:#fff; }
+  .badge.green{ background:rgba(16,185,129,.10); border-color:rgba(16,185,129,.3); color:var(--green-deep); }
+  .badge.amber{ background:rgba(233,168,100,.14); border-color:rgba(233,168,100,.4); color:#9A5B16; }
+  .linkbtn{ background:none; border:0; color:var(--green-deep); cursor:pointer; font-size:13px; padding:0; text-decoration:underline; }
+  .linkbtn.danger{ color:#DC2626; }
+  .msg{ font-size:13px; min-height:18px; margin:6px 0; }
+  .empty{ color:var(--muted-2); padding:24px 0; }
+  .card h3{ margin:0 0 4px; font-family:"Exo 2",sans-serif; font-weight:300; font-size:20px; }
+  .pill-row{ display:flex; gap:6px; flex-wrap:wrap; }
+</style>
+</head>
+<body data-page="admin">
+<div id="gw-header-mount"></div>
+
+<div class="console" id="console" style="display:none">
+  <div class="eyebrow mb-2">Admin console</div>
+  <h1 class="h2" style="font-size:34px">Stewardship operations.</h1>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="projects">Projects</button>
+    <button class="tab" data-tab="invoices">Invoices &amp; payments</button>
+    <button class="tab" data-tab="messages">Messages</button>
+  </div>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="panel active" id="panel-projects">
+    <div class="grid2">
+      <div class="card">
+        <h3 id="pFormTitle">New project</h3>
+        <p class="small mb-4">Assign a project to a client and publish its progress.</p>
+        <input type="hidden" id="pId">
+        <div class="ff"><label>Client</label><select id="pClient"></select></div>
+        <div class="ff"><label>Project name</label><input id="pName" placeholder="e.g. North Vineyard, Phase II"></div>
+        <div class="ff"><label>Location</label><input id="pLocation" placeholder="e.g. Mendoza, Argentina"></div>
+        <div class="row2">
+          <div class="ff"><label>Status</label>
+            <select id="pStatus">
+              <option>Planning</option><option>In Progress</option>
+              <option>On Hold</option><option>Completed</option>
+            </select>
+          </div>
+          <div class="ff"><label>Progress %</label><input id="pProgress" type="number" min="0" max="100" value="0"></div>
+        </div>
+        <div class="ff"><label>Summary</label><textarea id="pSummary" placeholder="Short description shown to the client"></textarea></div>
+        <div class="msg" id="pMsg"></div>
+        <div class="pill-row">
+          <button class="btn btn-primary btn-sm" onclick="saveProject()">Save project</button>
+          <button class="btn btn-ghost btn-sm" onclick="resetProjectForm()">Clear</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:8px 12px;">
+        <div id="projectsList"><p class="empty">Loading…</p></div>
+      </div>
+    </div>
+
+    <!-- Add update -->
+    <div class="card mt-6" style="max-width:620px;">
+      <h3>Post a progress update</h3>
+      <p class="small mb-4">Appears on the client's timeline for the chosen project.</p>
+      <div class="ff"><label>Project</label><select id="uProject"></select></div>
+      <div class="ff"><label>Title <span style="text-transform:none">(optional)</span></label><input id="uTitle" placeholder="e.g. Irrigation installed"></div>
+      <div class="ff"><label>Update</label><textarea id="uBody" placeholder="What happened?"></textarea></div>
+      <div class="msg" id="uMsg"></div>
+      <button class="btn btn-primary btn-sm" onclick="postUpdate()">Post update</button>
+    </div>
+  </section>
+
+  <!-- ===== INVOICES ===== -->
+  <section class="panel" id="panel-invoices">
+    <div class="grid2">
+      <div class="card">
+        <h3 id="iFormTitle">New invoice</h3>
+        <p class="small mb-4">Issue an invoice to a client.</p>
+        <input type="hidden" id="iId">
+        <div class="ff"><label>Client</label><select id="iClient"></select></div>
+        <div class="ff"><label>Project <span style="text-transform:none">(optional)</span></label><select id="iProject"></select></div>
+        <div class="row2">
+          <div class="ff"><label>Invoice no.</label><input id="iNumber" placeholder="INV-0001"></div>
+          <div class="ff"><label>Status</label>
+            <select id="iStatus"><option>Due</option><option>Paid</option><option>Overdue</option></select>
+          </div>
+        </div>
+        <div class="ff"><label>Description</label><input id="iDesc" placeholder="Services rendered"></div>
+        <div class="row2">
+          <div class="ff"><label>Amount</label><input id="iAmount" type="number" step="0.01" min="0" value="0"></div>
+          <div class="ff"><label>Currency</label><input id="iCurrency" value="AED" maxlength="3"></div>
+        </div>
+        <div class="row2">
+          <div class="ff"><label>Issued</label><input id="iIssued" type="date"></div>
+          <div class="ff"><label>Due</label><input id="iDue" type="date"></div>
+        </div>
+        <div class="msg" id="iMsg"></div>
+        <div class="pill-row">
+          <button class="btn btn-primary btn-sm" onclick="saveInvoice()">Save invoice</button>
+          <button class="btn btn-ghost btn-sm" onclick="resetInvoiceForm()">Clear</button>
+        </div>
+      </div>
+      <div class="card" style="padding:8px 12px;">
+        <div id="invoicesList"><p class="empty">Loading…</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MESSAGES ===== -->
+  <section class="panel" id="panel-messages">
+    <div class="card" style="padding:8px 12px;">
+      <div id="messagesList"><p class="empty">Loading…</p></div>
+    </div>
+  </section>
+</div>
+
+<div id="gw-footer-mount"></div>
+<script src="/js/gw.js"></script>
+<script src="/js/auth.js"></script>
+<script>
+let CLIENTS = [], PROJECTS = [], INVOICES = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!requireAdmin()) return;
+  document.getElementById('console').style.display = 'block';
+
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-' + t.dataset.tab).classList.add('active');
+  }));
+
+  await loadClients();
+  await Promise.all([loadProjects(), loadInvoices(), loadMessages()]);
+});
+
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtDate(d){ return d ? new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—'; }
+function clientLabel(c){ return (c.company ? c.company + ' · ' : '') + c.use1; }
+
+async function api(url, method, body){
+  const opt = { method: method || 'GET', headers: authHeaders() };
+  if (body) opt.body = JSON.stringify(body);
+  const res = await fetch(url, opt);
+  if (res.status === 401 || res.status === 403) { logout(); throw new Error('auth'); }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+/* ---------- Clients ---------- */
+async function loadClients(){
+  CLIENTS = (await api('/api/users')).filter(u => !(u.admin === true || u.admin === 't'));
+  const opts = CLIENTS.map(c => `<option value="${c.id}">${esc(clientLabel(c))}</option>`).join('');
+  document.getElementById('pClient').innerHTML = opts || '<option value="">No clients yet</option>';
+  document.getElementById('iClient').innerHTML = opts || '<option value="">No clients yet</option>';
+}
+
+/* ---------- Projects ---------- */
+async function loadProjects(){
+  PROJECTS = await api('/api/admin-projects');
+  // update-project picker
+  document.getElementById('uProject').innerHTML =
+    PROJECTS.map(p => `<option value="${p.id}">${esc(p.name)} — ${esc(p.client_company || p.client_username)}</option>`).join('')
+    || '<option value="">No projects</option>';
+  // invoice project picker (with a none option)
+  document.getElementById('iProject').innerHTML =
+    '<option value="">— none —</option>' +
+    PROJECTS.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join('');
+
+  const host = document.getElementById('projectsList');
+  if (!PROJECTS.length){ host.innerHTML = '<p class="empty">No projects yet.</p>'; return; }
+  host.innerHTML = `<table class="t"><thead><tr>
+      <th>Project</th><th>Client</th><th>Status</th><th>Progress</th><th></th></tr></thead><tbody>` +
+    PROJECTS.map(p => `<tr>
+      <td><strong>${esc(p.name)}</strong>${p.location?`<br><span class="small">${esc(p.location)}</span>`:''}</td>
+      <td>${esc(p.client_company || p.client_username)}</td>
+      <td><span class="badge ${p.status==='Completed'?'green':(p.status==='On Hold'?'amber':'')}">${esc(p.status)}</span></td>
+      <td>${p.progress||0}%</td>
+      <td><button class="linkbtn" onclick="editProject(${p.id})">Edit</button> ·
+          <button class="linkbtn danger" onclick="deleteProject(${p.id})">Delete</button></td>
+    </tr>`).join('') + '</tbody></table>';
+}
+
+function editProject(id){
+  const p = PROJECTS.find(x => x.id === id); if (!p) return;
+  document.getElementById('pFormTitle').textContent = 'Edit project';
+  document.getElementById('pId').value = p.id;
+  document.getElementById('pClient').value = p.user_id;
+  document.getElementById('pName').value = p.name || '';
+  document.getElementById('pLocation').value = p.location || '';
+  document.getElementById('pStatus').value = p.status || 'Planning';
+  document.getElementById('pProgress').value = p.progress || 0;
+  document.getElementById('pSummary').value = p.summary || '';
+  document.getElementById('panel-projects').scrollIntoView({ behavior:'smooth' });
+}
+function resetProjectForm(){
+  document.getElementById('pFormTitle').textContent = 'New project';
+  ['pId','pName','pLocation','pSummary'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('pStatus').value = 'Planning';
+  document.getElementById('pProgress').value = 0;
+  document.getElementById('pMsg').textContent = '';
+}
+async function saveProject(){
+  const msg = document.getElementById('pMsg'); msg.style.color = '#DC2626';
+  const id = document.getElementById('pId').value;
+  const payload = {
+    action: id ? 'update' : 'create',
+    id: id || undefined,
+    user_id: document.getElementById('pClient').value,
+    name: document.getElementById('pName').value.trim(),
+    location: document.getElementById('pLocation').value.trim(),
+    status: document.getElementById('pStatus').value,
+    progress: document.getElementById('pProgress').value,
+    summary: document.getElementById('pSummary').value.trim()
+  };
+  if (!payload.user_id || !payload.name){ msg.textContent = 'Client and name are required.'; return; }
+  try { await api('/api/admin-projects','POST',payload); resetProjectForm(); await loadProjects(); }
+  catch(e){ msg.textContent = e.message; }
+}
+async function deleteProject(id){
+  if (!confirm('Delete this project and its updates?')) return;
+  try { await api('/api/admin-projects','POST',{ action:'delete', id }); await Promise.all([loadProjects(), loadInvoices()]); }
+  catch(e){ alert(e.message); }
+}
+async function postUpdate(){
+  const msg = document.getElementById('uMsg'); msg.style.color = '#DC2626';
+  const project_id = document.getElementById('uProject').value;
+  const body = document.getElementById('uBody').value.trim();
+  if (!project_id || !body){ msg.textContent = 'Project and update text are required.'; return; }
+  try {
+    await api('/api/admin-projects','POST',{ action:'addUpdate', project_id,
+      title: document.getElementById('uTitle').value.trim(), body });
+    msg.style.color = '#0F7B52'; msg.textContent = 'Update posted.';
+    document.getElementById('uTitle').value = ''; document.getElementById('uBody').value = '';
+  } catch(e){ msg.textContent = e.message; }
+}
+
+/* ---------- Invoices ---------- */
+async function loadInvoices(){
+  INVOICES = await api('/api/admin-invoices');
+  const host = document.getElementById('invoicesList');
+  if (!INVOICES.length){ host.innerHTML = '<p class="empty">No invoices yet.</p>'; return; }
+  host.innerHTML = `<table class="t"><thead><tr>
+      <th>No.</th><th>Client</th><th>Amount</th><th>Due</th><th>Status</th><th></th></tr></thead><tbody>` +
+    INVOICES.map(i => `<tr>
+      <td><strong>${esc(i.number)}</strong>${i.project_name?`<br><span class="small">${esc(i.project_name)}</span>`:''}</td>
+      <td>${esc(i.client_company || i.client_username)}</td>
+      <td>${esc(i.currency||'AED')} ${(parseFloat(i.amount)||0).toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+      <td>${fmtDate(i.due_at)}</td>
+      <td><span class="badge ${i.status==='Paid'?'green':(i.status==='Overdue'?'amber':'')}">${esc(i.status)}</span></td>
+      <td>
+        ${i.status!=='Paid'?`<button class="linkbtn" onclick="setInvoice(${i.id},'Paid')">Mark paid</button> · `:''}
+        <button class="linkbtn" onclick="editInvoice(${i.id})">Edit</button> ·
+        <button class="linkbtn danger" onclick="deleteInvoice(${i.id})">Delete</button>
+      </td>
+    </tr>`).join('') + '</tbody></table>';
+}
+function editInvoice(id){
+  const i = INVOICES.find(x => x.id === id); if (!i) return;
+  document.getElementById('iFormTitle').textContent = 'Edit invoice';
+  document.getElementById('iId').value = i.id;
+  document.getElementById('iClient').value = i.user_id;
+  document.getElementById('iProject').value = i.project_id || '';
+  document.getElementById('iNumber').value = i.number || '';
+  document.getElementById('iStatus').value = i.status || 'Due';
+  document.getElementById('iDesc').value = i.description || '';
+  document.getElementById('iAmount').value = i.amount || 0;
+  document.getElementById('iCurrency').value = i.currency || 'AED';
+  document.getElementById('iIssued').value = i.issued_at ? i.issued_at.slice(0,10) : '';
+  document.getElementById('iDue').value = i.due_at ? i.due_at.slice(0,10) : '';
+  document.getElementById('panel-invoices').scrollIntoView({ behavior:'smooth' });
+}
+function resetInvoiceForm(){
+  document.getElementById('iFormTitle').textContent = 'New invoice';
+  ['iId','iNumber','iDesc','iIssued','iDue'].forEach(x => document.getElementById(x).value='');
+  document.getElementById('iProject').value=''; document.getElementById('iStatus').value='Due';
+  document.getElementById('iAmount').value=0; document.getElementById('iCurrency').value='AED';
+  document.getElementById('iMsg').textContent='';
+}
+async function saveInvoice(){
+  const msg = document.getElementById('iMsg'); msg.style.color='#DC2626';
+  const id = document.getElementById('iId').value;
+  const payload = {
+    action: id ? 'update' : 'create', id: id || undefined,
+    user_id: document.getElementById('iClient').value,
+    project_id: document.getElementById('iProject').value || null,
+    number: document.getElementById('iNumber').value.trim(),
+    description: document.getElementById('iDesc').value.trim(),
+    amount: document.getElementById('iAmount').value,
+    currency: (document.getElementById('iCurrency').value.trim() || 'AED').toUpperCase(),
+    status: document.getElementById('iStatus').value,
+    issued_at: document.getElementById('iIssued').value || null,
+    due_at: document.getElementById('iDue').value || null
+  };
+  if (!payload.user_id || !payload.number){ msg.textContent='Client and invoice number are required.'; return; }
+  try { await api('/api/admin-invoices','POST',payload); resetInvoiceForm(); await loadInvoices(); }
+  catch(e){ msg.textContent = e.message; }
+}
+async function setInvoice(id,status){
+  try { await api('/api/admin-invoices','POST',{ action:'setStatus', id, status }); await loadInvoices(); }
+  catch(e){ alert(e.message); }
+}
+async function deleteInvoice(id){
+  if (!confirm('Delete this invoice?')) return;
+  try { await api('/api/admin-invoices','POST',{ action:'delete', id }); await loadInvoices(); }
+  catch(e){ alert(e.message); }
+}
+
+/* ---------- Messages ---------- */
+async function loadMessages(){
+  const MSGS = await api('/api/admin-messages');
+  const host = document.getElementById('messagesList');
+  if (!MSGS.length){ host.innerHTML = '<p class="empty">No messages yet.</p>'; return; }
+  host.innerHTML = `<table class="t"><thead><tr>
+      <th>Received</th><th>From</th><th>Subject &amp; message</th><th>Status</th><th></th></tr></thead><tbody>` +
+    MSGS.map(m => `<tr>
+      <td>${fmtDate(m.created_at)}</td>
+      <td>${esc(m.name || m.client_username || 'Visitor')}${m.email?`<br><span class="small">${esc(m.email)}</span>`:''}</td>
+      <td>${m.subject?`<strong>${esc(m.subject)}</strong><br>`:''}<span class="small">${esc(m.body)}</span></td>
+      <td><span class="badge ${m.handled?'green':'amber'}">${m.handled?'Handled':'New'}</span></td>
+      <td>
+        <button class="linkbtn" onclick="setMsg(${m.id},${!m.handled})">${m.handled?'Reopen':'Mark handled'}</button> ·
+        <button class="linkbtn danger" onclick="delMsg(${m.id})">Delete</button>
+      </td>
+    </tr>`).join('') + '</tbody></table>';
+}
+async function setMsg(id,handled){
+  try { await api('/api/admin-messages','POST',{ action:'setHandled', id, handled }); await loadMessages(); }
+  catch(e){ alert(e.message); }
+}
+async function delMsg(id){
+  if (!confirm('Delete this message?')) return;
+  try { await api('/api/admin-messages','POST',{ action:'delete', id }); await loadMessages(); }
+  catch(e){ alert(e.message); }
+}
+</script>
+</body>
+</html>

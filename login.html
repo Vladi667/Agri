@@ -27,6 +27,7 @@
 </head>
 <body data-page="login">
 <div class="login-card">
+  <img src="/images/eden-terranova-symbol.svg" alt="Eden Terranova" style="height:42px; width:auto; display:block; margin-bottom:20px;">
   <div class="eyebrow mb-2">Client portal</div>
   <h1 class="h2" style="font-size:32px">Welcome back.</h1>
   <p class="small mt-3">Access your telemetry, audit reports and the five-year plan for every estate under our stewardship.</p>
@@ -61,7 +62,10 @@ async function doLogin() {
     const data = await res.json();
     if (!res.ok) { errmsg.textContent = data.error || 'Wrong username or password.'; return; }
     localStorage.setItem('gw_token', data.token);
-    window.location.href = '/index.html';
+    // Route admins to the console, clients to their portal.
+    let isAdmin = false;
+    try { isAdmin = JSON.parse(atob(data.token.split('.')[1])).admin === true; } catch {}
+    window.location.href = isAdmin ? '/admin.html' : '/account.html';
   } catch { errmsg.textContent = 'Server error — please try again.'; }
 }
 document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });

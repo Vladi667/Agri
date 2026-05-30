@@ -1,87 +1,128 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Sign Up</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Create account — Eden Terranova</title>
 <link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
-  <link href="/css/StyleSheet1.css" rel="stylesheet" />
-  <script src="/js/validation.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ padding-top:72px; background:
+    radial-gradient(60% 60% at 20% 30%, rgba(16,185,129,0.12), transparent 60%),
+    radial-gradient(50% 50% at 80% 70%, rgba(244,199,123,0.3), transparent 60%),
+    #F8F9F5;
+    min-height: 100vh;
+  }
+  .login-card{ max-width: 460px; margin: 48px auto; background:#fff; border:1px solid rgba(15,23,42,0.08); border-radius: 22px; padding: 36px; box-shadow: 0 40px 80px -30px rgba(15,23,42,0.22);}
+  .field{ display:flex; flex-direction:column; gap:6px; margin-bottom: 14px; }
+  .field label{ font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#64748B; }
+  .field input{ background:#F8F9F5; border:1px solid rgba(15,23,42,0.08); border-radius: 12px; padding: 14px 16px; font-size:15px; outline:none; transition: border-color .3s, box-shadow .3s; font-family:"Exo 2", sans-serif;}
+  .field input:focus{ border-color: var(--green-deep); box-shadow: 0 0 0 6px rgba(16,185,129,0.08);}
+  .field .hint{ color:#DC2626; font-size:12px; min-height:16px; }
+  #finmsg{ color:#DC2626; font-size:13px; min-height:20px; margin-top:4px;}
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:480px){ .two{ grid-template-columns:1fr; } }
+</style>
 </head>
-<body>
-  <div>
-    <h1 id="titles">Sign Up</h1>
-    <form onsubmit="return handleSignup(event)">
-      <div>
-        <!-- username -->
-        <label for="use">Username:</label><br>
-        <input type="text" id="use" name="use" onchange="usech()" required><br>
-        <div id="usemsg"><br /></div>
-
-        <!-- password -->
-        <label for="pass">Password:</label><br>
-        <input type="password" id="pass" name="pass" onchange="passch()" required><br>
-        <div id="passmsg"><br /></div>
-
-        <!-- confirm password -->
-        <label for="password">Confirm Password:</label><br>
-        <input type="password" id="password" name="password" onchange="passwordch()" required><br>
-        <div id="passwordmsg"><br /></div>
-
-        <!-- telephone -->
-        <label for="tele">Telephone:</label><br>
-        <input type="text" id="tele" name="tele" onchange="telech()" required><br>
-        <div id="telemsg"><br /></div>
-
-        <!-- email -->
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
-        <div id="emailmsg"><br /></div>
-
-        <div id="finmsg"><br /></div>
-
-        <!-- submit -->
-        <input type="submit" value="submit"><br>
+<body data-page="signup">
+<div class="login-card">
+  <img src="/images/eden-terranova-symbol.svg" alt="Eden Terranova" style="height:42px; width:auto; display:block; margin-bottom:20px;">
+  <div class="eyebrow mb-2">Client portal</div>
+  <h1 class="h2" style="font-size:30px">Create your account.</h1>
+  <p class="small mt-3">Open your private workspace to follow every estate under our stewardship — live progress, audit reports, invoices and direct contact with the team.</p>
+  <form class="mt-8" id="signupForm" onsubmit="return handleSignup(event)" novalidate>
+    <div class="field">
+      <label for="use">Username</label>
+      <input type="text" id="use" name="use" placeholder="letters only" autocomplete="username" required>
+      <div class="hint" id="usemsg"></div>
+    </div>
+    <div class="field">
+      <label for="company">Company / estate <span style="text-transform:none;letter-spacing:0;color:#94A3B8">(optional)</span></label>
+      <input type="text" id="company" name="company" placeholder="e.g. Terranova Holdings" autocomplete="organization">
+    </div>
+    <div class="two">
+      <div class="field">
+        <label for="pass">Password</label>
+        <input type="password" id="pass" name="pass" placeholder="8+ chars, 1 uppercase" autocomplete="new-password" required>
+        <div class="hint" id="passmsg"></div>
       </div>
-    </form>
-    <a href="/login.html"><p>Return to log in</p></a>
+      <div class="field">
+        <label for="password">Confirm</label>
+        <input type="password" id="password" name="password" placeholder="repeat password" autocomplete="new-password" required>
+        <div class="hint" id="passwordmsg"></div>
+      </div>
+    </div>
+    <div class="two">
+      <div class="field">
+        <label for="tele">Telephone</label>
+        <input type="text" id="tele" name="tele" placeholder="10 digits" autocomplete="tel" required>
+        <div class="hint" id="telemsg"></div>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required>
+        <div class="hint" id="emailmsg"></div>
+      </div>
+    </div>
+    <div id="finmsg"></div>
+    <button class="btn btn-primary lg" style="width:100%; justify-content:center; margin-top:8px;" type="submit">Create account
+      <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </form>
+  <div class="hairline mt-8"></div>
+  <div class="flex items-center justify-between mt-4">
+    <a href="login.html" class="small" style="text-decoration:underline; color:#0F7B52">Already have an account? Sign in</a>
+    <a href="index.html" class="small" style="color:#64748B">Back to home</a>
   </div>
+</div>
+<div id="gw-footer-mount"></div>
+<script src="/js/gw.js"></script>
+<script src="/js/validation.js"></script>
+<script>
+async function handleSignup(e) {
+  e.preventDefault();
+  const finmsg = document.getElementById('finmsg');
+  finmsg.textContent = '';
+  finmsg.style.color = '#DC2626';
 
-  <script>
-    async function handleSignup(e) {
-      e.preventDefault();
-      if (!validateForm()) return;
+  if (!validateForm()) return false;
 
-      const username = document.getElementById('use').value;
-      const password = document.getElementById('pass').value;
-      const telephone = document.getElementById('tele').value;
-      const email = document.getElementById('email').value;
-      const usemsg = document.getElementById('usemsg');
-      const finmsg = document.getElementById('finmsg');
+  const username = document.getElementById('use').value.trim();
+  const password = document.getElementById('pass').value;
+  const telephone = document.getElementById('tele').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const company = document.getElementById('company').value.trim();
 
-      try {
-        const res = await fetch('/api/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password, telephone, email })
-        });
-        const data = await res.json();
+  try {
+    const res = await fetch('/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password, telephone, email, company })
+    });
+    const data = await res.json();
 
-        if (!res.ok) {
-          if (res.status === 409) {
-            usemsg.innerHTML = 'Username is taken';
-            usemsg.style.color = 'red';
-          } else {
-            finmsg.innerHTML = data.error || 'Server error';
-            finmsg.style.color = 'red';
-          }
-          return;
-        }
-
-        window.location.href = '/index.html';
-      } catch (err) {
-        finmsg.innerHTML = 'Server error, please try again.';
-        finmsg.style.color = 'red';
+    if (!res.ok) {
+      if (res.status === 409) {
+        const usemsg = document.getElementById('usemsg');
+        usemsg.innerHTML = 'Username is taken';
+      } else {
+        finmsg.textContent = data.error || 'Server error — please try again.';
       }
+      return false;
     }
-  </script>
+
+    // Auto sign-in straight into the portal.
+    if (data.token) localStorage.setItem('gw_token', data.token);
+    window.location.href = '/account.html';
+  } catch (err) {
+    finmsg.textContent = 'Server error — please try again.';
+  }
+  return false;
+}
+</script>
 </body>
 </html>

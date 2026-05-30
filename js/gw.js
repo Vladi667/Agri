@@ -77,7 +77,10 @@
   const loginLink = session
     ? `<a href="#" class="btn btn-ghost" style="padding:.5rem 1rem; font-size:13px;" onclick="localStorage.removeItem('gw_token'); window.location.reload(); return false;">Log out</a>`
     : `<a href="login.html" class="btn btn-ghost" style="padding:.5rem 1rem; font-size:13px;">Log in</a>`;
-  const adminLinks = isAdmin ? `<a href="table.html" data-page="table">Portal</a>` : '';
+  const accountLink = session && !isAdmin ? `<a href="account.html" data-page="account">My account</a>` : '';
+  const adminLinks = isAdmin
+    ? `<a href="admin.html" data-page="admin">Console</a><a href="table.html" data-page="table">Users</a>`
+    : '';
   const contactLink = session ? `<a href="contacts.html" data-page="contacts">Contact</a>` : '';
   const navLinks = `
           <a href="index.html" data-page="index">Home</a>
@@ -88,6 +91,7 @@
           <a href="whatrwe.html" data-page="whatrwe">What we are</a>
           <a href="clients.html" data-page="clients">Clients</a>
           ${contactLink}
+          ${accountLink}
           ${adminLinks}`;
 
   const nav = `

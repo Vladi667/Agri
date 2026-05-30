@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>My account — Eden Terranova</title>
+<link rel="icon" href="/images/eden-terranova-symbol.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/gw.css">
+<style>
+  body{ padding-top:72px; background:
+    radial-gradient(55% 55% at 12% 8%, rgba(16,185,129,0.10), transparent 60%),
+    radial-gradient(45% 45% at 92% 4%, rgba(244,199,123,0.22), transparent 60%),
+    #F8F9F5; min-height:100vh; }
+  .portal{ max-width:1100px; margin:0 auto; padding:40px 24px 96px; }
+  .acct-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:8px; }
+  .tabs{ display:flex; gap:6px; margin:28px 0 20px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .tab{ appearance:none; background:none; border:0; font-family:"Exo 2",sans-serif; font-size:14.5px; color:var(--muted-2);
+        padding:10px 16px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .25s, border-color .25s; }
+  .tab:hover{ color:var(--ink); }
+  .tab.active{ color:var(--green-deep); border-color:var(--green-deep); font-weight:500; }
+  .panel{ display:none; }
+  .panel.active{ display:block; animation:fade .4s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:8px; }
+  @media (max-width:640px){ .stat-row{ grid-template-columns:1fr; } }
+  .stat .n{ font-family:"Exo 2",sans-serif; font-weight:200; font-size:36px; line-height:1; letter-spacing:-.02em; }
+  .stat .l{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted-2); margin-top:8px; }
+
+  .proj{ margin-bottom:18px; }
+  .proj h3{ margin:0; font-family:"Exo 2",sans-serif; font-weight:300; font-size:22px; letter-spacing:-.01em; }
+  .badge{ display:inline-flex; align-items:center; gap:.4rem; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+          padding:.35rem .7rem; border-radius:999px; border:1px solid var(--line); background:#fff; color:var(--ink-2); }
+  .badge.green{ background:rgba(16,185,129,.10); border-color:rgba(16,185,129,.3); color:var(--green-deep); }
+  .badge.amber{ background:rgba(233,168,100,.14); border-color:rgba(233,168,100,.4); color:#9A5B16; }
+  .badge.slate{ background:rgba(100,116,139,.10); color:#475569; }
+  .bar{ height:8px; border-radius:999px; background:rgba(15,23,42,.07); overflow:hidden; margin-top:14px; }
+  .bar > i{ display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--green-deep),var(--green-mid)); }
+  .timeline{ margin-top:16px; border-left:2px solid var(--line); padding-left:18px; display:flex; flex-direction:column; gap:16px; }
+  .tl-item{ position:relative; }
+  .tl-item::before{ content:""; position:absolute; left:-25px; top:5px; width:10px; height:10px; border-radius:999px; background:var(--green); box-shadow:0 0 0 4px rgba(16,185,129,.16); }
+  .tl-date{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .tl-title{ font-weight:500; margin-top:2px; }
+  .tl-body{ color:var(--ink-3); font-size:14.5px; line-height:1.55; margin-top:3px; white-space:pre-wrap; }
+
+  table.inv{ width:100%; border-collapse:collapse; }
+  table.inv th, table.inv td{ text-align:left; padding:13px 12px; border-bottom:1px solid var(--line); font-size:14px; }
+  table.inv th{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted-2); font-weight:500; }
+  table.inv td.amt{ font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .empty{ color:var(--muted-2); padding:28px 0; text-align:center; }
+
+  .form-field{ display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+  .form-field label{ font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#64748B; }
+  .form-field input, .form-field textarea{ background:#F8F9F5; border:1px solid var(--line); border-radius:12px; padding:13px 15px; font-size:15px; outline:none; font-family:"Exo 2",sans-serif; transition:border-color .3s, box-shadow .3s; }
+  .form-field input:focus, .form-field textarea:focus{ border-color:var(--green-deep); box-shadow:0 0 0 6px rgba(16,185,129,.08); }
+  .form-field textarea{ min-height:130px; resize:vertical; }
+  #contactMsg{ font-size:13.5px; min-height:20px; }
+</style>
+</head>
+<body data-page="account">
+<div id="gw-header-mount"></div>
+
+<div class="portal" id="portal" style="display:none">
+  <div class="acct-head">
+    <div>
+      <div class="eyebrow mb-2">Client portal</div>
+      <h1 class="h1" id="acctName">Welcome back.</h1>
+      <p class="small mt-2" id="acctSub"></p>
+    </div>
+    <span class="chip"><span class="dot"></span> <span id="acctChip">Active stewardship</span></span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="projects">Projects</button>
+    <button class="tab" data-tab="payments">Payments &amp; invoices</button>
+    <button class="tab" data-tab="contact">Contact us</button>
+  </div>
+
+  <!-- PROJECTS -->
+  <section class="panel active" id="panel-projects">
+    <div id="projects"></div>
+  </section>
+
+  <!-- PAYMENTS -->
+  <section class="panel" id="panel-payments">
+    <div class="stat-row">
+      <div class="card stat"><div class="n" id="sumOutstanding">—</div><div class="l">Outstanding</div></div>
+      <div class="card stat"><div class="n" id="sumPaid">—</div><div class="l">Paid to date</div></div>
+      <div class="card stat"><div class="n" id="sumCount">—</div><div class="l">Invoices</div></div>
+    </div>
+    <div class="card mt-6" style="padding:6px 8px;">
+      <div id="invoices"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="panel" id="panel-contact">
+    <div class="card" style="max-width:620px;">
+      <h3 class="h3 mb-2">Send us a message</h3>
+      <p class="small mb-6">Questions about an estate, an invoice or the road ahead — your account manager receives this directly.</p>
+      <form id="contactForm" onsubmit="return sendContact(event)">
+        <div class="form-field">
+          <label for="cSubject">Subject</label>
+          <input type="text" id="cSubject" placeholder="What is this about?">
+        </div>
+        <div class="form-field">
+          <label for="cBody">Message</label>
+          <textarea id="cBody" placeholder="Write your message…" required></textarea>
+        </div>
+        <div id="contactMsg"></div>
+        <button class="btn btn-primary lg mt-2" type="submit" style="justify-content:center;">Send message
+          <svg class="arrow" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<div id="gw-footer-mount"></div>
+<script src="/js/gw.js"></script>
+<script src="/js/auth.js"></script>
+<script>
+let ACCOUNT = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!requireLogin()) return;
+  await loadAccount();
+
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('panel-' + t.dataset.tab).classList.add('active');
+    });
+  });
+});
+
+async function loadAccount() {
+  try {
+    const res = await fetch('/api/account', { headers: authHeaders() });
+    if (res.status === 401) { logout(); return; }
+    if (!res.ok) throw new Error();
+    ACCOUNT = await res.json();
+    document.getElementById('portal').style.display = 'block';
+    renderHeader();
+    renderProjects();
+    renderInvoices();
+  } catch {
+    document.getElementById('portal').style.display = 'block';
+    document.getElementById('projects').innerHTML =
+      '<p class="empty">We couldn\'t load your account right now. Please refresh in a moment.</p>';
+  }
+}
+
+function renderHeader() {
+  const u = ACCOUNT.user;
+  const name = u.company || u.use1;
+  document.getElementById('acctName').textContent = 'Welcome, ' + name + '.';
+  document.getElementById('acctSub').textContent =
+    (u.email || '') + (u.tele ? ' · ' + u.tele : '');
+  const live = ACCOUNT.projects.filter(p => p.status !== 'Completed').length;
+  document.getElementById('acctChip').textContent =
+    live ? live + ' active ' + (live === 1 ? 'project' : 'projects') : 'No active projects';
+}
+
+function statusClass(s) {
+  s = (s || '').toLowerCase();
+  if (s === 'completed') return 'green';
+  if (s === 'on hold') return 'amber';
+  return 'slate';
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+function esc(s) {
+  return (s == null ? '' : String(s)).replace(/[&<>"]/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+function renderProjects() {
+  const wrap = document.getElementById('projects');
+  const projects = ACCOUNT.projects || [];
+  if (!projects.length) {
+    wrap.innerHTML = '<div class="card"><p class="empty">No projects yet. Once we begin work on an estate for you, it will appear here with live progress.</p></div>';
+    return;
+  }
+  wrap.innerHTML = projects.map(p => {
+    const updates = (p.updates || []).map(u => `
+      <div class="tl-item">
+        <div class="tl-date">${fmtDate(u.created_at)}</div>
+        ${u.title ? `<div class="tl-title">${esc(u.title)}</div>` : ''}
+        <div class="tl-body">${esc(u.body)}</div>
+      </div>`).join('');
+    return `
+    <div class="card proj">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h3>${esc(p.name)}</h3>
+          ${p.location ? `<div class="small mt-1">${esc(p.location)}</div>` : ''}
+        </div>
+        <span class="badge ${statusClass(p.status)}">${esc(p.status || 'Planning')}</span>
+      </div>
+      ${p.summary ? `<p class="body mt-3" style="font-size:15px">${esc(p.summary)}</p>` : ''}
+      <div class="flex items-center gap-3 mt-3">
+        <div class="bar" style="flex:1"><i style="width:${Math.max(0, Math.min(100, p.progress || 0))}%"></i></div>
+        <span class="small" style="white-space:nowrap">${p.progress || 0}%</span>
+      </div>
+      ${updates ? `<div class="timeline">${updates}</div>`
+                : `<p class="small mt-4">No updates posted yet.</p>`}
+    </div>`;
+  }).join('');
+}
+
+function renderInvoices() {
+  const invoices = ACCOUNT.invoices || [];
+  let outstanding = 0, paid = 0;
+  invoices.forEach(i => {
+    const amt = parseFloat(i.amount) || 0;
+    if ((i.status || '').toLowerCase() === 'paid') paid += amt; else outstanding += amt;
+  });
+  const cur = invoices[0] ? invoices[0].currency : 'AED';
+  const money = n => (cur || 'AED') + ' ' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('sumOutstanding').textContent = money(outstanding);
+  document.getElementById('sumPaid').textContent = money(paid);
+  document.getElementById('sumCount').textContent = invoices.length;
+
+  const host = document.getElementById('invoices');
+  if (!invoices.length) {
+    host.innerHTML = '<p class="empty">No invoices yet.</p>';
+    return;
+  }
+  const rows = invoices.map(i => {
+    const cls = statusClass(i.status === 'Paid' ? 'completed' : (i.status === 'Overdue' ? 'on hold' : ''));
+    return `<tr>
+      <td><strong>${esc(i.number)}</strong></td>
+      <td>${esc(i.description || '—')}</td>
+      <td>${fmtDate(i.issued_at)}</td>
+      <td>${fmtDate(i.due_at)}</td>
+      <td class="amt">${esc(i.currency || 'AED')} ${(parseFloat(i.amount) || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+      <td><span class="badge ${cls}">${esc(i.status || 'Due')}</span></td>
+    </tr>`;
+  }).join('');
+  host.innerHTML = `<table class="inv">
+    <thead><tr><th>Invoice</th><th>Description</th><th>Issued</th><th>Due</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+
+async function sendContact(e) {
+  e.preventDefault();
+  const msg = document.getElementById('contactMsg');
+  const subject = document.getElementById('cSubject').value.trim();
+  const body = document.getElementById('cBody').value.trim();
+  msg.style.color = '#DC2626';
+  if (!body) { msg.textContent = 'Please write a message.'; return false; }
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({
+        subject,
+        body,
+        name: ACCOUNT && (ACCOUNT.user.company || ACCOUNT.user.use1),
+        email: ACCOUNT && ACCOUNT.user.email
+      })
+    });
+    if (!res.ok) throw new Error();
+    msg.style.color = '#0F7B52';
+    msg.textContent = 'Message sent — we\'ll be in touch shortly.';
+    document.getElementById('contactForm').reset();
+  } catch {
+    msg.textContent = 'Could not send. Please try again.';
+  }
+  return false;
+}
+</script>
+</body>
+</html>

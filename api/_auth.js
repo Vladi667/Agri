@@ -23,4 +23,14 @@ function verifyLogin(req) {
   }
 }
 
-module.exports = { verifyAdmin, verifyLogin };
+// Resolve the numeric user id for the logged-in caller. Older tokens issued
+// before `uid` was added carry only `username`, so fall back to a lookup.
+async function resolveUserId(payload, pool) {
+  if (!payload) return null;
+  if (payload.uid) return payload.uid;
+  if (!payload.username) return null;
+  const r = await pool.query('SELECT id FROM users WHERE use1 = $1', [payload.username]);
+  return r.rows.length ? r.rows[0].id : null;
+}
+
+module.exports = { verifyAdmin, verifyLogin, resolveUserId };

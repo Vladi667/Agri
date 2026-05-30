@@ -20,7 +20,11 @@ module.exports = async (req, res) => {
 
     const user = result.rows[0];
     const token = jwt.sign(
-      { username: user.use1, admin: user.admin === true || user.admin === 't' || user.admin === 1 },
+      {
+        uid: user.id,
+        username: user.use1,
+        admin: user.admin === true || user.admin === 't' || user.admin === 1
+      },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );

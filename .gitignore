@@ -49,3 +49,10 @@ Desktop.ini
 $RECYCLE.BIN/
 
 .vercel
+.aidesigner/*
+!.aidesigner/.gitkeep
+
+# Local secrets pulled from Vercel
+.env
+.env.*
+node_modules/

@@ -1,5 +1,7 @@
 // Shared schema definition used by both the /api/init-db endpoint and the
 // local scripts/init-db.js runner, so the two can never drift apart.
+const bcrypt = require('bcryptjs');
+
 async function initSchema(pool, opts = {}) {
   const adminUser = opts.adminUser || 'admin';
   const adminPass = opts.adminPass || 'Admin1234';
@@ -77,11 +79,15 @@ async function initSchema(pool, opts = {}) {
   `);
 
   // --- Seed an admin account so the admin console is usable ---
+  // Password is bcrypt-hashed. On conflict we keep the existing password
+  // (so a later re-run never resets a changed admin password) but ensure
+  // the account stays flagged as admin.
+  const adminHash = await bcrypt.hash(adminPass, 10);
   await pool.query(
     `INSERT INTO users (use1, pass, email, admin, company)
      VALUES ($1, $2, $3, true, 'Eden Terranova')
      ON CONFLICT (use1) DO UPDATE SET admin = true`,
-    [adminUser, adminPass, adminEmail]
+    [adminUser, adminHash, adminEmail]
   );
 
   return { adminUser };

@@ -69,7 +69,13 @@ function requireLogin() {
 
 function requireAdmin() {
   const session = getSession();
-  if (!session || !session.admin) {
+  // Not signed in at all → send to login so there's a way in.
+  if (!session) {
+    window.location.href = '/login.html';
+    return false;
+  }
+  // Signed in but not an admin → not allowed here.
+  if (!session.admin) {
     window.location.href = '/index.html';
     return false;
   }

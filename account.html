@@ -128,6 +128,9 @@ let ACCOUNT = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!requireLogin()) return;
+  // Safety net: admins belong in the console, never the client portal.
+  const _s = getSession();
+  if (_s && _s.admin) { window.location.replace('/admin.html'); return; }
   await loadAccount();
 
   document.querySelectorAll('.tab').forEach(t => {
